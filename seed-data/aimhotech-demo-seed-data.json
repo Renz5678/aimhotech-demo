@@ -1,0 +1,268 @@
+{
+  "_notes": "Shared seed data for the AImhotech demo. Copy this file into BOTH the admin-dashboard and mobile-view project directories (e.g. src/data/seed-data.json) so the two independently-running apps show consistent facilities, users, patients, and history. There is no real backend connecting them — see demo-script.md for how the live 'trigger' scenario (Maria dela Cruz) is choreographed by hand across both apps during the pitch.",
+
+  "facilities": [
+    {
+      "id": "RHU-QC-07",
+      "type": "RHU",
+      "name": "Quezon City RHU District 7",
+      "address": "Barangay Commonwealth, Quezon City",
+      "lgu": "Quezon City"
+    },
+    {
+      "id": "BHS-QC-097",
+      "type": "barangay_station",
+      "name": "Barangay Commonwealth Health Station",
+      "address": "Commonwealth Ave, Quezon City",
+      "lgu": "Quezon City",
+      "areaCodePrefix": "QC-097"
+    },
+    {
+      "id": "BHS-QC-133",
+      "type": "barangay_station",
+      "name": "Barangay Payatas Health Station",
+      "address": "Payatas, Quezon City",
+      "lgu": "Quezon City",
+      "areaCodePrefix": "QC-133"
+    },
+    {
+      "id": "BHS-QC-024",
+      "type": "barangay_station",
+      "name": "Barangay Bagong Silangan Health Station",
+      "address": "Bagong Silangan, Quezon City",
+      "lgu": "Quezon City",
+      "areaCodePrefix": "QC-024"
+    },
+    {
+      "id": "BHS-MRK-011",
+      "type": "barangay_station",
+      "name": "Barangay Concepcion Uno Health Station",
+      "address": "Concepcion Uno, Marikina City",
+      "lgu": "Marikina City",
+      "areaCodePrefix": "MRK-011"
+    },
+    {
+      "id": "HOSP-QC-STLUKES",
+      "type": "hospital",
+      "name": "St. Luke's Medical Center - QC (Referral Partner)",
+      "address": "E Rodriguez Sr. Ave, Quezon City",
+      "lgu": "Quezon City"
+    }
+  ],
+
+  "users": [
+    { "id": "U-BHW-001", "name": "Liza Marasigan", "role": "barangay_health_worker", "facilityId": "BHS-QC-097" },
+    { "id": "U-BHW-002", "name": "Ronnel Gatpayat", "role": "barangay_health_worker", "facilityId": "BHS-QC-133" },
+    { "id": "U-BHW-003", "name": "Jenny Villaflor", "role": "barangay_health_worker", "facilityId": "BHS-QC-024" },
+    { "id": "U-BHW-004", "name": "Mark Anthony Fajardo", "role": "barangay_health_worker", "facilityId": "BHS-MRK-011" },
+    { "id": "U-PHY-001", "name": "Dr. Carmela Ramos", "role": "rhu_physician", "facilityId": "RHU-QC-07" },
+    { "id": "U-PHY-002", "name": "Dr. Emmanuel Cruz", "role": "rhu_physician", "facilityId": "RHU-QC-07" },
+    { "id": "U-DOH-001", "name": "Atty. Grace Villanueva", "role": "doh_regional_officer", "facilityId": null, "region": "NCR" },
+    { "id": "U-ADMIN-001", "name": "Daniel Scaparro", "role": "super_admin", "facilityId": null }
+  ],
+
+  "devices": [
+    { "id": "DEV-MLB6-1001", "type": "microlife_b6_connect", "facilityId": "BHS-QC-097", "status": "online", "lastMaintenance": "2026-06-15" },
+    { "id": "DEV-BION-2001", "type": "bionime_rightest_ifree", "facilityId": "BHS-QC-097", "status": "online", "lastMaintenance": "2026-06-15" },
+    { "id": "DEV-MLB6-1002", "type": "microlife_b6_connect", "facilityId": "BHS-QC-133", "status": "online", "lastMaintenance": "2026-05-30" },
+    { "id": "DEV-BION-2002", "type": "bionime_rightest_ifree", "facilityId": "BHS-QC-133", "status": "maintenance_needed", "lastMaintenance": "2026-03-02" },
+    { "id": "DEV-MLB6-1003", "type": "microlife_b6_connect", "facilityId": "BHS-QC-024", "status": "online", "lastMaintenance": "2026-07-01" },
+    { "id": "DEV-MLB6-1004", "type": "microlife_b6_connect", "facilityId": "BHS-MRK-011", "status": "offline", "lastMaintenance": "2026-04-18" }
+  ],
+
+  "patients": [
+    {
+      "id": "QC-097-00214",
+      "name": "Rosalinda Buenaventura",
+      "dob": "1968-03-11",
+      "sex": "F",
+      "facilityId": "BHS-QC-097",
+      "consentStatus": "given",
+      "consentDate": "2026-01-10"
+    },
+    {
+      "id": "QC-097-00229",
+      "name": "Jun Bermudez",
+      "dob": "1975-09-02",
+      "sex": "M",
+      "facilityId": "BHS-QC-097",
+      "consentStatus": "given",
+      "consentDate": "2026-01-14"
+    },
+    {
+      "id": "QC-133-00088",
+      "name": "Aurora Sinag",
+      "dob": "1959-12-20",
+      "sex": "F",
+      "facilityId": "BHS-QC-133",
+      "consentStatus": "given",
+      "consentDate": "2026-02-02"
+    },
+    {
+      "id": "QC-133-00104",
+      "name": "Efren Pantaleon",
+      "dob": "1982-06-30",
+      "sex": "M",
+      "facilityId": "BHS-QC-133",
+      "consentStatus": "given",
+      "consentDate": "2026-02-09"
+    },
+    {
+      "id": "QC-024-00051",
+      "name": "Divina Aquino",
+      "dob": "1990-01-17",
+      "sex": "F",
+      "facilityId": "BHS-QC-024",
+      "consentStatus": "given",
+      "consentDate": "2026-02-20"
+    },
+    {
+      "id": "QC-024-00062",
+      "name": "Randy Oclarit",
+      "dob": "1971-05-05",
+      "sex": "M",
+      "facilityId": "BHS-QC-024",
+      "consentStatus": "given",
+      "consentDate": "2026-02-22"
+    },
+    {
+      "id": "MRK-011-00033",
+      "name": "Corazon Malabanan",
+      "dob": "1965-11-08",
+      "sex": "F",
+      "facilityId": "BHS-MRK-011",
+      "consentStatus": "given",
+      "consentDate": "2026-03-01"
+    },
+    {
+      "id": "QC-097-00241",
+      "name": "Maria Dela Cruz",
+      "dob": "1977-08-19",
+      "sex": "F",
+      "facilityId": "BHS-QC-097",
+      "consentStatus": "given",
+      "consentDate": "2026-07-20",
+      "_demoNote": "LIVE TRIGGER PATIENT — do not pre-seed her screening/risk-flag/referral. She is enrolled only. Her screening is created live during the demo per demo-script.md."
+    }
+  ],
+
+  "screenings": [
+    { "id": "SCR-0001", "patientId": "QC-097-00214", "facilityId": "BHS-QC-097", "healthWorkerId": "U-BHW-001", "timestamp": "2026-07-05T08:12:00+08:00", "bp": "148/92", "glucose": null, "afibFlag": false, "deviceId": "DEV-MLB6-1001", "gradeLevel": "screening" },
+    { "id": "SCR-0002", "patientId": "QC-097-00214", "facilityId": "BHS-QC-097", "healthWorkerId": "U-BHW-001", "timestamp": "2026-07-19T08:30:00+08:00", "bp": "152/94", "glucose": null, "afibFlag": false, "deviceId": "DEV-MLB6-1001", "gradeLevel": "screening" },
+    { "id": "SCR-0003", "patientId": "QC-097-00229", "facilityId": "BHS-QC-097", "healthWorkerId": "U-BHW-001", "timestamp": "2026-07-10T09:05:00+08:00", "bp": "128/82", "glucose": "141 mg/dL", "afibFlag": false, "deviceId": "DEV-MLB6-1001", "gradeLevel": "screening" },
+    { "id": "SCR-0004", "patientId": "QC-133-00088", "facilityId": "BHS-QC-133", "healthWorkerId": "U-BHW-002", "timestamp": "2026-06-28T10:00:00+08:00", "bp": "162/98", "glucose": null, "afibFlag": true, "deviceId": "DEV-MLB6-1002", "gradeLevel": "screening" },
+    { "id": "SCR-0005", "patientId": "QC-133-00088", "facilityId": "BHS-QC-133", "healthWorkerId": "U-BHW-002", "timestamp": "2026-07-18T10:15:00+08:00", "bp": "158/96", "glucose": null, "afibFlag": true, "deviceId": "DEV-MLB6-1002", "gradeLevel": "screening" },
+    { "id": "SCR-0006", "patientId": "QC-133-00104", "facilityId": "BHS-QC-133", "healthWorkerId": "U-BHW-002", "timestamp": "2026-07-15T11:00:00+08:00", "bp": "118/76", "glucose": "98 mg/dL", "afibFlag": false, "deviceId": "DEV-MLB6-1002", "gradeLevel": "screening" },
+    { "id": "SCR-0007", "patientId": "QC-024-00051", "facilityId": "BHS-QC-024", "healthWorkerId": "U-BHW-003", "timestamp": "2026-07-12T09:40:00+08:00", "bp": "112/74", "glucose": "89 mg/dL", "afibFlag": false, "deviceId": "DEV-MLB6-1003", "gradeLevel": "screening" },
+    { "id": "SCR-0008", "patientId": "QC-024-00062", "facilityId": "BHS-QC-024", "healthWorkerId": "U-BHW-003", "timestamp": "2026-07-08T14:20:00+08:00", "bp": "144/90", "glucose": "172 mg/dL", "afibFlag": false, "deviceId": "DEV-MLB6-1003", "gradeLevel": "screening" },
+    { "id": "SCR-0009", "patientId": "QC-024-00062", "facilityId": "BHS-QC-024", "healthWorkerId": "U-BHW-003", "timestamp": "2026-07-22T14:00:00+08:00", "bp": "146/91", "glucose": "180 mg/dL", "afibFlag": false, "deviceId": "DEV-MLB6-1003", "gradeLevel": "screening" },
+    { "id": "SCR-0010", "patientId": "MRK-011-00033", "facilityId": "BHS-MRK-011", "healthWorkerId": "U-BHW-004", "timestamp": "2026-06-30T08:50:00+08:00", "bp": "150/93", "glucose": null, "afibFlag": false, "deviceId": "DEV-MLB6-1004", "gradeLevel": "screening" },
+    { "id": "SCR-0011", "patientId": "MRK-011-00033", "facilityId": "BHS-MRK-011", "healthWorkerId": "U-BHW-004", "timestamp": "2026-07-21T09:10:00+08:00", "bp": "121/79", "glucose": null, "afibFlag": false, "deviceId": "DEV-MLB6-1004", "gradeLevel": "screening", "clinicalValidation": { "validated": true, "clinicianLicenseNo": "PH-MD-2023-88214", "qrVerified": true, "validatingClinician": "Dr. Carmela Ramos" } }
+  ],
+
+  "riskFlags": [
+    { "id": "RF-0001", "patientId": "QC-097-00214", "screeningId": "SCR-0002", "category": "elevated", "confidence": 0.86, "source": "ai_brain", "recommendedAction": "Refer to RHU for hypertension follow-up", "timestamp": "2026-07-19T08:31:00+08:00" },
+    { "id": "RF-0002", "patientId": "QC-097-00229", "screeningId": "SCR-0003", "category": "moderate", "confidence": 0.64, "source": "ai_brain", "recommendedAction": "Recheck glucose in 2 weeks", "timestamp": "2026-07-10T09:06:00+08:00" },
+    { "id": "RF-0003", "patientId": "QC-133-00088", "screeningId": "SCR-0005", "category": "elevated", "confidence": 0.91, "source": "ai_brain", "recommendedAction": "Urgent referral — sustained hypertension with AFIB flag", "timestamp": "2026-07-18T10:16:00+08:00" },
+    { "id": "RF-0004", "patientId": "QC-024-00062", "screeningId": "SCR-0009", "category": "elevated", "confidence": 0.88, "source": "ai_brain", "recommendedAction": "Refer to RHU — sustained elevated glucose", "timestamp": "2026-07-22T14:01:00+08:00" },
+    { "id": "RF-0005", "patientId": "MRK-011-00033", "screeningId": "SCR-0011", "category": "low", "confidence": 0.93, "source": "ai_brain", "recommendedAction": "Continue routine monitoring", "timestamp": "2026-07-21T09:11:00+08:00" }
+  ],
+
+  "referrals": [
+    { "id": "REF-0001", "patientId": "QC-097-00214", "riskFlagId": "RF-0001", "destinationFacilityId": "RHU-QC-07", "status": "referred", "createdAt": "2026-07-19T09:00:00+08:00", "updatedAt": "2026-07-20T10:00:00+08:00", "agingDays": 8, "stalled": false },
+    { "id": "REF-0002", "patientId": "QC-133-00088", "riskFlagId": "RF-0003", "destinationFacilityId": "HOSP-QC-STLUKES", "status": "flagged", "createdAt": "2026-07-18T11:00:00+08:00", "updatedAt": "2026-07-18T11:00:00+08:00", "agingDays": 9, "stalled": true },
+    { "id": "REF-0003", "patientId": "QC-024-00062", "riskFlagId": "RF-0004", "destinationFacilityId": "RHU-QC-07", "status": "seen", "createdAt": "2026-07-08T15:00:00+08:00", "updatedAt": "2026-07-23T09:00:00+08:00", "agingDays": 19, "stalled": false },
+    { "id": "REF-0004", "patientId": "QC-097-00229", "riskFlagId": "RF-0002", "destinationFacilityId": "RHU-QC-07", "status": "resolved", "createdAt": "2026-06-20T09:00:00+08:00", "updatedAt": "2026-07-01T10:00:00+08:00", "agingDays": 11, "stalled": false }
+  ],
+
+  "kpis_precomputed_for_dashboard_landing": {
+    "screeningsThisMonth": 11,
+    "elevatedRiskPercent": 36,
+    "referralCompletionRate": 50,
+    "barangayRiskHeatmap": [
+      { "facilityId": "BHS-QC-097", "riskLevel": "elevated" },
+      { "facilityId": "BHS-QC-133", "riskLevel": "elevated" },
+      { "facilityId": "BHS-QC-024", "riskLevel": "moderate" },
+      { "facilityId": "BHS-MRK-011", "riskLevel": "low" }
+    ]
+  },
+
+  "liveTriggerScenario": {
+    "_description": "This is NOT pre-loaded. It is the scripted event sequence the presenter fires by hand on each app during the live demo. See demo-script.md for exact steps.",
+    "patientId": "QC-097-00241",
+    "patientName": "Maria Dela Cruz",
+    "steps": [
+      {
+        "step": 1,
+        "app": "mobile-view (Health Worker Mode)",
+        "action": "Pair devices, capture vitals for Maria Dela Cruz",
+        "resultingRecord": {
+          "id": "SCR-LIVE-001",
+          "patientId": "QC-097-00241",
+          "facilityId": "BHS-QC-097",
+          "healthWorkerId": "U-BHW-001",
+          "bp": "164/99",
+          "glucose": null,
+          "afibFlag": true,
+          "deviceId": "DEV-MLB6-1001",
+          "gradeLevel": "screening"
+        }
+      },
+      {
+        "step": 2,
+        "app": "mobile-view (Health Worker Mode)",
+        "action": "On-device AI shows PROVISIONAL risk result",
+        "resultingRecord": {
+          "id": "RF-LIVE-001",
+          "patientId": "QC-097-00241",
+          "screeningId": "SCR-LIVE-001",
+          "category": "elevated",
+          "confidence": 0.79,
+          "source": "on_device",
+          "provisional": true,
+          "recommendedAction": "Likely referral — confirm once synced"
+        }
+      },
+      {
+        "step": 3,
+        "app": "presenter trigger",
+        "action": "Presenter clicks the hidden 'Sync Now' trigger — narrates this as the sync engine reconciling with the AI Brain",
+        "note": "No real network call happens; this just unlocks/reveals the next seeded record in each app's local state."
+      },
+      {
+        "step": 4,
+        "app": "admin-dashboard (Risk Queue)",
+        "action": "New row appears at top of Risk Queue with a highlight/pulse animation",
+        "resultingRecord": {
+          "id": "RF-LIVE-001-confirmed",
+          "patientId": "QC-097-00241",
+          "screeningId": "SCR-LIVE-001",
+          "category": "elevated",
+          "confidence": 0.94,
+          "source": "ai_brain",
+          "provisional": false,
+          "recommendedAction": "Urgent referral — sustained hypertension with AFIB flag, cross-referenced against Rosalinda Buenaventura's station trend"
+        }
+      },
+      {
+        "step": 5,
+        "app": "admin-dashboard (Risk Queue -> Referral Management)",
+        "action": "Dr. Carmela Ramos (physician) opens the case, clicks 'Create Referral', selects St. Luke's Medical Center - QC",
+        "resultingRecord": {
+          "id": "REF-LIVE-001",
+          "patientId": "QC-097-00241",
+          "riskFlagId": "RF-LIVE-001-confirmed",
+          "destinationFacilityId": "HOSP-QC-STLUKES",
+          "status": "referred",
+          "createdAt": "LIVE_TIMESTAMP"
+        }
+      },
+      {
+        "step": 6,
+        "app": "mobile-view (Patient Mode)",
+        "action": "Switch to Maria Dela Cruz's Patient Mode view — Referral Tracker now shows 'Referred' stage with facility + date, closing the loop",
+        "note": "This is the payoff beat of the whole demo — same patient, same event, three roles, one system."
+      }
+    ]
+  }
+}

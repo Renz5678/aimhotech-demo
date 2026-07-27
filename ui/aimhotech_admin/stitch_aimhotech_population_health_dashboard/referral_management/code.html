@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AImhotech | Referral Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#e3e2e0",
+                    "tertiary": "#331716",
+                    "surface-container": "#eeeeeb",
+                    "on-surface": "#1a1c1b",
+                    "on-secondary-container": "#5c6948",
+                    "on-surface-variant": "#424844",
+                    "surface-variant": "#e3e2e0",
+                    "on-tertiary-fixed": "#2f1412",
+                    "inverse-on-surface": "#f1f1ee",
+                    "outline": "#727974",
+                    "primary-container": "#1e3a2f",
+                    "secondary-fixed": "#d9e8bf",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "secondary": "#566342",
+                    "surface": "#faf9f7",
+                    "tertiary-fixed-dim": "#ecbbb7",
+                    "surface-tint": "#486458",
+                    "primary": "#07241a",
+                    "on-tertiary-fixed-variant": "#603e3b",
+                    "on-primary-fixed-variant": "#304c41",
+                    "tertiary-fixed": "#ffdad7",
+                    "tertiary-container": "#4c2c2a",
+                    "primary-fixed": "#caeada",
+                    "outline-variant": "#c1c8c3",
+                    "surface-bright": "#faf9f7",
+                    "on-secondary-fixed": "#141f05",
+                    "on-tertiary-container": "#c0928f",
+                    "on-secondary-fixed-variant": "#3f4b2c",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f4f3f1",
+                    "inverse-surface": "#2f312f",
+                    "inverse-primary": "#aecebe",
+                    "surface-dim": "#dadad8",
+                    "secondary-container": "#d9e8bf",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#e9e8e6",
+                    "on-primary-fixed": "#032017",
+                    "background": "#faf9f7",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#aecebe",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#86a496",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#becca4",
+                    "on-background": "#1a1c1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container_padding": "32px",
+                    "base_unit": "4px",
+                    "card_gap": "24px",
+                    "section_margin": "40px",
+                    "sidebar_width": "228px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "title-sm": ["IBM Plex Sans"],
+                    "label-caps": ["IBM Plex Sans"],
+                    "data-sm": ["IBM Plex Mono"],
+                    "data-lg": ["IBM Plex Mono"],
+                    "body-sm": ["IBM Plex Sans"],
+                    "display-lg": ["IBM Plex Sans"],
+                    "headline-md": ["IBM Plex Sans"],
+                    "body-md": ["IBM Plex Sans"]
+            },
+            "fontSize": {
+                    "title-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "label-caps": ["11px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                    "data-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "data-lg": ["28px", {"lineHeight": "1.1", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .custom-shadow {
+            box-shadow: 0px 4px 20px rgba(30, 58, 47, 0.05);
+        }
+        .stepper-line {
+            height: 4px;
+            border-radius: 999px;
+            background: #E5E5E0;
+            position: relative;
+        }
+        .stepper-line-active {
+            background: #566342;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        aside::-webkit-scrollbar {
+            width: 4px;
+        }
+        aside::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface">
+<!-- Main Navigation Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-[228px] bg-primary flex flex-col py-8 z-50">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-white/20 flex items-center justify-center text-on-primary font-bold">A</div>
+<div>
+<h1 class="text-on-primary font-headline-md text-headline-md font-bold leading-tight">AImhotech</h1>
+<p class="text-on-primary/60 text-[10px] tracking-widest font-bold">WEB ADMIN</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3 text-xl opacity-70 group-hover:opacity-100">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3 text-xl opacity-70 group-hover:opacity-100">person_search</span>
+<span class="font-body-sm text-body-sm">Patient Registry</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3 text-xl opacity-70 group-hover:opacity-100">priority_high</span>
+<span class="font-body-sm text-body-sm">Risk Queue</span>
+<span class="ml-auto bg-error text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">6</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 bg-white/10 text-on-primary border-l-4 border-secondary-fixed-dim group" href="#">
+<span class="material-symbols-outlined mr-3 text-xl fill-icon">sync_alt</span>
+<span class="font-body-sm text-body-sm">Referrals</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3 text-xl opacity-70 group-hover:opacity-100">verified_user</span>
+<span class="font-body-sm text-body-sm">Clinical Validation</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3 text-xl opacity-70 group-hover:opacity-100">bar_chart</span>
+<span class="font-body-sm text-body-sm">Reports & Analytics</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors group mt-auto" href="#">
+<span class="material-symbols-outlined mr-3 text-xl opacity-70 group-hover:opacity-100">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+</nav>
+<div class="px-4 mt-8 pt-6 border-t border-white/10">
+<div class="bg-white/5 rounded-lg p-3">
+<p class="text-white/40 text-[10px] font-bold mb-2">VIEWING AS</p>
+<select class="w-full bg-transparent border-none text-on-primary font-body-sm text-body-sm p-0 focus:ring-0">
+<option class="bg-primary">RHU Physician</option>
+<option class="bg-primary">Admin Lead</option>
+</select>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container text-xs font-bold">DR</div>
+<div class="overflow-hidden">
+<p class="text-on-primary font-bold text-body-sm truncate">Dr. Amelia Reyes</p>
+<p class="text-on-primary/50 text-[10px]">RHU Physician</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Content Canvas -->
+<main class="ml-[228px] min-h-screen">
+<!-- Top Bar -->
+<header class="flex justify-between items-center w-full pl-8 pr-8 py-6">
+<div class="flex items-center gap-4">
+<h2 class="font-display-lg text-display-lg font-semibold text-on-background">Referral Management</h2>
+<div class="bg-secondary-container/30 px-3 py-1 rounded-full flex items-center gap-2 border border-secondary-container">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-body-sm text-body-sm text-on-secondary-container">RHU Malanday • 8 stations</span>
+</div>
+</div>
+<div class="font-data-sm text-data-sm text-on-surface-variant">
+                Sat, Jul 26 2026 • 09:41 PHT
+            </div>
+</header>
+<div class="px-8 pb-12">
+<!-- KPI Grid -->
+<div class="grid grid-cols-4 gap-gutter mb-10">
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow border border-surface-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">ACTIVE REFERRALS</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">4</span>
+<span class="text-body-sm text-on-surface-variant">cases</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow border border-surface-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">STALLED (≥ 7D)</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-error">2</span>
+<span class="text-body-sm text-on-surface-variant">at risk</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow border border-surface-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">RESOLVED THIS MONTH</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">2</span>
+<span class="text-body-sm text-on-surface-variant">completed</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow border border-surface-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">MEDIAN DAYS TO SEEN</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">4.5</span>
+<span class="text-body-sm text-on-surface-variant">days avg.</span>
+</div>
+</div>
+</div>
+<!-- Referral Table/Cards -->
+<div class="space-y-4">
+<!-- Row 1 (Stalled) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow flex items-center border-l-4 border-error/40">
+<div class="w-1/4">
+<h4 class="font-title-sm text-title-sm text-on-surface">Luzviminda Santos</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-data-sm text-data-sm text-on-surface-variant">REF-2107</span>
+<span class="text-outline-variant">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Brgy. Poblacion</span>
+</div>
+</div>
+<div class="flex-1 px-8 relative">
+<div class="flex justify-between mb-6">
+<div class="flex flex-col items-center relative z-10">
+<div class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary mb-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">FLAGGED</span>
+</div>
+<div class="flex flex-col items-center relative z-10">
+<div class="w-6 h-6 rounded-full bg-tertiary-container flex items-center justify-center border-2 border-tertiary-fixed shadow-sm mb-2 scale-110">
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface font-bold">REFERRED</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">SEEN</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">RESOLVED</span>
+</div>
+</div>
+<!-- Progress Background Bar -->
+<div class="absolute top-[10px] left-[calc(12.5%+16px)] right-[calc(12.5%+16px)] h-1 bg-surface-variant rounded-full -z-0">
+<div class="h-full w-1/3 bg-secondary rounded-full"></div>
+</div>
+</div>
+<div class="w-1/4 flex flex-col items-end gap-3">
+<div class="text-right">
+<p class="font-body-sm text-body-sm font-medium text-on-surface">Prov. Hospital — Cardio</p>
+<div class="flex items-center gap-1.5 justify-end mt-1 text-error">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="font-label-caps text-[10px] bg-error-container/20 px-2 py-0.5 rounded-full font-bold">Stalled • 9d</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps py-2 px-6 rounded-lg hover:bg-primary-container transition-all active:scale-95">MARK SEEN</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow flex items-center">
+<div class="w-1/4">
+<h4 class="font-title-sm text-title-sm text-on-surface">Rosario Dimagiba</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-data-sm text-data-sm text-on-surface-variant">REF-2111</span>
+<span class="text-outline-variant">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Brgy. San Isidro</span>
+</div>
+</div>
+<div class="flex-1 px-8 relative">
+<div class="flex justify-between mb-6">
+<div class="flex flex-col items-center relative z-10">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary shadow-sm mb-2 scale-110">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface font-bold">FLAGGED</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">REFERRED</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">SEEN</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">RESOLVED</span>
+</div>
+</div>
+<div class="absolute top-[10px] left-[calc(12.5%+16px)] right-[calc(12.5%+16px)] h-1 bg-surface-variant rounded-full -z-0"></div>
+</div>
+<div class="w-1/4 flex flex-col items-end gap-3">
+<div class="text-right">
+<p class="font-body-sm text-body-sm font-medium text-on-surface">Far EasTone Health+ consult</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant mt-1">2d in stage</p>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps py-2 px-6 rounded-lg hover:bg-primary-container transition-all active:scale-95">MARK REFERRED</button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow flex items-center">
+<div class="w-1/4">
+<h4 class="font-title-sm text-title-sm text-on-surface">Marites Ocampo</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-data-sm text-data-sm text-on-surface-variant">REF-2098</span>
+<span class="text-outline-variant">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Brgy. Malanday</span>
+</div>
+</div>
+<div class="flex-1 px-8 relative">
+<div class="flex justify-between mb-6">
+<div class="flex flex-col items-center relative z-10">
+<div class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary mb-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">FLAGGED</span>
+</div>
+<div class="flex flex-col items-center relative z-10">
+<div class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary mb-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">REFERRED</span>
+</div>
+<div class="flex flex-col items-center relative z-10">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary shadow-sm mb-2 scale-110">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface font-bold">SEEN</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">RESOLVED</span>
+</div>
+</div>
+<div class="absolute top-[10px] left-[calc(12.5%+16px)] right-[calc(12.5%+16px)] h-1 bg-surface-variant rounded-full -z-0">
+<div class="h-full w-2/3 bg-secondary rounded-full"></div>
+</div>
+</div>
+<div class="w-1/4 flex flex-col items-end gap-3">
+<div class="text-right">
+<p class="font-body-sm text-body-sm font-medium text-on-surface">Prov. Hospital — IM</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant mt-1">3d in stage</p>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps py-2 px-6 rounded-lg hover:bg-primary-container transition-all active:scale-95">MARK RESOLVED</button>
+</div>
+</div>
+<!-- Row 4 (Stalled) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl custom-shadow flex items-center border-l-4 border-error/40">
+<div class="w-1/4">
+<h4 class="font-title-sm text-title-sm text-on-surface">Antonio Mercado</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-data-sm text-data-sm text-on-surface-variant">REF-2091</span>
+<span class="text-outline-variant">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Brgy. Malanday</span>
+</div>
+</div>
+<div class="flex-1 px-8 relative">
+<div class="flex justify-between mb-6">
+<div class="flex flex-col items-center relative z-10">
+<div class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary mb-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">FLAGGED</span>
+</div>
+<div class="flex flex-col items-center relative z-10">
+<div class="w-6 h-6 rounded-full bg-tertiary-container flex items-center justify-center border-2 border-tertiary-fixed shadow-sm mb-2 scale-110">
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface font-bold">REFERRED</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">SEEN</span>
+</div>
+<div class="flex flex-col items-center relative z-10 opacity-30">
+<div class="w-4 h-4 rounded-full bg-surface-variant border-2 border-outline-variant mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">RESOLVED</span>
+</div>
+</div>
+<div class="absolute top-[10px] left-[calc(12.5%+16px)] right-[calc(12.5%+16px)] h-1 bg-surface-variant rounded-full -z-0">
+<div class="h-full w-1/3 bg-secondary rounded-full"></div>
+</div>
+</div>
+<div class="w-1/4 flex flex-col items-end gap-3">
+<div class="text-right">
+<p class="font-body-sm text-body-sm font-medium text-on-surface">District Hospital — IM</p>
+<div class="flex items-center gap-1.5 justify-end mt-1 text-error">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="font-label-caps text-[10px] bg-error-container/20 px-2 py-0.5 rounded-full font-bold">Stalled • 11d</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps py-2 px-6 rounded-lg hover:bg-primary-container transition-all active:scale-95">MARK SEEN</button>
+</div>
+</div>
+<!-- Row 5 (Resolved) -->
+<div class="bg-surface-container-low/50 p-6 rounded-xl custom-shadow flex items-center opacity-80">
+<div class="w-1/4">
+<h4 class="font-title-sm text-title-sm text-on-surface">Corazon Villanueva</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-data-sm text-data-sm text-on-surface-variant">REF-2086</span>
+<span class="text-outline-variant">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Brgy. San Isidro</span>
+</div>
+</div>
+<div class="flex-1 px-8 relative">
+<div class="flex justify-between mb-6">
+<div class="flex flex-col items-center relative z-10">
+<div class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary mb-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">FLAGGED</span>
+</div>
+<div class="flex flex-col items-center relative z-10">
+<div class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary mb-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">REFERRED</span>
+</div>
+<div class="flex flex-col items-center relative z-10">
+<div class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary mb-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">SEEN</span>
+</div>
+<div class="flex flex-col items-center relative z-10">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary shadow-sm mb-2 scale-110">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface font-bold">RESOLVED</span>
+</div>
+</div>
+<div class="absolute top-[10px] left-[calc(12.5%+16px)] right-[calc(12.5%+16px)] h-1 bg-surface-variant rounded-full -z-0">
+<div class="h-full w-full bg-secondary rounded-full"></div>
+</div>
+</div>
+<div class="w-1/4 flex flex-col items-end gap-3">
+<div class="text-right">
+<p class="font-body-sm text-body-sm font-medium text-on-surface">Far EasTone Health+ consult</p>
+</div>
+<div class="flex items-center gap-2 text-secondary font-label-caps text-label-caps py-2">
+<span class="material-symbols-outlined text-base">check_circle</span>
+                            Resolved
+                        </div>
+</div>
+</div>
+</div>
+<footer class="mt-8 pt-6 border-t border-surface-variant/40">
+<p class="text-on-surface-variant text-body-sm leading-relaxed max-w-3xl">
+                    Referrals idle past <span class="font-bold text-on-surface">7 days</span> are flagged as stalled. Video consults launch via Far EasTone Health+ at the “Seen” stage.
+                </p>
+</footer>
+</div>
+</main>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.classList.add('translate-y-[-1px]');
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.classList.remove('translate-y-[-1px]');
+            });
+        });
+
+        // Simple real-time clock update (even though it's simulated as static)
+        function updateTime() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            // For the sake of matching the static design requirements, we keep the provided timestamp
+            // but the logic is here for true "live" admin feel.
+        }
+    </script>
+</body></html>

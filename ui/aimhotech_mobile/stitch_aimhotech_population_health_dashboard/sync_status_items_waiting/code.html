@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Sync Status - AImhotech</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "background": "#faf9f7",
+                "inverse-on-surface": "#f1f1ee",
+                "on-secondary": "#ffffff",
+                "inverse-surface": "#2f312f",
+                "primary-fixed": "#caeada",
+                "surface-container-lowest": "#ffffff",
+                "inverse-primary": "#aecebe",
+                "on-tertiary": "#ffffff",
+                "on-error": "#ffffff",
+                "surface-container-low": "#f4f3f1",
+                "surface-container-highest": "#e3e2e0",
+                "surface-bright": "#faf9f7",
+                "on-surface": "#1a1c1b",
+                "secondary": "#566342",
+                "on-error-container": "#93000a",
+                "primary": "#07241a",
+                "surface-tint": "#486458",
+                "outline": "#727974",
+                "tertiary-fixed-dim": "#c7c6c5",
+                "on-tertiary-fixed": "#1a1c1b",
+                "secondary-container": "#d9e8bf",
+                "on-secondary-fixed-variant": "#3f4b2c",
+                "on-background": "#1a1c1b",
+                "outline-variant": "#c1c8c3",
+                "on-tertiary-container": "#9d9d9c",
+                "primary-container": "#1e3a2f",
+                "on-primary": "#ffffff",
+                "tertiary-fixed": "#e3e2e0",
+                "tertiary-container": "#343534",
+                "surface": "#faf9f7",
+                "on-primary-fixed-variant": "#304c41",
+                "tertiary": "#1f201f",
+                "surface-container-high": "#e9e8e6",
+                "secondary-fixed-dim": "#becca4",
+                "surface-dim": "#dadad8",
+                "primary-fixed-dim": "#aecebe",
+                "on-primary-container": "#86a496",
+                "error": "#ba1a1a",
+                "surface-container": "#eeeeeb",
+                "on-surface-variant": "#424844",
+                "error-container": "#ffdad6",
+                "surface-variant": "#e3e2e0",
+                "on-tertiary-fixed-variant": "#464746",
+                "secondary-fixed": "#d9e8bf",
+                "on-secondary-fixed": "#141f05",
+                "on-primary-fixed": "#032017",
+                "on-secondary-container": "#5c6948"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "sm": "12px",
+                "edge_margin": "20px",
+                "xs": "8px",
+                "stack_gap": "16px",
+                "md": "16px",
+                "lg": "24px",
+                "base": "4px",
+                "xl": "32px"
+            },
+            "fontFamily": {
+                "label-sm": ["Figtree"],
+                "body-lg": ["Figtree"],
+                "body-md": ["Figtree"],
+                "headline-md": ["Figtree"],
+                "technical-id": ["IBM Plex Mono"],
+                "headline-sm": ["Figtree"],
+                "display-lg": ["Figtree"]
+            },
+            "fontSize": {
+                "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                "technical-id": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Figtree', sans-serif; background-color: #faf9f7; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; }
+        
+        .soft-pulse {
+            animation: pulse-ring 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        .shadow-raised {
+            box-shadow: 0 4px 12px rgba(30, 58, 47, 0.04);
+        }
+
+        .shadow-active {
+            box-shadow: 0 6px 16px rgba(30, 58, 47, 0.08);
+        }
+
+        .tap-target { min-height: 48px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen text-on-surface">
+<!-- TopAppBar from JSON -->
+<header class="flex flex-col px-edge_margin pt-xl pb-md w-full bg-background dark:bg-background sticky top-0 z-50">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional circular profile icon of a health worker logo, simplified and clean, utilizing a forest green and sage color palette on a white background, high-end vector aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVIQCWEAKxH7mMm9DraV8nLWPe82LnACw9WFp4EfwhIPeNXAm0mppho1H8n4hSBAW7FArPMjEw45XT2ihGCph4SPT1Iwam3mxUHR__rXkgzWId6oipGZFju5yiX7zASMnuaekQKQP9UYsmyHIKyY0OAGVJp5MXGydyXYD37kxJbLDi2-5-H2JqdavH3Z41jzVSR5K2XC3tepG1a3U3lKRrstqeeN9bO8xBj-nN99VS2Rb9YTCjLqXtlZujTp_jsXI2qXd6m6DQc3g"/>
+</div>
+<h1 class="text-headline-md font-headline-md text-primary dark:text-inverse-primary tracking-tight">Barangay San Isidro</h1>
+</div>
+<div class="flex items-center px-sm py-1 bg-secondary-container rounded-full gap-xs animate-pulse">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-label-sm font-label-sm text-on-secondary-container">3 pending</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow px-edge_margin pb-32 pt-4">
+<section class="space-y-stack_gap">
+<h2 class="text-headline-md font-headline-md text-primary mt-xs">Sync Status</h2>
+<!-- Substantial Summary Card -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-raised flex flex-col items-center text-center relative overflow-hidden border border-outline-variant/10">
+<!-- Background Atmospheric Decorative Element -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<!-- Pulse Indicator -->
+<div class="relative mb-lg">
+<div class="absolute inset-0 bg-secondary rounded-full soft-pulse opacity-20"></div>
+<div class="relative w-20 h-20 bg-secondary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary scale-150" data-icon="cloud_sync">cloud_sync</span>
+</div>
+</div>
+<div class="space-y-xs mb-lg">
+<h3 class="text-display-lg font-display-lg text-primary">3 items waiting</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Last successful sync: 7:42 AM</p>
+</div>
+<!-- Prominent Sync Button -->
+<button class="w-full bg-primary text-on-primary font-headline-sm text-headline-sm h-[56px] rounded-xl flex items-center justify-center gap-sm active:scale-95 transition-transform shadow-active group" onclick="handleSync()">
+<span class="material-symbols-outlined group-hover:animate-spin" data-icon="sync">sync</span>
+<span>Sync now</span>
+</button>
+</div>
+<!-- Refined Item List Container -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-raised">
+<div class="px-lg py-md bg-surface-container-low border-b border-outline-variant/30">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Waiting to sync (3)</span>
+</div>
+<ul class="divide-y divide-outline-variant/20">
+<!-- Item 1 -->
+<li class="p-lg flex items-center justify-between hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-md">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="clinical_notes">clinical_notes</span>
+</div>
+<div>
+<div class="flex items-center gap-xs">
+<span class="text-body-lg font-body-lg text-primary">Screening — Maria Santos</span>
+</div>
+<div class="flex items-center gap-xs mt-1">
+<span class="text-label-sm font-label-sm text-on-surface-variant/70">Vitals + risk flag</span>
+<span class="text-on-surface-variant/30">•</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant/70">Queued 10m ago</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-label-sm font-label-sm text-secondary px-2 py-0.5 bg-secondary-container rounded-full">Ready</span>
+<button class="text-primary p-2 -mr-2 rounded-full hover:bg-secondary-container transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</li>
+<!-- Item 2 -->
+<li class="p-lg flex items-center justify-between hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-md">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="clinical_notes">clinical_notes</span>
+</div>
+<div>
+<div class="flex items-center gap-xs">
+<span class="text-body-lg font-body-lg text-primary">Screening — Jose Ramirez</span>
+</div>
+<div class="flex items-center gap-xs mt-1">
+<span class="text-label-sm font-label-sm text-on-surface-variant/70">Vitals + risk flag</span>
+<span class="text-on-surface-variant/30">•</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant/70">Queued 2h ago</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-label-sm font-label-sm text-secondary px-2 py-0.5 bg-secondary-container rounded-full">Ready</span>
+<button class="text-primary p-2 -mr-2 rounded-full hover:bg-secondary-container transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</li>
+<!-- Item 3 -->
+<li class="p-lg flex items-center justify-between hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-md">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="clinical_notes">clinical_notes</span>
+</div>
+<div>
+<div class="flex items-center gap-xs">
+<span class="text-body-lg font-body-lg text-primary">Screening — Lourdes Bautista</span>
+</div>
+<div class="flex items-center gap-xs mt-1">
+<span class="text-label-sm font-label-sm text-on-surface-variant/70">Vitals + risk flag</span>
+<span class="text-on-surface-variant/30">•</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant/70">Queued today</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-label-sm font-label-sm text-secondary px-2 py-0.5 bg-secondary-container rounded-full">Ready</span>
+<button class="text-primary p-2 -mr-2 rounded-full hover:bg-secondary-container transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</li>
+</ul>
+</div>
+<!-- Satisfying "Sync Success" Area Placeholder (Hidden initially) -->
+<div class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500 bg-secondary-container/20 rounded-xl p-lg flex flex-col items-center text-center border border-secondary/10" id="successState">
+<div class="w-16 h-16 bg-secondary text-on-secondary rounded-full flex items-center justify-center mb-md shadow-lg">
+<span class="material-symbols-outlined text-[32px]" data-icon="check_circle">check_circle</span>
+</div>
+<h4 class="text-headline-sm font-headline-sm text-primary">Everything synced!</h4>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">You're all caught up with the cloud.</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar from JSON (Active: Settings) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-[72px] px-4 pb-safe bg-surface-container-lowest dark:bg-surface-container-lowest shadow-sm">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-all duration-150 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<!-- Screening -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-all duration-150 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+<span class="text-label-sm font-label-sm">Screening</span>
+</a>
+<!-- Lookup -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-all duration-150 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="text-label-sm font-label-sm">Lookup</span>
+</a>
+<!-- Settings (Active) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-bold scale-95 transition-all duration-150 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-label-sm font-label-sm">Settings</span>
+</a>
+</nav>
+<script>
+        function handleSync() {
+            const btn = document.querySelector('button[onclick="handleSync()"]');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            const btnText = btn.querySelector('span:last-child');
+            
+            // Interaction feedback
+            icon.classList.add('animate-spin');
+            btnText.textContent = "Syncing...";
+            btn.disabled = true;
+            btn.classList.add('opacity-80');
+
+            // Fake processing delay
+            setTimeout(() => {
+                const summaryCard = btn.closest('.bg-surface-container-lowest');
+                const itemList = document.querySelector('ul').closest('.bg-surface-container-lowest');
+                const successState = document.getElementById('successState');
+                
+                // Animate out items
+                summaryCard.style.transition = 'all 0.5s ease';
+                itemList.style.transition = 'all 0.5s ease';
+                
+                summaryCard.style.opacity = '0';
+                summaryCard.style.transform = 'translateY(-20px)';
+                itemList.style.opacity = '0';
+                itemList.style.transform = 'translateY(-20px)';
+
+                setTimeout(() => {
+                    summaryCard.classList.add('hidden');
+                    itemList.classList.add('hidden');
+                    successState.classList.remove('hidden');
+                }, 500);
+            }, 2000);
+        }
+    </script>
+</body></html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AImhotech Population Health Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-dim": "#dadad8",
+            "on-surface-variant": "#424844",
+            "error-container": "#ffdad6",
+            "surface-container-low": "#f4f3f1",
+            "background": "#faf9f7",
+            "surface-tint": "#486458",
+            "on-secondary-fixed-variant": "#3f4b2c",
+            "on-primary-container": "#86a496",
+            "on-surface": "#1a1c1b",
+            "surface-container-high": "#e9e8e6",
+            "surface-container": "#eeeeeb",
+            "tertiary": "#331716",
+            "surface-variant": "#e3e2e0",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-fixed-variant": "#603e3b",
+            "on-primary-fixed": "#032017",
+            "primary": "#07241a",
+            "secondary-fixed-dim": "#becca4",
+            "primary-fixed-dim": "#aecebe",
+            "primary-fixed": "#caeada",
+            "on-secondary-container": "#5c6948",
+            "outline": "#727974",
+            "error": "#ba1a1a",
+            "inverse-primary": "#aecebe",
+            "on-secondary-fixed": "#141f05",
+            "tertiary-fixed-dim": "#ecbbb7",
+            "surface-container-lowest": "#ffffff",
+            "surface-bright": "#faf9f7",
+            "on-background": "#1a1c1b",
+            "on-primary-fixed-variant": "#304c41",
+            "on-error-container": "#93000a",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#4c2c2a",
+            "on-tertiary-fixed": "#2f1412",
+            "secondary-container": "#d9e8bf",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f1f1ee",
+            "on-primary": "#ffffff",
+            "primary-container": "#1e3a2f",
+            "secondary": "#566342",
+            "on-tertiary-container": "#c0928f",
+            "surface-container-highest": "#e3e2e0",
+            "outline-variant": "#c1c8c3",
+            "surface": "#faf9f7",
+            "secondary-fixed": "#d9e8bf",
+            "inverse-surface": "#2f312f",
+            "tertiary-fixed": "#ffdad7"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "card_gap": "24px",
+            "gutter": "16px",
+            "section_margin": "40px",
+            "sidebar_width": "228px",
+            "base_unit": "4px",
+            "container_padding": "32px"
+          },
+          "fontFamily": {
+            "data-sm": ["IBM Plex Mono"],
+            "title-sm": ["IBM Plex Sans"],
+            "label-caps": ["IBM Plex Sans"],
+            "body-md": ["IBM Plex Sans"],
+            "body-sm": ["IBM Plex Sans"],
+            "display-lg": ["IBM Plex Sans"],
+            "data-lg": ["IBM Plex Mono"],
+            "headline-md": ["IBM Plex Sans"]
+          },
+          "fontSize": {
+            "data-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+            "title-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "500"}],
+            "label-caps": ["11px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "700"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+            "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "data-lg": ["28px", {"lineHeight": "1.1", "fontWeight": "600"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #faf9f7;
+      color: #1a1c1b;
+      -webkit-font-smoothing: antialiased;
+    }
+    .soft-shadow {
+      box-shadow: 0px 4px 20px rgba(30, 58, 47, 0.05);
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .chart-bar:hover {
+      filter: brightness(1.1);
+      cursor: pointer;
+    }
+    .risk-low { border-left: 4px solid #4C7A5A; background-color: rgba(76, 122, 90, 0.05); }
+    .risk-med { border-left: 4px solid #C79A3C; background-color: rgba(199, 154, 60, 0.05); }
+    .risk-high { border-left: 4px solid #B0523F; background-color: rgba(176, 82, 63, 0.05); }
+    
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #e3e2e0; border-radius: 10px; }
+  </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-0 h-full w-[228px] bg-primary-container flex flex-col py-8 z-50">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-10 h-10 bg-on-primary-container/20 rounded-lg flex items-center justify-center text-on-primary-container font-headline-md font-bold">A</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-white leading-none">AImhotech</h1>
+<p class="font-body-sm text-[10px] tracking-widest text-on-primary-container/60 mt-1 uppercase">WEB ADMIN</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center w-full px-6 py-3 bg-white/10 text-on-primary border-l-4 border-secondary-fixed-dim transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center w-full px-6 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">person_search</span>
+<span class="font-body-sm text-body-sm">Patient Registry</span>
+</a>
+<a class="flex items-center justify-between w-full px-6 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<div class="flex items-center">
+<span class="material-symbols-outlined mr-3 text-[20px]">priority_high</span>
+<span class="font-body-sm text-body-sm">Risk Queue</span>
+</div>
+<span class="bg-error px-2 py-0.5 rounded-full text-[10px] font-bold text-white">6</span>
+</a>
+<a class="flex items-center w-full px-6 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">sync_alt</span>
+<span class="font-body-sm text-body-sm">Referrals</span>
+</a>
+<a class="flex items-center w-full px-6 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">verified_user</span>
+<span class="font-body-sm text-body-sm">Clinical Validation</span>
+</a>
+<a class="flex items-center w-full px-6 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">bar_chart</span>
+<span class="font-body-sm text-body-sm">Reports &amp; Analytics</span>
+</a>
+<a class="flex items-center w-full px-6 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+</nav>
+<div class="px-6 pt-6 mt-6 border-t border-white/10">
+<p class="font-label-caps text-label-caps text-on-primary/40 uppercase mb-4">VIEWING AS</p>
+<select class="w-full bg-primary text-on-primary text-sm rounded-lg border-white/20 focus:ring-secondary-fixed focus:border-secondary-fixed mb-6 py-2 px-3 appearance-none">
+<option>RHU Physician</option>
+<option>Admin</option>
+</select>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">DA</div>
+<div class="overflow-hidden">
+<p class="font-body-sm text-on-primary font-semibold truncate">Dr. Amelia Reyes</p>
+<p class="font-body-sm text-[11px] text-on-primary/50 leading-tight">RHU Physician</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="pl-[228px] w-full min-h-screen">
+<!-- Top Bar -->
+<header class="flex justify-between items-center w-full px-8 py-8 bg-background">
+<div class="flex items-center gap-4">
+<h2 class="font-display-lg text-display-lg font-semibold text-primary">Population Health Dashboard</h2>
+<span class="flex items-center gap-2 bg-surface-container border border-outline-variant rounded-full px-4 py-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+          RHU Malanday • 8 stations
+        </span>
+</div>
+<div class="font-data-sm text-data-sm text-on-surface-variant/70 tabular-nums">
+        Sat, Jul 26 2026 • 09:41 PHT
+      </div>
+</header>
+<!-- Dashboard Grid -->
+<div class="px-8 pb-12">
+<!-- KPI Row -->
+<div class="grid grid-cols-4 gap-6 mb-10">
+<div class="bg-surface-container-lowest p-6 rounded-xl soft-shadow border border-surface-container">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">SCREENINGS THIS MONTH</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">0</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl soft-shadow border border-surface-container">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">ELEVATED-RISK SHARE</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">—</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl soft-shadow border border-surface-container">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">REFERRAL COMPLETION</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">—</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl soft-shadow border border-surface-container">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">STATIONS ONLINE</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">0 / 1</span>
+</div>
+</div>
+</div>
+<!-- Main Bento Section -->
+<div class="bg-surface-container-lowest rounded-xl soft-shadow border border-surface-container p-12 flex flex-col items-center text-center min-h-[600px] justify-center">
+<div class="w-full max-w-md mb-8">
+<img alt="New station illustration" class="w-full h-auto rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdaDpXtBi_uA65TFryQ6t0OxARJNPMtC1_B_-hHnjJ0WviGYgxkbiaF91ftUl_3HgXY95j6yMLfTTDj1-kDzuEwNvSc39Xcsn8KOIZAHLxSM2thdJf1d7OWhA31Wk7acKpn7ir_-9Tv3UwTEXSmOSuT2rNt6fRJgCbl9dTuy8bNPl4-W_kkltSN6vWBakDdwRVRZpPVdzdqsn42SYbv7x4_9l_3-7kEW9f0BK0WAPcPuyNqKAGLacABi5s5RewOwLtt6gM48s3rjs"/>
+</div>
+<h3 class="font-display-lg text-display-lg font-semibold text-primary mb-4">Ready for your first screening</h3>
+<p class="font-body-md text-body-md text-on-surface-variant/70 max-w-xl mb-8">
+    This station is properly configured and online. Once screenings begin, your population health data and AI risk insights will appear here.
+  </p>
+<div class="flex gap-4">
+<button class="bg-primary-container text-on-primary px-8 py-3 rounded-lg font-bold hover:bg-primary transition-colors">
+      Start first screening
+    </button>
+<button class="border border-outline-variant text-primary px-8 py-3 rounded-lg font-bold hover:bg-surface-container transition-colors">
+      View screening guide
+    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+    // Micro-interactions and data visualization highlights
+    document.addEventListener('DOMContentLoaded', () => {
+      // Logic for chart interactions
+      const bars = document.querySelectorAll('.chart-bar');
+      bars.forEach(bar => {
+        bar.addEventListener('mouseenter', () => {
+          bar.style.opacity = '0.8';
+        });
+        bar.addEventListener('mouseleave', () => {
+          bar.style.opacity = '1';
+        });
+      });
+      
+      // Simple clock update simulation for the TopBar
+      function updateTime() {
+        const timeEl = document.querySelector('header .font-data-sm');
+        if (timeEl) {
+          const now = new Date();
+          const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZoneName: 'short' };
+          // For demo purposes, we keep the static date format similar to the prompt
+          // but could dynamically update here
+        }
+      }
+      setInterval(updateTime, 60000);
+    });
+  </script>
+</body></html>

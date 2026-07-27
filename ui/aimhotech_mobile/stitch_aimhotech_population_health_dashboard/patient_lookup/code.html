@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Patient Lookup - AImhotech Health Worker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#1f201f",
+                    "on-secondary-fixed-variant": "#3f4b2c",
+                    "surface-container": "#eeeeeb",
+                    "secondary-fixed": "#d9e8bf",
+                    "on-tertiary-fixed": "#1a1c1b",
+                    "on-primary-container": "#86a496",
+                    "surface-bright": "#faf9f7",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#aecebe",
+                    "background": "#faf9f7",
+                    "surface-container-high": "#e9e8e6",
+                    "tertiary-container": "#343534",
+                    "outline-variant": "#c1c8c3",
+                    "tertiary-fixed-dim": "#c7c6c5",
+                    "surface-dim": "#dadad8",
+                    "primary": "#07241a",
+                    "surface-container-highest": "#e3e2e0",
+                    "primary-fixed": "#caeada",
+                    "on-surface-variant": "#424844",
+                    "surface": "#faf9f7",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "tertiary-fixed": "#e3e2e0",
+                    "outline": "#727974",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#141f05",
+                    "inverse-surface": "#2f312f",
+                    "on-tertiary-container": "#9d9d9c",
+                    "surface-container-low": "#f4f3f1",
+                    "primary-fixed-dim": "#aecebe",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#becca4",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#486458",
+                    "inverse-on-surface": "#f1f1ee",
+                    "primary-container": "#1e3a2f",
+                    "on-background": "#1a1c1b",
+                    "on-primary": "#ffffff",
+                    "secondary": "#566342",
+                    "on-primary-fixed-variant": "#304c41",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#032017",
+                    "on-surface": "#1a1c1b",
+                    "surface-variant": "#e3e2e0",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#5c6948",
+                    "secondary-container": "#d9e8bf"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "lg": "24px",
+                    "edge_margin": "20px",
+                    "xs": "8px",
+                    "sm": "12px",
+                    "stack_gap": "16px",
+                    "base": "4px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Figtree"],
+                    "body-md": ["Figtree"],
+                    "headline-sm": ["Figtree"],
+                    "body-lg": ["Figtree"],
+                    "headline-md": ["Figtree"],
+                    "technical-id": ["IBM Plex Mono"],
+                    "display-lg": ["Figtree"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "technical-id": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #faf9f7;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-scale:active {
+            transform: scale(0.95);
+            transition: transform 150ms ease;
+        }
+        /* Custom scrollbar for mobile feel */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        .raised-card {
+            box-shadow: 0 4px 12px rgba(30, 58, 47, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-background min-h-screen pb-[100px]">
+<!-- Top App Bar -->
+<header class="flex flex-col px-edge_margin pt-xl pb-md w-full sticky top-0 bg-background z-40">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist professional avatar of a health worker logo, featuring a clean green medical cross integrated with a leaf silhouette, rendered in a flat modern graphic style with high-contrast forest green and soft cream colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxLy1m9nr5N1jgKrSQVo5gJsswPXBL1G5Lw7gYolRHC73zRf0dUb7Jg-wABPpMNo-MsJkRrY9ZaRa8Vd1zVtqx1WkWK2YIhmv0pawBA9x7iv0DkONMwttY-wksmAl9BxbGwl1aoosggFbO0Wg5ueBkfC2EstP6oqqakWyZrIojUHdqTwztip3ANk3NcBVUQTCipeDN25z3dBSKwnKjR9jM9635iC_DBTWeoZefz3v3OVfKTvGb9SY5832S1n_WsZETXXn4am3_GVU"/>
+</div>
+<span class="text-headline-sm font-headline-sm text-primary">Barangay San Isidro</span>
+</div>
+<div class="flex items-center bg-secondary-container/30 px-sm py-xs rounded-full gap-xs">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-label-sm font-label-sm text-on-secondary-container">3 pending</span>
+</div>
+</div>
+<h1 class="text-display-lg font-display-lg text-primary mt-lg">Patient Lookup</h1>
+</header>
+<main class="px-edge_margin flex flex-col gap-stack_gap">
+<!-- Search Section -->
+<div class="flex items-center gap-sm">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-[56px] pl-12 pr-4 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-lg font-body-lg text-on-surface" id="patient-search" placeholder="Search name or Patient ID..." type="text"/>
+</div>
+<button class="h-[56px] w-[56px] bg-secondary-container/50 border border-secondary-container flex items-center justify-center rounded-xl active-scale">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'wght' 600;">qr_code_scanner</span>
+</button>
+</div>
+<!-- Recent Patients Section -->
+<div class="flex flex-col gap-stack_gap" id="patient-list-container">
+<h2 class="text-label-sm font-label-sm text-outline tracking-widest px-1 uppercase">Recent Patients</h2>
+<div class="flex flex-col bg-surface-container-lowest rounded-xl border border-outline-variant raised-card overflow-hidden">
+<!-- Patient Item 1 -->
+<div class="flex items-center p-md gap-md border-b border-outline-variant/30 active:bg-surface-container-low transition-colors cursor-pointer active-scale">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="text-on-primary-fixed font-bold text-body-lg">MS</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-body-lg font-headline-sm text-primary truncate">Maria Santos</p>
+<p class="text-technical-id font-technical-id text-on-surface-variant">BGY-041-00217 • 58 · F</p>
+<p class="text-label-sm font-label-sm text-outline mt-1">Last seen Jul 12</p>
+</div>
+<div class="bg-[#e7f3ee] text-[#2d6a4f] px-3 py-1 rounded-full text-label-sm font-label-sm">Low</div>
+</div>
+<!-- Patient Item 2 -->
+<div class="flex items-center p-md gap-md border-b border-outline-variant/30 active:bg-surface-container-low transition-colors cursor-pointer active-scale">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="text-on-secondary-fixed font-bold text-body-lg">JR</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-body-lg font-headline-sm text-primary truncate">Jose Ramirez</p>
+<p class="text-technical-id font-technical-id text-on-surface-variant">BGY-041-00342 • 64 · M</p>
+<p class="text-label-sm font-label-sm text-outline mt-1">Last seen Jul 20</p>
+</div>
+<div class="bg-[#fff4e6] text-[#b4690e] px-3 py-1 rounded-full text-label-sm font-label-sm">Moderate</div>
+</div>
+<!-- Patient Item 3 -->
+<div class="flex items-center p-md gap-md border-b border-outline-variant/30 active:bg-surface-container-low transition-colors cursor-pointer active-scale">
+<div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center">
+<span class="text-on-error-container font-bold text-body-lg">LB</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-body-lg font-headline-sm text-primary truncate">Lourdes Bautista</p>
+<p class="text-technical-id font-technical-id text-on-surface-variant">BGY-041-00519 • 71 · F</p>
+<p class="text-label-sm font-label-sm text-outline mt-1">Last seen Jun 30</p>
+</div>
+<div class="bg-[#fde7e9] text-[#ba1a1a] px-3 py-1 rounded-full text-label-sm font-label-sm">Elevated</div>
+</div>
+<!-- Patient Item 4 -->
+<div class="flex items-center p-md gap-md active:bg-surface-container-low transition-colors cursor-pointer active-scale">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="text-on-surface-variant font-bold text-body-lg">AV</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-body-lg font-headline-sm text-primary truncate">Andres Villanueva</p>
+<p class="text-technical-id font-technical-id text-on-surface-variant">BGY-041-00088 • 45 · M</p>
+<p class="text-label-sm font-label-sm text-outline mt-1">Last seen Jul 24</p>
+</div>
+<div class="bg-[#e7f3ee] text-[#2d6a4f] px-3 py-1 rounded-full text-label-sm font-label-sm">Low</div>
+</div>
+</div>
+</div>
+<!-- Zero State (Hidden by default, shown via script) -->
+<div class="hidden flex-col items-center justify-center py-xl text-center gap-lg" id="zero-state">
+<div class="w-48 h-48 bg-surface-container-low rounded-full flex items-center justify-center overflow-hidden">
+<img class="w-32 h-32 object-contain opacity-70" data-alt="A friendly, high-fidelity 3D illustration of an empty medical folder with a magnifying glass hovering over it, set against a soft cream background with forest green accents. The style is soft, tactile, and professional, suggesting a search process in a clean digital healthcare environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlPmPc34wOqSkplblH4crahPM2IrT7HjNuS23XjjSuciD69e7xkDOFK6VtArGmz6hm7joHq3D5USTHC78ftAObiNn4PWUdOmHtALVvXBLJ_IXhQxOMcdMuzISNjAmggk2Fa2RGuY5F04IQjc_luf-fs0Ko6oD3wGSwmUcw8RFxyb8V4VHc-oRlbF4p2EonP_4c950ypKt-PzdF93CPNMs2NrcxsfJwXi9UigmOfgsDDO9b8xBM77gSiHnvxV910IA_CQCrwuqNBSk"/>
+</div>
+<div class="flex flex-col gap-base">
+<h3 class="text-headline-md font-headline-md text-primary">No match found</h3>
+<p class="text-body-md text-on-surface-variant px-lg">We couldn't find any patient with that name or ID. Try checking your spelling or enroll them as a new patient.</p>
+</div>
+<button class="flex items-center gap-sm bg-primary text-on-primary px-lg py-md rounded-xl font-body-lg active-scale shadow-lg">
+<span class="material-symbols-outlined">person_add</span>
+                Enroll New Patient
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-[72px] px-4 pb-safe bg-surface-container-lowest border-t border-outline-variant shadow-sm">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant active-scale" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<!-- Screening -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant active-scale" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+<span class="text-label-sm font-label-sm">Screening</span>
+</a>
+<!-- Lookup (Active) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold active-scale" href="#">
+<div class="relative flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="text-label-sm font-label-sm">Lookup</span>
+<div class="absolute -top-1 w-12 h-8 bg-primary/10 rounded-full -z-10"></div>
+</div>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant active-scale" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-label-sm font-label-sm">Settings</span>
+</a>
+</nav>
+<script>
+        // Simple search interactivity
+        const searchInput = document.getElementById('patient-search');
+        const patientList = document.getElementById('patient-list-container');
+        const zeroState = document.getElementById('zero-state');
+
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            if (val.length > 3) {
+                // Mock search logic: if user types something specific and finds nothing
+                if (val.includes('xyz')) {
+                    patientList.classList.add('hidden');
+                    zeroState.classList.remove('hidden');
+                } else {
+                    patientList.classList.remove('hidden');
+                    zeroState.classList.add('hidden');
+                }
+            } else {
+                patientList.classList.remove('hidden');
+                zeroState.classList.add('hidden');
+            }
+        });
+
+        // Soft interaction for list items
+        document.querySelectorAll('#patient-list-container > div > div').forEach(item => {
+            item.addEventListener('click', () => {
+                item.style.backgroundColor = 'rgba(72, 100, 88, 0.1)';
+                setTimeout(() => {
+                    item.style.backgroundColor = '';
+                }, 200);
+            });
+        });
+    </script>
+</body></html>

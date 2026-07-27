@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HealthLink | Secure Login</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Figtree & IBM Plex Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#becca4",
+                        "surface-bright": "#faf9f7",
+                        "on-primary-fixed": "#032017",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e3e2e0",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#caeada",
+                        "on-surface-variant": "#424844",
+                        "tertiary-fixed": "#e3e2e0",
+                        "on-secondary-container": "#5c6948",
+                        "surface": "#faf9f7",
+                        "outline-variant": "#c1c8c3",
+                        "surface-container": "#eeeeeb",
+                        "secondary": "#566342",
+                        "tertiary-fixed-dim": "#c7c6c5",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#aecebe",
+                        "surface-container-highest": "#e3e2e0",
+                        "on-tertiary-container": "#9d9d9c",
+                        "primary-container": "#1e3a2f",
+                        "tertiary": "#1f201f",
+                        "surface-container-high": "#e9e8e6",
+                        "surface-container-low": "#f4f3f1",
+                        "surface-tint": "#486458",
+                        "inverse-on-surface": "#f1f1ee",
+                        "background": "#faf9f7",
+                        "on-primary-fixed-variant": "#304c41",
+                        "on-background": "#1a1c1b",
+                        "tertiary-container": "#343534",
+                        "primary-fixed-dim": "#aecebe",
+                        "secondary-container": "#d9e8bf",
+                        "on-surface": "#1a1c1b",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary": "#07241a",
+                        "on-secondary-fixed-variant": "#3f4b2c",
+                        "inverse-surface": "#2f312f",
+                        "surface-dim": "#dadad8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#464746",
+                        "on-primary-container": "#86a496",
+                        "secondary-fixed": "#d9e8bf",
+                        "on-tertiary-fixed": "#1a1c1b",
+                        "outline": "#727974",
+                        "on-secondary-fixed": "#141f05"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "stack_gap": "16px",
+                        "sm": "12px",
+                        "edge_margin": "20px",
+                        "xs": "8px",
+                        "lg": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Figtree"],
+                        "body-lg": ["Figtree"],
+                        "display-lg": ["Figtree"],
+                        "technical-id": ["IBM Plex Mono"],
+                        "headline-sm": ["Figtree"],
+                        "headline-md": ["Figtree"],
+                        "body-md": ["Figtree"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "technical-id": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #faf9f7;
+            font-family: 'Figtree', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .otp-input:focus {
+            outline: none;
+            border-color: #07241a;
+            box-shadow: 0 0 0 2px rgba(7, 36, 26, 0.1);
+        }
+        .hidden-screen {
+            display: none;
+        }
+        .screen-transition {
+            transition: opacity 0.3s ease-in-out;
+        }
+        /* Tap targets constraint */
+        .min-tap-target {
+            min-height: 48px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex items-center justify-center min-h-screen bg-surface p-base sm:p-md">
+<!-- Mobile Container Emulator -->
+<div class="relative w-full max-w-[412px] h-[892px] bg-surface overflow-hidden shadow-2xl flex flex-col sm:rounded-[40px] sm:border-[8px] sm:border-primary">
+<!-- Status Bar -->
+<div class="flex justify-between items-center px-edge_margin pt-sm pb-xs bg-surface text-on-surface">
+<span class="font-label-sm text-label-sm">9:30</span>
+<div class="flex gap-xs items-center">
+<span class="material-symbols-outlined text-[18px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[18px]">wifi</span>
+<span class="material-symbols-outlined text-[18px]">battery_5_bar</span>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col px-edge_margin pt-xl relative">
+<!-- Logo Section -->
+<div class="mb-xl">
+<div class="w-14 h-14 bg-primary-container rounded-xl flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-on-primary-container text-[32px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+</div>
+<!-- LOGIN SCREEN (Screen 1) -->
+<div class="screen-transition opacity-100 flex flex-col h-full" id="login-screen">
+<header class="mb-xl">
+<h1 class="font-display-lg text-display-lg text-primary mb-xs">Welcome back</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Sign in with your Patient ID and mobile number.</p>
+</header>
+<div class="space-y-stack_gap">
+<!-- Patient ID Input -->
+<div class="space-y-base">
+<label class="font-label-sm text-label-sm text-on-surface-variant ml-1" for="patient-id">Patient ID</label>
+<div class="relative">
+<input class="w-full h-14 px-md bg-white border border-outline-variant rounded-xl font-technical-id text-technical-id text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200" id="patient-id" placeholder="XXX-XXX-XXXXX" type="text" value="BGY-041-00217"/>
+</div>
+</div>
+<!-- Mobile Number Input -->
+<div class="space-y-base">
+<label class="font-label-sm text-label-sm text-on-surface-variant ml-1" for="mobile-number">Mobile Number</label>
+<div class="flex gap-xs">
+<div class="w-20 h-14 px-md flex items-center justify-center bg-surface-container-low border border-outline-variant rounded-xl font-body-lg text-body-lg text-on-surface-variant">
+                                +63
+                            </div>
+<input class="flex-1 h-14 px-md bg-white border border-outline-variant rounded-xl font-body-lg text-body-lg text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200" id="mobile-number" placeholder="Phone number" type="tel" value="927 412 4127"/>
+</div>
+</div>
+</div>
+<div class="mt-xl">
+<button class="w-full h-[56px] bg-primary text-white font-headline-sm text-headline-sm rounded-xl flex items-center justify-center gap-xs shadow-md active:scale-95 transition-all duration-200" onclick="toggleScreens()">
+<span class="material-symbols-outlined">message</span>
+                        Text me a code
+                    </button>
+</div>
+<div class="mt-auto mb-xl text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        New here? <a class="text-secondary font-bold hover:underline" href="#">Start enrollment</a>
+</p>
+</div>
+</div>
+<!-- OTP SCREEN (Screen 2) -->
+<div class="screen-transition opacity-0 hidden-screen flex flex-col h-full" id="otp-screen">
+<header class="mb-xl">
+<div class="mb-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors" onclick="toggleScreens()">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary mb-xs">Verify your identity</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">We've sent a 6-digit code to <span class="font-bold">+63 ••• ••• 4127</span></p>
+</header>
+<div class="space-y-xl">
+<!-- 6-digit OTP Inputs -->
+<div class="flex justify-between gap-base sm:gap-xs">
+<input autofocus="" class="otp-input w-12 h-14 bg-white border border-outline-variant rounded-xl text-center font-display-lg text-headline-md text-primary" maxlength="1" type="text"/>
+<input class="otp-input w-12 h-14 bg-white border border-outline-variant rounded-xl text-center font-display-lg text-headline-md text-primary" maxlength="1" type="text"/>
+<input class="otp-input w-12 h-14 bg-white border border-outline-variant rounded-xl text-center font-display-lg text-headline-md text-primary" maxlength="1" type="text"/>
+<input class="otp-input w-12 h-14 bg-white border border-outline-variant rounded-xl text-center font-display-lg text-headline-md text-primary" maxlength="1" type="text"/>
+<input class="otp-input w-12 h-14 bg-white border border-outline-variant rounded-xl text-center font-display-lg text-headline-md text-primary" maxlength="1" type="text"/>
+<input class="otp-input w-12 h-14 bg-white border border-outline-variant rounded-xl text-center font-display-lg text-headline-md text-primary" maxlength="1" type="text"/>
+</div>
+<div class="text-center">
+<div class="font-body-md text-body-md text-on-surface-variant flex items-center justify-center gap-xs" id="timer">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+                            Resend code in <span class="font-bold tabular-nums" id="countdown">0:45</span>
+</div>
+<button class="hidden text-secondary font-bold hover:underline flex items-center justify-center gap-xs mx-auto" id="resend-btn">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                            Resend now
+                        </button>
+</div>
+</div>
+<div class="mt-xl">
+<button class="w-full h-[56px] bg-primary text-white font-headline-sm text-headline-sm rounded-xl flex items-center justify-center gap-xs shadow-md active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined">verified_user</span>
+                        Verify &amp; login
+                    </button>
+</div>
+<!-- Bento-style information card for security reassurance -->
+<div class="mt-xl bg-surface-container-low p-md rounded-xl border border-outline-variant/30">
+<div class="flex items-start gap-md">
+<div class="p-xs bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-primary uppercase">Secure Encryption</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">Your health data is protected with end-to-end clinical encryption standards.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell (Filter Applied: Transactional Hidden) -->
+<!-- Only rendering for visual completeness of the container, but suppressed items per rules if login is transactional -->
+<footer class="mt-auto px-edge_margin pb-xl pt-md flex items-center justify-between border-t border-outline-variant/20 bg-surface">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container text-[16px]">help</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Need help?</span>
+</div>
+<div class="text-xs font-technical-id text-on-surface-variant/40">v2.4.0 (PROD)</div>
+</footer>
+<!-- Bottom Home Indicator -->
+<div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-primary/20 rounded-full"></div>
+</div>
+<script>
+        function toggleScreens() {
+            const login = document.getElementById('login-screen');
+            const otp = document.getElementById('otp-screen');
+            
+            if (login.classList.contains('hidden-screen')) {
+                // Back to login
+                otp.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => {
+                    otp.classList.add('hidden-screen');
+                    login.classList.remove('hidden-screen');
+                    setTimeout(() => login.classList.replace('opacity-0', 'opacity-100'), 10);
+                }, 300);
+            } else {
+                // To OTP
+                login.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => {
+                    login.classList.add('hidden-screen');
+                    otp.classList.remove('hidden-screen');
+                    setTimeout(() => {
+                        otp.classList.replace('opacity-0', 'opacity-100');
+                        startTimer();
+                        document.querySelector('.otp-input').focus();
+                    }, 10);
+                }, 300);
+            }
+        }
+
+        // OTP Autofocus logic
+        const inputs = document.querySelectorAll('.otp-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // Countdown logic
+        let timerRunning = false;
+        function startTimer() {
+            if (timerRunning) return;
+            timerRunning = true;
+            let timeLeft = 45;
+            const display = document.getElementById('countdown');
+            const timerDiv = document.getElementById('timer');
+            const resendBtn = document.getElementById('resend-btn');
+
+            resendBtn.classList.add('hidden');
+            timerDiv.classList.remove('hidden');
+
+            const interval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                display.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    timerDiv.classList.add('hidden');
+                    resendBtn.classList.remove('hidden');
+                    timerRunning = false;
+                }
+            }, 1000);
+        }
+
+        // Basic resend reset
+        document.getElementById('resend-btn').addEventListener('click', () => {
+            startTimer();
+        });
+    </script>
+</body></html>

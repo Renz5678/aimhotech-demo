@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>AImhotech - Appointments</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#1a1c1b",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f1f1ee",
+                        "surface-bright": "#faf9f7",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#aecebe",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e3e2e0",
+                        "primary-fixed": "#caeada",
+                        "primary": "#07241a",
+                        "secondary": "#566342",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f4f3f1",
+                        "surface-container-high": "#e9e8e6",
+                        "on-tertiary-container": "#9d9d9c",
+                        "tertiary-fixed": "#e3e2e0",
+                        "on-secondary-fixed": "#141f05",
+                        "inverse-surface": "#2f312f",
+                        "outline-variant": "#c1c8c3",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#aecebe",
+                        "on-tertiary-fixed-variant": "#464746",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#d9e8bf",
+                        "on-primary-fixed-variant": "#304c41",
+                        "outline": "#727974",
+                        "primary-container": "#1e3a2f",
+                        "secondary-fixed": "#d9e8bf",
+                        "on-secondary-fixed-variant": "#3f4b2c",
+                        "on-primary-fixed": "#032017",
+                        "tertiary-container": "#343534",
+                        "tertiary-fixed-dim": "#c7c6c5",
+                        "surface-dim": "#dadad8",
+                        "background": "#faf9f7",
+                        "on-surface": "#1a1c1b",
+                        "secondary-fixed-dim": "#becca4",
+                        "tertiary": "#1f201f",
+                        "surface-tint": "#486458",
+                        "surface": "#faf9f7",
+                        "on-surface-variant": "#424844",
+                        "on-secondary-container": "#5c6948",
+                        "surface-container-highest": "#e3e2e0",
+                        "surface-container": "#eeeeeb",
+                        "on-primary-container": "#86a496",
+                        "on-background": "#1a1c1b",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xs": "8px",
+                        "stack_gap": "16px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "md": "16px",
+                        "edge_margin": "20px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Figtree"],
+                        "technical-id": ["IBM Plex Mono"],
+                        "headline-md": ["Figtree"],
+                        "body-lg": ["Figtree"],
+                        "label-sm": ["Figtree"],
+                        "headline-sm": ["Figtree"],
+                        "display-lg": ["Figtree"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "technical-id": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                        "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F7;
+            font-family: 'Figtree', sans-serif;
+            color: #1A1C1B;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-line {
+            height: 2px;
+            background: #E3E2E0;
+            flex-grow: 1;
+            position: relative;
+            top: 20px;
+            z-index: 0;
+        }
+        .step-line.active {
+            background: #1E3A2F;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 12px rgba(30, 58, 47, 0.04);
+        }
+        .premium-glow {
+            box-shadow: 0 8px 24px rgba(30, 58, 47, 0.15);
+        }
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background">
+<!-- TopAppBar -->
+<header class="flex flex-col px-edge_margin pt-xl pb-md w-full bg-background sticky top-0 z-50">
+<div class="flex justify-between items-center w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a female community health worker in a subtle forest green clinical uniform, soft warm natural lighting, smiling warmly, minimalist professional background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwrKaiS5zL_9Pck5qBv1Y7tpWR1b4xht0iXKxnbePyQkcD6dx6AuNx-9mkXNr8q9SW3t7ClkMyvMqH_tck0I2TeLteLdErok2wb6GQD3VFtpAnNZ2avLwTRKEuf8Ae82tVGXrr9eJoeQSmtfv_m_Qpikj7nUCvW-OmCmPq0lIJgn0fPFPKr9GkWb7qyRSpuBemrcGRT0Vc7wuAXBooTX4K0NL7f7ZQlJEMKzTSXeOQOadkF0DmmF73pawrUPgnVAbvygioGS87XKQ"/>
+</div>
+<h1 class="text-headline-md font-headline-md text-primary">Appointments</h1>
+</div>
+<div class="flex items-center px-3 py-1 bg-secondary-container rounded-full gap-1.5 transition-all active:scale-95 duration-200 cursor-pointer">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-label-sm font-label-sm text-on-secondary-container">3 pending</span>
+</div>
+</div>
+</header>
+<main class="px-edge_margin pb-32 space-y-stack_gap">
+<!-- Active Referral Card -->
+<div class="bg-surface-container-lowest rounded-[24px] p-lg card-shadow border border-outline-variant/30">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="text-label-sm font-label-sm text-outline uppercase tracking-wider mb-1">Referral Case</p>
+<h2 class="text-headline-sm font-headline-sm text-primary">REF-2231</h2>
+</div>
+<span class="px-3 py-1 bg-secondary-container/50 text-on-secondary-container text-label-sm font-label-sm rounded-lg uppercase tracking-wide">In Progress</span>
+</div>
+<!-- Stepper -->
+<div class="relative flex justify-between items-start mb-8 px-2">
+<!-- Lines -->
+<div class="absolute left-0 right-0 top-5 h-[2px] bg-surface-container-highest z-0 mx-8"></div>
+<div class="absolute left-0 top-5 h-[2px] bg-primary-container z-0 mx-8" style="width: 33%;"></div>
+<!-- Step 1: Flagged -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined !text-[20px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="text-label-sm font-label-sm text-primary">Flagged</span>
+</div>
+<!-- Step 2: Referred (Active) -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-white border-2 border-primary-container flex items-center justify-center text-primary-container ring-4 ring-primary-container/10">
+<span class="text-body-lg font-headline-sm">2</span>
+</div>
+<span class="text-label-sm font-label-sm text-primary font-bold">Referred</span>
+</div>
+<!-- Step 3: Seen -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="text-body-lg font-headline-sm">3</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline">Seen</span>
+</div>
+<!-- Step 4: Resolved -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="text-body-lg font-headline-sm">4</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline">Resolved</span>
+</div>
+</div>
+<!-- Detailed Info Section -->
+<div class="bg-surface-container-low rounded-xl p-md space-y-md mb-lg border border-outline-variant/20">
+<div class="flex items-start gap-4">
+<div class="p-2 bg-white rounded-lg text-primary-container">
+<span class="material-symbols-outlined">health_and_safety</span>
+</div>
+<div>
+<h3 class="text-body-lg font-headline-sm text-primary leading-tight">San Isidro Rural Health Unit</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Primary Clinical Care Center</p>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-3 pt-2 border-t border-outline-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline !text-[20px]">calendar_today</span>
+<span class="text-body-md font-body-md text-on-surface">Tue, Aug 4 • 9:00 AM</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline !text-[20px]">person</span>
+<span class="text-body-md font-body-md text-on-surface">Dra. Reyes • Specialist</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline !text-[20px]">medical_services</span>
+<span class="text-body-md font-body-md text-on-surface">Blood pressure follow-up</span>
+</div>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full h-[56px] bg-primary-container text-white rounded-xl flex items-center justify-center gap-3 premium-glow transition-all active:scale-[0.98] hover:bg-primary-container/90">
+<span class="material-symbols-outlined !text-[24px]" style="font-variation-settings: 'FILL' 1;">videocam</span>
+<span class="font-headline-sm text-body-lg">Join video consult</span>
+</button>
+</div>
+<!-- Upcoming Section -->
+<section class="space-y-md">
+<div class="flex justify-between items-center">
+<h3 class="text-headline-sm font-headline-sm text-primary">Upcoming Appointments</h3>
+<button class="text-primary font-label-sm text-label-sm">View All</button>
+</div>
+<!-- List Item 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/20 flex gap-4 items-center transition-all active:scale-[0.99]">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/30 flex flex-col items-center justify-center text-on-secondary-container">
+<span class="text-label-sm font-bold">12</span>
+<span class="text-[10px] uppercase font-bold">Aug</span>
+</div>
+<div class="flex-grow">
+<h4 class="text-body-lg font-bold text-primary">Routine Checkup</h4>
+<p class="text-body-md text-on-surface-variant">General Hospital • 10:30 AM</p>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+<!-- List Item 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/20 flex gap-4 items-center transition-all active:scale-[0.99]">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/30 flex flex-col items-center justify-center text-on-secondary-container">
+<span class="text-label-sm font-bold">18</span>
+<span class="text-[10px] uppercase font-bold">Aug</span>
+</div>
+<div class="flex-grow">
+<h4 class="text-body-lg font-bold text-primary">Vaccination Drive</h4>
+<p class="text-body-md text-on-surface-variant">Barangay Hall • 08:00 AM</p>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-[72px] px-4 pb-safe bg-surface-container-lowest shadow-[0_-1px_10px_rgba(0,0,0,0.05)] border-t border-outline-variant/20">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-all duration-150 px-4 py-2 rounded-xl" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-label-sm font-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-all duration-150 px-4 py-2 rounded-xl" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="text-label-sm font-label-sm mt-1">Screening</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold transition-all duration-150 scale-105 px-4 py-2 rounded-xl bg-primary-container/5" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="text-label-sm font-label-sm mt-1">Visits</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-all duration-150 px-4 py-2 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-sm font-label-sm mt-1">Settings</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for primary button
+        const mainBtn = document.querySelector('button.premium-glow');
+        if(mainBtn) {
+            mainBtn.addEventListener('mousedown', () => {
+                mainBtn.style.transform = 'scale(0.96)';
+            });
+            mainBtn.addEventListener('mouseup', () => {
+                mainBtn.style.transform = 'scale(1)';
+            });
+        }
+
+        // Ripple effect for list items
+        document.querySelectorAll('.transition-all').forEach(item => {
+            item.addEventListener('click', function(e) {
+                let ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
+<style>
+        /* Small custom ripple effect for buttons */
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body></html>

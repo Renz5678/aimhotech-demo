@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audit Log - AImhotech Web Admin</title>
+<!-- Google Fonts: IBM Plex Sans & IBM Plex Mono -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#603e3b",
+                      "inverse-on-surface": "#f1f1ee",
+                      "primary-fixed": "#caeada",
+                      "primary-container": "#1e3a2f",
+                      "primary-fixed-dim": "#aecebe",
+                      "surface-variant": "#e3e2e0",
+                      "surface-bright": "#faf9f7",
+                      "background": "#faf9f7",
+                      "on-primary-container": "#86a496",
+                      "surface": "#faf9f7",
+                      "on-primary-fixed-variant": "#304c41",
+                      "on-tertiary-fixed": "#2f1412",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#becca4",
+                      "tertiary": "#331716",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#ecbbb7",
+                      "tertiary-fixed": "#ffdad7",
+                      "surface-container-low": "#f4f3f1",
+                      "on-surface-variant": "#424844",
+                      "surface-dim": "#dadad8",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#d9e8bf",
+                      "surface-container": "#eeeeeb",
+                      "on-surface": "#1a1c1b",
+                      "error": "#ba1a1a",
+                      "tertiary-container": "#4c2c2a",
+                      "primary": "#07241a",
+                      "on-secondary-fixed": "#141f05",
+                      "on-secondary-container": "#5c6948",
+                      "on-primary-fixed": "#032017",
+                      "surface-container-high": "#e9e8e6",
+                      "secondary": "#566342",
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#486458",
+                      "surface-container-highest": "#e3e2e0",
+                      "secondary-fixed": "#d9e8bf",
+                      "outline-variant": "#c1c8c3",
+                      "on-secondary-fixed-variant": "#3f4b2c",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#aecebe",
+                      "outline": "#727974",
+                      "on-primary": "#ffffff",
+                      "on-background": "#1a1c1b",
+                      "inverse-surface": "#2f312f",
+                      "on-tertiary-container": "#c0928f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "section_margin": "40px",
+                      "base_unit": "4px",
+                      "sidebar_width": "228px",
+                      "card_gap": "24px",
+                      "container_padding": "32px"
+              },
+              "fontFamily": {
+                      "display-lg": ["IBM Plex Sans"],
+                      "body-md": ["IBM Plex Sans"],
+                      "headline-md": ["IBM Plex Sans"],
+                      "data-sm": ["IBM Plex Mono"],
+                      "label-caps": ["IBM Plex Sans"],
+                      "data-lg": ["IBM Plex Mono"],
+                      "body-sm": ["IBM Plex Sans"],
+                      "title-sm": ["IBM Plex Sans"]
+              },
+              "fontSize": {
+                      "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "data-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "label-caps": ["11px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                      "data-lg": ["28px", {"lineHeight": "1.1", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "title-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .row-expanded {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .active-row .row-expanded {
+            max-height: 200px;
+        }
+        .table-shadow {
+            box-shadow: 0px 4px 20px rgba(30, 58, 47, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full w-[228px] bg-primary flex flex-col py-8 z-50">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-primary-fixed-dim flex items-center justify-center text-primary font-bold text-headline-md">A</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-primary leading-tight">AImhotech</h1>
+<p class="text-[10px] tracking-widest text-on-primary/60 font-bold uppercase">WEB ADMIN</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">person_search</span>
+<span class="font-body-sm text-body-sm">Patient Registry</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors relative" href="#">
+<span class="material-symbols-outlined mr-3">priority_high</span>
+<span class="font-body-sm text-body-sm flex-1">Risk Queue</span>
+<span class="bg-error text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">6</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">sync_alt</span>
+<span class="font-body-sm text-body-sm">Referrals</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">verified_user</span>
+<span class="font-body-sm text-body-sm">Clinical Validation</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">devices</span>
+<span class="font-body-sm text-body-sm">Device Fleet</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">bar_chart</span>
+<span class="font-body-sm text-body-sm">Reports &amp; Analytics</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+<span class="font-body-sm text-body-sm">Users &amp; Roles</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center w-full px-4 py-3 bg-white/10 text-on-primary border-l-4 border-secondary-fixed-dim transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">history</span>
+<span class="font-body-sm text-body-sm">Audit Log</span>
+</a>
+<a class="flex items-center w-full px-4 py-3 text-on-primary/70 hover:bg-white/5 hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 pt-4 border-t border-white/10">
+<div class="p-3 bg-white/5 rounded-lg mb-4">
+<label class="text-[10px] text-on-primary/50 font-bold uppercase block mb-2">Viewing As</label>
+<select class="w-full bg-transparent text-on-primary font-body-sm text-body-sm border-none focus:ring-0 p-0 cursor-pointer">
+<option class="bg-primary">Super Admin</option>
+<option class="bg-primary">Operator</option>
+<option class="bg-primary">Auditor</option>
+</select>
+</div>
+<div class="flex items-center gap-3 px-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-[12px]">CM</div>
+<div class="overflow-hidden">
+<p class="text-on-primary font-body-sm text-body-sm font-semibold truncate">Carlo Mendoza</p>
+<p class="text-on-primary/50 text-[11px]">Super Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[228px] flex-1 flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-8 py-6 bg-background">
+<div class="flex items-center gap-4">
+<h2 class="font-display-lg text-display-lg font-semibold text-on-background">Audit Log</h2>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-body-sm text-[12px] border border-secondary-fixed-dim/20">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim"></span>
+                    All facilities • platform-wide
+                </span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-data-sm text-data-sm text-on-surface-variant/70 tracking-tighter">Sat, Jul 26 2026 • 09:41 PHT</span>
+</div>
+</header>
+<!-- Utility Bar -->
+<section class="px-8 pb-4 flex items-center justify-between">
+<div class="flex items-center gap-6 flex-1 max-w-2xl">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full bg-white border border-outline-variant rounded-lg py-2 pl-10 pr-4 text-body-sm focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all placeholder:text-outline-variant" placeholder="Filter by actor, action, or entity..." type="text"/>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant/60 font-body-sm text-[13px]">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Immutable log • RA 10173 compliant</span>
+</div>
+</div>
+<button class="flex items-center gap-2 px-6 py-2 border border-outline-variant text-primary font-semibold rounded-lg hover:bg-surface-container transition-colors font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                Export CSV
+            </button>
+</section>
+<!-- Table Container -->
+<section class="px-8 flex-1 pb-10">
+<div class="bg-white rounded-xl table-shadow overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-label-caps font-label-caps text-on-surface-variant/60 border-b border-outline-variant/30">
+<th class="py-4 px-6 font-bold tracking-widest">TIMESTAMP</th>
+<th class="py-4 px-6 font-bold tracking-widest">ACTOR</th>
+<th class="py-4 px-6 font-bold tracking-widest">ACTION</th>
+<th class="py-4 px-6 font-bold tracking-widest">ENTITY</th>
+<th class="py-4 px-6 font-bold tracking-widest">CONTEXT</th>
+<th class="py-4 px-6 w-10"></th>
+</tr>
+</thead>
+<tbody class="text-on-surface divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer" onclick="toggleDetails(this)">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-26 09:38:12</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Dr. Amelia Reyes</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary-fixed-dim/30 text-primary-container uppercase tracking-tight">VIEW</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Patient <span class="text-primary font-bold">PT-042-0117</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">Risk queue drill-down • 203.87.14.2</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-transform duration-200 chevron">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Hidden Expansion Row -->
+<tr class="hidden-details bg-surface-container-low/50">
+<td class="p-0" colspan="6">
+<div class="row-expanded px-6 py-0">
+<div class="grid grid-cols-4 gap-6 py-6 border-l-4 border-primary ml-4">
+<div>
+<p class="text-label-caps text-on-surface-variant/50 mb-1">SESSION ID</p>
+<p class="font-data-sm text-on-surface">SID_9821_AAX</p>
+</div>
+<div>
+<p class="text-label-caps text-on-surface-variant/50 mb-1">STATION</p>
+<p class="font-body-sm text-on-surface">Malanday RHU • Stn 04</p>
+</div>
+<div>
+<p class="text-label-caps text-on-surface-variant/50 mb-1">OS / BROWSER</p>
+<p class="font-body-sm text-on-surface">macOS • Chrome 124.0</p>
+</div>
+<div>
+<p class="text-label-caps text-on-surface-variant/50 mb-1">RECORD INTEGRITY</p>
+<span class="inline-flex items-center gap-1 text-[11px] font-bold text-secondary">
+<span class="material-symbols-outlined text-[14px]">verified</span> SHA-256 Valid
+                                            </span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer" onclick="toggleDetails(this)">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-26 09:31:47</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Dr. Amelia Reyes</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary-container/40 text-on-secondary-container uppercase tracking-tight">UPDATE</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Referral <span class="text-primary font-bold">REF-2098</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">Status: referred → seen</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-transform duration-200 chevron">keyboard_arrow_down</span>
+</td>
+</tr>
+<tr class="hidden-details bg-surface-container-low/50">
+<td class="p-0" colspan="6">
+<div class="row-expanded px-6 py-0">
+<div class="py-4 border-l-4 border-secondary ml-4 px-4">
+<p class="text-body-sm text-on-surface-variant italic">Metadata expansion: Action modified referral status within the clinic dashboard to reflect patient arrival.</p>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-26 09:02:05</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Maria Dela Cruz</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary-fixed-dim/30 text-primary-container uppercase tracking-tight">VIEW</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Station <span class="text-primary font-bold">sync report</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">Brgy. San Isidro</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Row 4 (Create Action) -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-25 17:44:31</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Carlo Mendoza</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary-fixed/50 text-on-secondary-fixed-variant uppercase tracking-tight">CREATE</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">User <span class="text-primary font-bold italic">e.pascual@brgy.gov.ph</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">Role: BHW • Brgy. Mabini</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Row 5 (Validate) -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-25 16:20:09</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Dr. Jonathan Uy</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary-container text-on-primary-container uppercase tracking-tight">VALIDATE</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Screening <span class="text-primary font-bold">S-8841</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">PRC 0291045 • QR verified</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Row 6 (Flag) -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-25 14:11:58</td>
+<td class="py-3 px-6 font-semibold font-body-sm">system</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-error-container text-on-error-container uppercase tracking-tight">FLAG</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Patient <span class="text-primary font-bold">PT-042-0117</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">AI Brain risk model v3.2</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Row 7 (Export) -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-25 11:03:26</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Ramon Villareal</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-outline-variant/30 text-on-surface-variant uppercase tracking-tight">EXPORT</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Report <span class="text-primary font-bold">RPT-0663</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">Q2 population summary • PDF</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Row 8 -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-25 09:47:40</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Dr. Amelia Reyes</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary-fixed-dim/30 text-primary-container uppercase tracking-tight">VIEW</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Patient <span class="text-primary font-bold">PT-042-0076</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">Patient registry search</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Row 9 (Sync) -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-24 18:29:03</td>
+<td class="py-3 px-6 font-semibold font-body-sm text-on-surface-variant/80">system</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-tertiary-fixed/40 text-on-tertiary-fixed-variant uppercase tracking-tight">SYNC</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Device <span class="text-primary font-bold">KSK-042-04</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">Sync failed — offline 48h alert</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+<!-- Row 10 -->
+<tr class="group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<td class="py-3 px-6 font-data-sm text-data-sm text-on-surface-variant">07-24 15:02:11</td>
+<td class="py-3 px-6 font-semibold font-body-sm">Dr. Amelia Reyes</td>
+<td class="py-3 px-6">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary-container text-on-primary-container uppercase tracking-tight">VALIDATE</span>
+</td>
+<td class="py-3 px-6 font-data-sm text-data-sm">Screening <span class="text-primary font-bold">S-8841</span></td>
+<td class="py-3 px-6 text-body-sm text-on-surface-variant">PRC 0384712 • QR verified</td>
+<td class="py-3 px-6 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">keyboard_arrow_down</span>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination / Footer -->
+<footer class="bg-surface-container-low px-6 py-3 flex items-center justify-between border-t border-outline-variant/20">
+<p class="text-body-sm text-on-surface-variant/60">Showing <span class="font-bold text-on-surface">1-10</span> of 1,248 entries</p>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-white transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<span class="px-3 py-1 bg-primary text-on-primary rounded text-data-sm">1</span>
+<button class="px-3 py-1 hover:bg-white rounded text-data-sm transition-colors">2</button>
+<button class="px-3 py-1 hover:bg-white rounded text-data-sm transition-colors">3</button>
+<span class="text-outline-variant px-1">...</span>
+<button class="px-3 py-1 hover:bg-white rounded text-data-sm transition-colors">125</button>
+<button class="p-1 rounded hover:bg-white transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</footer>
+</div>
+</section>
+</main>
+<script>
+        function toggleDetails(row) {
+            const nextRow = row.nextElementSibling;
+            if (nextRow && nextRow.classList.contains('hidden-details')) {
+                const chevron = row.querySelector('.chevron');
+                const isExpanded = row.classList.contains('active-row');
+                
+                if (isExpanded) {
+                    row.classList.remove('active-row');
+                    chevron.style.transform = 'rotate(0deg)';
+                } else {
+                    // Close other rows first (optional, for cleaner feel)
+                    document.querySelectorAll('.active-row').forEach(active => {
+                        active.classList.remove('active-row');
+                        active.querySelector('.chevron').style.transform = 'rotate(0deg)';
+                    });
+
+                    row.classList.add('active-row');
+                    chevron.style.transform = 'rotate(180deg)';
+                }
+            }
+        }
+    </script>
+</body></html>

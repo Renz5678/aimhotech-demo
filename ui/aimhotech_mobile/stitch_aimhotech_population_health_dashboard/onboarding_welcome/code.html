@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AImhotech Welcome</title>
+<!-- Google Fonts: Figtree for brand typography, IBM Plex Mono for technical IDs if needed -->
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f4f3f1",
+                    "on-primary-fixed": "#032017",
+                    "outline-variant": "#c1c8c3",
+                    "on-primary-fixed-variant": "#304c41",
+                    "secondary": "#566342",
+                    "surface-dim": "#dadad8",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#aecebe",
+                    "on-surface-variant": "#424844",
+                    "on-surface": "#1a1c1b",
+                    "on-secondary-fixed": "#141f05",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#86a496",
+                    "outline": "#727974",
+                    "primary-fixed-dim": "#aecebe",
+                    "tertiary": "#1f201f",
+                    "tertiary-fixed-dim": "#c7c6c5",
+                    "inverse-on-surface": "#f1f1ee",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "inverse-surface": "#2f312f",
+                    "surface-container": "#eeeeeb",
+                    "surface-tint": "#486458",
+                    "primary-fixed": "#caeada",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#3f4b2c",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "background": "#faf9f7",
+                    "on-tertiary-container": "#9d9d9c",
+                    "on-secondary-container": "#5c6948",
+                    "surface-variant": "#e3e2e0",
+                    "tertiary-container": "#343534",
+                    "surface-container-high": "#e9e8e6",
+                    "surface-bright": "#faf9f7",
+                    "surface": "#faf9f7",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e3e2e0",
+                    "primary": "#07241a",
+                    "on-tertiary-fixed": "#1a1c1b",
+                    "tertiary-fixed": "#e3e2e0",
+                    "on-background": "#1a1c1b",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#1e3a2f",
+                    "secondary-container": "#d9e8bf",
+                    "secondary-fixed": "#d9e8bf",
+                    "secondary-fixed-dim": "#becca4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "1rem",
+                    "3xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "xl": "32px",
+                    "xs": "8px",
+                    "edge_margin": "20px",
+                    "stack_gap": "16px",
+                    "sm": "12px",
+                    "base": "4px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Figtree"],
+                    "body-lg": ["Figtree"],
+                    "headline-md": ["Figtree"],
+                    "display-lg": ["Figtree"],
+                    "body-md": ["Figtree"],
+                    "technical-id": ["IBM Plex Mono"],
+                    "label-sm": ["Figtree"]
+            },
+            "fontSize": {
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "technical-id": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #1a1c1b; /* Outer frame background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background-color: #faf9f7;
+            border-radius: 40px;
+            position: relative;
+            box-shadow: 0 0 0 12px #2f312f, 0 0 0 14px #424844, 0 20px 40px rgba(0,0,0,0.4);
+            overflow: hidden;
+            display: flex;
+            flex-col: items-center;
+        }
+
+        .status-bar {
+            height: 44px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1c1b;
+            z-index: 20;
+        }
+
+        .notch {
+            width: 120px;
+            height: 30px;
+            background: #2f312f;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            z-index: 30;
+        }
+
+        .home-indicator {
+            width: 134px;
+            height: 5px;
+            background: #c1c8c3;
+            border-radius: 100px;
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .shadow-tactile {
+            box-shadow: 0 4px 12px rgba(30, 58, 47, 0.04);
+        }
+
+        .shadow-active {
+            box-shadow: 0 6px 16px rgba(30, 58, 47, 0.08);
+        }
+
+        .segmented-control-bg {
+            background-color: rgba(227, 226, 224, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .segmented-control-thumb {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Micro-interactions */
+        .tap-active:active {
+            transform: scale(0.97);
+            transition: transform 0.1s ease-out;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background">
+<div class="phone-frame flex flex-col">
+<!-- Status Bar -->
+<div class="status-bar">
+<span>9:30</span>
+<div class="flex gap-1 items-center">
+<span class="material-symbols-outlined !text-[18px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined !text-[18px]">wifi</span>
+<span class="material-symbols-outlined !text-[18px]">battery_full</span>
+</div>
+</div>
+<div class="notch"></div>
+<!-- Main Content Scroll Area -->
+<div class="flex-1 overflow-y-auto px-edge_margin flex flex-col items-center pt-xl">
+<!-- Pagination Dots -->
+<div class="flex gap-2 mb-xl">
+<div class="w-8 h-2 rounded-full bg-primary-container"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<!-- Custom Illustration Container -->
+<div class="w-full aspect-square max-w-[280px] relative mb-xl animate-float">
+<div class="absolute inset-0 bg-secondary-container/20 rounded-[48px] rotate-3 blur-2xl"></div>
+<div class="relative w-full h-full rounded-[48px] overflow-hidden shadow-tactile border border-white/40">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvdskgYXJvdKWXg6C52QclL0heljCG5rqjbqm-n3O0jGruaF_gcBw_WdFEdX_CgSneKgsI5J4TgNULm8_SY_c3ddCGHaAg2jcB51P0Fpxana2Yw_GRFCVMAqdahim4zLFcvbhLQ73Z3szyRQYqboS-8A1U_3IaEeCKc0IA2zErEyJF3cndSaPphkTeOWnkTnj3Kowg3Vfm715By8A7R2f_HxMx05s6a60coTmRPUUC-6nZ0j_Zq3OWreFLrHkR67poy-lbyX_sfCg"/>
+</div>
+</div>
+<!-- Typography Content -->
+<div class="text-center space-y-md mb-xl">
+<h1 class="font-display-lg text-display-lg text-primary leading-tight px-4">
+                    Your health record, in one place
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    Kaya mo ‘to! AImhotech keeps your check-ups from the barangay kiosk, RHU, and hospitals together — so you never start from zero.
+                </p>
+</div>
+<!-- Language Selector (Segmented Control) -->
+<div class="w-full max-w-[240px] p-1 rounded-2xl segmented-control-bg flex relative mb-xl">
+<div class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-xl shadow-sm z-0 segmented-control-thumb" id="lang-thumb"></div>
+<button class="relative z-10 flex-1 py-2 font-label-sm text-label-sm text-primary transition-colors duration-300" id="btn-en" onclick="switchLanguage('en')">
+                    English
+                </button>
+<button class="relative z-10 flex-1 py-2 font-label-sm text-label-sm text-on-surface-variant transition-colors duration-300" id="btn-tl" onclick="switchLanguage('tl')">
+                    Filipino
+                </button>
+</div>
+</div>
+<!-- Action Area -->
+<div class="px-edge_margin pb-[64px] pt-md space-y-md">
+<button class="w-full h-[56px] bg-primary-container text-white rounded-2xl font-headline-sm text-headline-sm shadow-active tap-active flex items-center justify-center gap-2 group">
+                Get started
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<div class="text-center">
+<button class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary transition-colors">
+                    I already have an account
+                </button>
+</div>
+</div>
+<div class="home-indicator"></div>
+</div>
+<script>
+        function switchLanguage(lang) {
+            const thumb = document.getElementById('lang-thumb');
+            const btnEn = document.getElementById('btn-en');
+            const btnTl = document.getElementById('btn-tl');
+
+            if (lang === 'en') {
+                thumb.style.transform = 'translateX(0)';
+                btnEn.classList.add('text-primary');
+                btnEn.classList.remove('text-on-surface-variant');
+                btnTl.classList.add('text-on-surface-variant');
+                btnTl.classList.remove('text-primary');
+            } else {
+                thumb.style.transform = 'translateX(calc(100% + 4px))';
+                btnTl.classList.add('text-primary');
+                btnTl.classList.remove('text-on-surface-variant');
+                btnEn.classList.add('text-on-surface-variant');
+                btnEn.classList.remove('text-primary');
+            }
+        }
+
+        // Lightweight floating animation for the illustration
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+            .animate-float {
+                animation: float 5s ease-in-out infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body></html>
