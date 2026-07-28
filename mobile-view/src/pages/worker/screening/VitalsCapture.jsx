@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import TopBar from '../../../components/layout/TopBar';
 import { useMobileStore } from '../../../store/useMobileStore';
 import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore.ts';
+import { useLanguage } from '../../../hooks/useLanguage';
 
 export default function VitalsCapture() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { selectedPatientId, setVitalsSession } = useMobileStore();
   const patients = useLiveDemoStore(s => s.patients);
@@ -18,7 +20,7 @@ export default function VitalsCapture() {
 
   return (
     <div className="flex flex-col h-full bg-surface">
-      <TopBar title="Capture Vitals" subtitle="Step 2 of 3" showBack onBack={() => navigate(-1)} />
+      <TopBar title={t('newScreening')} showBack onBack={() => navigate(-1)} />
       
       <div className="flex justify-center gap-2 py-4">
         <div className="w-2 h-2 rounded-full bg-primary" />
@@ -28,6 +30,11 @@ export default function VitalsCapture() {
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 page-enter pb-24">
         
+        <div>
+          <h2 className="text-secondary font-bold text-xs tracking-widest uppercase mb-1">{t('step3Of4')}</h2>
+          <h1 className="text-2xl font-bold text-primary">{t('captureVitals')}</h1>
+        </div>
+
         <div className="bg-surface-container p-3 rounded-xl flex items-center gap-3">
           <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">{patient.firstName[0]}{patient.lastName[0]}</div>
           <div><div className="font-bold">{patient.firstName} {patient.lastName}</div><div className="text-xs text-secondary">{patient.id}</div></div>
@@ -70,7 +77,7 @@ export default function VitalsCapture() {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-surface border-t border-outline-variant/30">
-        <button onClick={handleAnalyze} className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg active:scale-95 card-shadow-1">Analyze Risk</button>
+        <button onClick={handleAnalyze} className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg active:scale-95 card-shadow-1">{t('analyzeRisk')}</button>
       </div>
 
       {showConfirm && (

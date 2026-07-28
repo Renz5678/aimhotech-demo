@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore.ts';
 import TopBar from '../../components/layout/TopBar';
+import { useLanguage } from '../../hooks/useLanguage';
 
 export default function HealthHistory() {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState('all');
   const screenings = useLiveDemoStore(s => s.screenings.filter(sc => sc.patientId === 'QC-097-00214'));
 
@@ -11,7 +13,7 @@ export default function HealthHistory() {
 
   return (
     <div className="flex flex-col h-full bg-surface">
-      <TopBar title="My Health" />
+      <TopBar title={t('myHealth')} />
       <div className="flex gap-2 p-4 overflow-x-auto no-scrollbar">
         {['All', 'Blood Pressure', 'Glucose'].map(f => (
           <button key={f} onClick={() => setFilter(f.toLowerCase())} className={`px-4 py-1.5 rounded-full whitespace-nowrap font-bold text-sm transition-colors ${filter === f.toLowerCase() ? 'bg-primary text-white' : 'bg-surface-container text-secondary'}`}>{f}</button>
@@ -20,11 +22,11 @@ export default function HealthHistory() {
       
       <div className="flex-1 overflow-y-auto p-4 pt-0 pb-24 space-y-6 page-enter">
         <div className="bg-surface-container rounded-2xl p-5 card-shadow-1">
-          <h3 className="font-bold mb-4 text-on-surface">Vitals Summary</h3>
+          <h3 className="font-bold mb-4 text-on-surface">{t('vitalsSummary')}</h3>
           <div className="grid grid-cols-3 gap-2 text-center mb-6">
-            <div><div className="text-xs text-secondary mb-1">Risk</div><div className="font-bold text-[#B0523F]">Elevated</div></div>
-            <div className="border-l border-r border-outline-variant"><div className="text-xs text-secondary mb-1">Latest BP</div><div className="font-bold text-on-surface">142/90</div></div>
-            <div><div className="text-xs text-secondary mb-1">Glucose</div><div className="font-bold text-on-surface">105</div></div>
+            <div><div className="text-xs text-secondary mb-1">{t('risk')}</div><div className="font-bold text-[#B0523F]">{t('elevatedRisk')}</div></div>
+            <div className="border-l border-r border-outline-variant"><div className="text-xs text-secondary mb-1">{t('latestBP')}</div><div className="font-bold text-on-surface">142/90</div></div>
+            <div><div className="text-xs text-secondary mb-1">{t('glucose')}</div><div className="font-bold text-on-surface">105</div></div>
           </div>
           <svg viewBox="0 0 100 80" className="w-full h-20 overflow-visible" preserveAspectRatio="none">
             <path d={chartPoints} fill="none" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -32,8 +34,8 @@ export default function HealthHistory() {
         </div>
 
         <div className="space-y-4">
-          <h3 className="font-bold text-on-surface px-1">Screening Timeline</h3>
-          {screenings.length === 0 && <div className="text-center text-secondary py-8">No screenings found.</div>}
+          <h3 className="font-bold text-on-surface px-1">{t('screeningTimeline')}</h3>
+          {screenings.length === 0 && <div className="text-center text-secondary py-8">{t('noScreenings')}</div>}
           {screenings.map((sc, i) => {
             const isHighBP = (sc.bpSystolic ?? 0) > 140;
             const isHighGlucose = (sc.glucoseValue ?? 0) > 100;
@@ -57,7 +59,7 @@ export default function HealthHistory() {
                     <div className="font-bold text-on-surface">{sc.heartRate}</div>
                   </div>
                 </div>
-                <div className="text-xs font-semibold text-primary bg-primary/10 self-start px-2 py-1 rounded">Source: {sc.source}</div>
+                <div className="text-xs font-semibold text-primary bg-primary/10 self-start px-2 py-1 rounded">{t('source')} {sc.source}</div>
               </div>
             );
           })}

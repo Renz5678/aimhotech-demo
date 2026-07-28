@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore.ts';
 import TopBar from '../../components/layout/TopBar';
+import { useLanguage } from '../../hooks/useLanguage';
 
 export default function PatientHome() {
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const healthTips = useLiveDemoStore(s => s.healthTips);
   const tip = healthTips[0];
@@ -20,7 +22,7 @@ export default function PatientHome() {
   return (
     <div className="flex flex-col h-full bg-surface">
       <TopBar 
-        title="Good morning, Rosalinda!" 
+        title={`${t('greeting')} Rosalinda!`} 
         subtitle="San Isidro, Quezon City" 
         rightIcon="notifications"
         scrolled={scrolled}
@@ -30,16 +32,16 @@ export default function PatientHome() {
         <div className="bg-primary text-white rounded-2xl p-5 card-shadow-2 relative overflow-hidden">
           <div className="flex justify-between items-start mb-4">
             <div>
-              <div className="text-primary-100 text-sm font-semibold mb-1">Current Risk Status</div>
+              <div className="text-primary-100 text-sm font-semibold mb-1">{t('riskStatus')}</div>
               <div className="text-2xl font-bold flex items-center gap-2">
-                Elevated Risk <span className="text-sm bg-white/20 px-2 py-1 rounded-full text-white">78% conf</span>
+                {t('elevatedRisk')} <span className="text-sm bg-white/20 px-2 py-1 rounded-full text-white">78% conf</span>
               </div>
             </div>
             <div className="bg-[#B0523F] px-3 py-1 rounded-full text-sm font-bold shadow-sm">Elevated</div>
           </div>
           <div className="flex justify-between items-end">
             <div>
-              <div className="text-primary-100 text-sm">Last BP</div>
+              <div className="text-primary-100 text-sm">{t('latestBP')}</div>
               <div className="text-xl font-bold">142/90</div>
             </div>
             <svg viewBox="0 0 80 30" className="w-20 h-8 opacity-80 overflow-visible">
@@ -50,7 +52,7 @@ export default function PatientHome() {
 
         {/* Appointment Card */}
         <div className="bg-surface-container rounded-2xl p-4 card-shadow-1">
-          <h3 className="font-bold mb-3 flex items-center gap-2 text-on-surface"><span className="material-symbols-outlined text-primary">calendar_month</span> Upcoming Visit</h3>
+          <h3 className="font-bold mb-3 flex items-center gap-2 text-on-surface"><span className="material-symbols-outlined text-primary">calendar_month</span> {t('upcomingVisit')}</h3>
           <div className="flex gap-4">
             <div className="bg-primary/10 rounded-xl p-3 text-center min-w-[70px]">
               <div className="text-primary font-bold text-lg">Oct</div>
@@ -67,8 +69,8 @@ export default function PatientHome() {
         <div className="bg-surface-container rounded-xl p-4 border-l-4 border-secondary flex gap-4 items-start">
           <span className="material-symbols-outlined text-secondary text-3xl">lightbulb</span>
           <div>
-            <h4 className="font-bold text-on-surface mb-1">{tip?.title || 'Tip'}</h4>
-            <p className="text-sm text-secondary leading-snug">{tip?.description || ''}</p>
+            <h4 className="font-bold text-on-surface mb-1">{t('healthTip')}</h4>
+            <p className="text-sm text-secondary leading-snug">{t('drinkWater')}</p>
           </div>
         </div>
 

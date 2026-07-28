@@ -6,7 +6,7 @@ import ConsentToggle from '../../components/ui/ConsentToggle';
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const setLanguage = useMobileStore(s => s.setLanguage);
   
   const [step, setStep] = useState(1);
@@ -23,12 +23,12 @@ export default function Onboarding() {
             <span className="material-symbols-outlined text-white text-5xl relative z-10">spa</span>
           </div>
 
-          <h1 className="text-[28px] font-bold text-primary mb-4 leading-tight tracking-tight">
-            Your health record,<br />in one place
+          <h1 className="text-[28px] font-bold text-primary mb-4 leading-tight tracking-tight whitespace-pre-line">
+            {t('onboardingHero1')}
           </h1>
           
           <p className="text-secondary mb-10 text-[15px] leading-relaxed">
-            Kaya mo 'to! AImhotech keeps your check-ups from the barangay kiosk, RHU, and hospitals together — so you never start from zero.
+            {t('onboardingSub1')}
           </p>
 
           <div className="flex w-full bg-surface-container rounded-2xl p-1 mb-8 shadow-inner border border-outline-variant/30">
@@ -36,13 +36,13 @@ export default function Onboarding() {
               onClick={() => setLanguage('en')} 
               className={`flex-1 py-3 rounded-xl font-bold transition-all duration-200 ${language === 'en' ? 'bg-primary text-white card-shadow-1 scale-100' : 'text-secondary hover:bg-surface-container-high scale-95'}`}
             >
-              English
+              {t('english')}
             </button>
             <button 
               onClick={() => setLanguage('fil')} 
               className={`flex-1 py-3 rounded-xl font-bold transition-all duration-200 ${language === 'fil' ? 'bg-primary text-white card-shadow-1 scale-100' : 'text-secondary hover:bg-surface-container-high scale-95'}`}
             >
-              Filipino
+              {t('filipino')}
             </button>
           </div>
         </div>
@@ -54,11 +54,11 @@ export default function Onboarding() {
           </div>
 
           <h1 className="text-[28px] font-bold text-primary mb-4 leading-tight tracking-tight">
-            A gentle early warning
+            {t('onboardingHero2')}
           </h1>
           
           <p className="text-secondary mb-10 text-[15px] leading-relaxed">
-            After each check-up, smart software looks at your numbers and quietly flags anything worth a doctor’s attention — even without internet at the station.
+            {t('onboardingSub2')}
           </p>
         </div>
 
@@ -69,17 +69,17 @@ export default function Onboarding() {
           </div>
 
           <h1 className="text-[28px] font-bold text-primary mb-4 leading-tight tracking-tight">
-            Your data, your say
+            {t('onboardingHero3')}
           </h1>
           
           <p className="text-secondary mb-8 text-[15px] leading-relaxed">
-            We only record your check-up results with your permission, keep them encrypted, and share them only with the health workers caring for you. You can say no or change your mind anytime.
+            {t('onboardingSub3')}
           </p>
           
           <div className="w-full text-left">
             <ConsentToggle 
-              title="I agree — record my health data"
-              description="What happens to my data?"
+              title={t('consentTitle')}
+              description={t('consentDesc')}
               checked={consentChecked}
               onChange={setConsentChecked}
             />
@@ -95,7 +95,7 @@ export default function Onboarding() {
             onClick={() => setStep(step + 1)}
             className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg card-shadow-1 hover:scale-[1.02] active:scale-[0.98] transition-transform"
           >
-            Next
+            {t('next')}
           </button>
         ) : (
           <button 
@@ -103,14 +103,14 @@ export default function Onboarding() {
             disabled={!consentChecked}
             className={`w-full py-4 rounded-2xl font-bold text-lg card-shadow-1 transition-all ${consentChecked ? 'bg-primary text-white hover:scale-[1.02] active:scale-[0.98]' : 'bg-surface-container text-on-surface-variant opacity-50'}`}
           >
-            {consentChecked ? 'Get Started' : 'Turn on consent to continue'}
+            {consentChecked ? t('getStarted') : t('turnOnConsent')}
           </button>
         )}
         <button 
           onClick={() => navigate('/login')}
           className="w-full py-3 text-secondary font-semibold hover:text-primary transition-colors text-sm"
         >
-          I already have an account
+          {t('alreadyAccount')}
         </button>
       </div>
     </div>

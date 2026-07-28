@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../../components/layout/TopBar';
 import { useMobileStore } from '../../../store/useMobileStore';
+import { useLanguage } from '../../../hooks/useLanguage';
 
 export default function DevicePairing() {
+  const { t } = useLanguage();
   const [scanning, setScanning] = useState(true);
   const [showManual, setShowManual] = useState(false);
   const navigate = useNavigate();
@@ -22,44 +24,51 @@ export default function DevicePairing() {
 
   return (
     <div className="flex flex-col h-full bg-surface">
-      <TopBar title="Pair Devices" subtitle="Step 1 of 3" showBack onBack={() => navigate(-1)} />
+      <TopBar title={t('newScreening')} showBack onBack={() => navigate('/worker/screening/confirm')} />
       
-      <div className="flex justify-center gap-2 py-4">
-        <div className="w-2 h-2 rounded-full bg-primary" />
-        <div className="w-2 h-2 rounded-full bg-outline-variant" />
-        <div className="w-2 h-2 rounded-full bg-outline-variant" />
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col space-y-6 page-enter">
+        <div>
+          <h2 className="text-secondary font-bold text-xs tracking-widest uppercase mb-1">{t('step2Of4')}</h2>
+          <h1 className="text-2xl font-bold text-primary">{t('pairDevices')}</h1>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+          {scanning ? (
+            <div className="flex-1 flex flex-col items-center justify-center">
+              <div className="bt-ripple w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-8">
+                <span className="material-symbols-outlined text-5xl text-primary">bluetooth_searching</span>
+              </div>
+              <h2 className="text-xl font-bold text-on-surface">{t('scanningForDevices')}</h2>
+              <p className="text-secondary mt-2">{t('ensureDevicesOn')}</p>
+            </div>
+          ) : (
+            <div className="w-full flex-1">
+              <h2 className="text-xl font-bold text-on-surface mb-6 text-left">{t('devicesFound')}</h2>
+              <div className="space-y-4 text-left">
+                <div className="bg-green-50 border-2 border-green-500 rounded-xl p-4 flex items-center gap-4">
+                  <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
+                  <div><div className="font-bold">Microlife B6 Connect</div><div className="text-sm text-green-700">DEV-MLB6-1001</div></div>
+                </div>
+                <div className="bg-green-50 border-2 border-green-500 rounded-xl p-4 flex items-center gap-4">
+                  <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
+                  <div><div className="font-bold">Bionime iFree</div><div className="text-sm text-green-700">DEV-BION-2001</div></div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center p-6 text-center page-enter">
-        {scanning ? (
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="bt-ripple w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-8">
-              <span className="material-symbols-outlined text-5xl text-primary">bluetooth_searching</span>
-            </div>
-            <h2 className="text-xl font-bold text-on-surface">Scanning for devices...</h2>
-            <p className="text-secondary mt-2">Ensure devices are turned on.</p>
-          </div>
-        ) : (
-          <div className="w-full flex-1">
-            <h2 className="text-xl font-bold text-on-surface mb-6 text-left">Devices Found</h2>
-            <div className="space-y-4 text-left">
-              <div className="bg-green-50 border-2 border-green-500 rounded-xl p-4 flex items-center gap-4">
-                <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
-                <div><div className="font-bold">Microlife B6 Connect</div><div className="text-sm text-green-700">DEV-MLB6-1001</div></div>
-              </div>
-              <div className="bg-green-50 border-2 border-green-500 rounded-xl p-4 flex items-center gap-4">
-                <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
-                <div><div className="font-bold">Bionime iFree</div><div className="text-sm text-green-700">DEV-BION-2001</div></div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="p-4 bg-surface">
-        <button onClick={handleContinue} disabled={scanning} className="w-full bg-primary text-white py-4 rounded-xl font-bold disabled:opacity-50 active:scale-95">Continue to Vitals</button>
+      <div className="p-4 bg-surface border-t border-outline-variant/30">
+        <button 
+          onClick={handleContinue}
+          disabled={!allPaired}
+          className={`w-full py-4 rounded-2xl font-bold transition-all ${allPaired ? 'bg-primary text-white card-shadow-1 active:scale-95' : 'bg-surface-container text-secondary opacity-50'}`}
+        >
+          {allPaired ? t('continueToVitals') : t('pairDevices')}
+        </button>
         <div className="text-center mt-4">
-          <button onClick={() => setShowManual(true)} className="text-primary font-bold">Enter Manually</button>
+          <button onClick={() => setShowManual(true)} className="text-primary font-bold">{t('enterManually')}</button>
         </div>
       </div>
 

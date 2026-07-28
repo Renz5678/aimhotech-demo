@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../../hooks/useLanguage';
 
 export default function GabayChat() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
     {
       id: 1,
       sender: 'ai',
-      text: "Kumusta, Maria! I'm Gabay. Ask me anything about your results, appointments, or healthy habits — kahit walang signal."
+      text: t('gabayGreeting')
     }
   ]);
 
   const suggestions = [
-    "What does my result mean?",
-    "How do I lower my sugar?",
-    "Is my data private?"
+    t('gabaySample1'),
+    t('gabaySample2'),
+    t('gabaySample3')
   ];
 
   const handleSend = (text) => {
@@ -67,7 +69,7 @@ export default function GabayChat() {
         <div className="relative flex items-center">
           <input 
             type="text" 
-            placeholder="Tanong lang — I'm here to help..." 
+            placeholder={t('typeMessage')} 
             className="w-full bg-surface-container pl-5 pr-14 py-4 rounded-full border border-outline-variant focus:border-primary focus:outline-none transition-colors text-on-surface placeholder:text-secondary shadow-inner"
             value={input}
             onChange={e => setInput(e.target.value)}

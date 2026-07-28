@@ -1,24 +1,26 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useLanguage } from '../../hooks/useLanguage';
 
 export default function BottomNavigation({ mode = 'patient' }) {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
 
   const getNavItems = () => {
     if (mode === 'patient') {
       return [
-        { path: '/patient/home', icon: 'home', label: 'Home' },
-        { path: '/patient/history', icon: 'favorite', label: 'My Health' },
-        { path: '/patient/appointments', icon: 'event_note', label: 'Visits' },
-        { path: '/patient/settings', icon: 'settings', label: 'Settings' },
+        { path: '/patient/home', icon: 'home', label: t('home') },
+        { path: '/patient/history', icon: 'favorite', label: t('myHealth') },
+        { path: '/patient/appointments', icon: 'event_note', label: t('visits') },
+        { path: '/patient/settings', icon: 'settings', label: t('settings') },
       ];
     } else {
       return [
-        { path: '/worker/home', icon: 'home', label: 'Home' },
-        { path: '/worker/lookup', icon: 'search', label: 'Lookup' },
+        { path: '/worker/home', icon: 'home', label: t('home') },
+        { path: '/worker/lookup', icon: 'search', label: t('patientLookup').split(' ')[0] },
         { path: '/worker/screening/device', icon: 'add_circle', label: 'Screening' },
-        { path: '/worker/settings', icon: 'settings', label: 'Settings' },
+        { path: '/worker/settings', icon: 'settings', label: t('settings') },
       ];
     }
   };

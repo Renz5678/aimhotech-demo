@@ -4,15 +4,17 @@ import TopBar from '../../components/layout/TopBar';
 import { useMobileStore } from '../../store/useMobileStore';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore.ts';
 import NotificationBell from '../../components/ui/NotificationBell';
+import { useLanguage } from '../../hooks/useLanguage';
 
 export default function WorkerHome() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { syncQueueCount, isSynced, syncToBrain, pairedDevices } = useMobileStore();
   const patients = useLiveDemoStore(s => s.patients).slice(0,3);
 
   return (
     <div className="flex flex-col h-full bg-surface">
-      <TopBar title="San Isidro Kiosk" subtitle="Health Worker Mode" rightElement={<NotificationBell />} />
+      <TopBar title="San Isidro Kiosk" subtitle={t('kioskMode')} rightElement={<NotificationBell />} />
       <div className="flex-1 overflow-y-auto p-4 pb-24 space-y-6 page-enter">
         
         <div className="bg-surface-container rounded-2xl p-4 flex items-center gap-4">
@@ -26,36 +28,36 @@ export default function WorkerHome() {
         {syncQueueCount > 0 ? (
           <div className="bg-amber-100 rounded-2xl p-4 flex justify-between items-center card-shadow-1 cursor-pointer" onClick={() => navigate('/worker/sync')}>
             <div>
-              <div className="text-amber-800 font-bold flex items-center gap-1"><span className="material-symbols-outlined">sync_problem</span> {syncQueueCount} pending</div>
+              <div className="text-amber-800 font-bold flex items-center gap-1"><span className="material-symbols-outlined">sync_problem</span> {syncQueueCount} {t('pending')}</div>
             </div>
             <button className="bg-amber-600 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-sm active:scale-95">View & Sync</button>
           </div>
         ) : (
           <div className="bg-green-100 rounded-2xl p-4 flex justify-between items-center card-shadow-1 cursor-pointer" onClick={() => navigate('/worker/sync')}>
-            <div className="text-green-800 font-bold flex items-center gap-1"><span className="material-symbols-outlined">cloud_done</span> All synced ✔</div>
-            <div className="text-green-700 text-sm">Just now</div>
+            <div className="text-green-800 font-bold flex items-center gap-1"><span className="material-symbols-outlined">cloud_done</span> {t('allSynced')} ✔</div>
+            <div className="text-green-700 text-sm">{t('justNow')}</div>
           </div>
         )}
 
         <button onClick={() => navigate('/worker/lookup')} className="w-full bg-primary text-white rounded-2xl p-6 text-left card-shadow-2 active:scale-95 transition-transform flex items-center justify-between">
           <div>
             <span className="material-symbols-outlined text-4xl mb-2">person_add</span>
-            <h2 className="text-2xl font-bold">New Patient Screening</h2>
+            <h2 className="text-2xl font-bold">{t('newScreening')}</h2>
           </div>
           <span className="material-symbols-outlined text-3xl">arrow_forward</span>
         </button>
 
         <div>
-          <h3 className="font-bold text-on-surface mb-3 px-1">Today's Activity</h3>
+          <h3 className="font-bold text-on-surface mb-3 px-1">{t('todayActivity')}</h3>
           <div className="grid grid-cols-3 gap-3 text-center">
-            <div className="bg-surface-container rounded-xl py-3 card-shadow-1"><div className="text-2xl font-bold text-primary">12</div><div className="text-xs text-secondary font-semibold">Screenings</div></div>
-            <div className="bg-surface-container rounded-xl py-3 card-shadow-1"><div className="text-2xl font-bold text-primary">2</div><div className="text-xs text-secondary font-semibold">Referrals</div></div>
-            <div className="bg-surface-container rounded-xl py-3 card-shadow-1"><div className="text-2xl font-bold text-primary">9</div><div className="text-xs text-secondary font-semibold">Synced</div></div>
+            <div className="bg-surface-container rounded-xl py-3 card-shadow-1"><div className="text-2xl font-bold text-primary">12</div><div className="text-xs text-secondary font-semibold">{t('screeningsCompleted')}</div></div>
+            <div className="bg-surface-container rounded-xl py-3 card-shadow-1"><div className="text-2xl font-bold text-primary">2</div><div className="text-xs text-secondary font-semibold">{t('referralsMade')}</div></div>
+            <div className="bg-surface-container rounded-xl py-3 card-shadow-1"><div className="text-2xl font-bold text-primary">9</div><div className="text-xs text-secondary font-semibold">{t('synced')}</div></div>
           </div>
         </div>
 
         <div>
-          <h3 className="font-bold text-on-surface mb-3 px-1 flex justify-between">Recent Patients <button className="text-primary text-sm">View All</button></h3>
+          <h3 className="font-bold text-on-surface mb-3 px-1 flex justify-between">{t('recentPatients')} <button className="text-primary text-sm">{t('viewAll')}</button></h3>
           <div className="space-y-3">
             {patients.map(p => (
               <div key={p.id} className="bg-surface-container p-3 rounded-xl flex items-center gap-3">
@@ -70,7 +72,7 @@ export default function WorkerHome() {
         </div>
 
         <div>
-          <h3 className="font-bold text-on-surface mb-3 px-1">Device Status</h3>
+          <h3 className="font-bold text-on-surface mb-3 px-1">{t('deviceStatus')}</h3>
           {pairedDevices.length > 0 ? (
             <div className="space-y-2">
               {pairedDevices.map(d => (
@@ -83,7 +85,7 @@ export default function WorkerHome() {
           ) : (
             <div className="bg-surface-container p-4 rounded-xl flex flex-col items-center justify-center text-secondary border-2 border-dashed border-outline-variant">
               <span className="material-symbols-outlined text-3xl mb-1">bluetooth_searching</span>
-              <p className="text-sm font-semibold">No devices paired</p>
+              <p className="text-sm font-semibold">{t('noDevices')}</p>
             </div>
           )}
         </div>
