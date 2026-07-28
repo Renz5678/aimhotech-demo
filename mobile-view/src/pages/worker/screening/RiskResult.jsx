@@ -27,7 +27,7 @@ export default function RiskResult() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-surface">
+    <div className="flex flex-col h-full bg-surface relative">
       <TopBar title={t('newScreening')} showBack onBack={() => navigate(-1)} />
       
       <div className="flex justify-center gap-2 py-4">
@@ -80,8 +80,8 @@ export default function RiskResult() {
       </div>
 
       {showBottomSheet && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-end">
-          <div className="bg-surface w-full p-6 rounded-t-3xl bottom-sheet">
+        <div className="absolute inset-0 bg-black/60 z-50 flex items-end">
+          <div className="bg-surface w-full p-6 rounded-t-3xl shadow-2xl">
             <h2 className="text-xl font-bold mb-4">{t('selectFacility')}</h2>
             <div className="space-y-3 mb-6">
               {['St. Luke\'s Medical Center', 'East Avenue Medical Center', 'QC General Hospital'].map((f, i) => (
@@ -93,7 +93,7 @@ export default function RiskResult() {
             </div>
             <div className="flex gap-3">
               <button onClick={() => setShowBottomSheet(false)} className="flex-1 py-4 border-2 border-outline-variant rounded-xl font-bold">{t('cancel')}</button>
-              <button onClick={handleCreateReferral} className="flex-2 w-full bg-primary text-white py-4 rounded-xl font-bold">{t('confirmReferral')}</button>
+              <button onClick={handleCreateReferral} className="flex-[2] w-full bg-primary text-white py-4 rounded-xl font-bold">{t('confirmReferral')}</button>
             </div>
           </div>
         </div>

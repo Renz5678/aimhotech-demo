@@ -19,7 +19,7 @@ export default function VitalsCapture() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-surface">
+    <div className="flex flex-col h-full bg-surface relative">
       <TopBar title={t('newScreening')} showBack onBack={() => navigate(-1)} />
       
       <div className="flex justify-center gap-2 py-4">
@@ -83,13 +83,14 @@ export default function VitalsCapture() {
       </div>
 
       {showConfirm && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-surface p-6 rounded-2xl w-full max-w-sm">
-            <h2 className="text-xl font-bold mb-2">Unusual Reading Detected</h2>
-            <p className="text-secondary mb-6">BP 164/99 mmHg is very high. Please confirm or re-measure.</p>
-            <div className="flex gap-2">
-              <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 border-2 border-outline-variant rounded-xl font-bold text-secondary">Re-measure</button>
-              <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 bg-red-500 text-white rounded-xl font-bold">Confirm</button>
+        <div className="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-surface p-6 rounded-3xl w-[90%] max-w-[340px] shadow-2xl flex flex-col items-center text-center">
+            <span className="material-symbols-outlined text-red-500 text-5xl mb-3">warning</span>
+            <h2 className="text-xl font-bold mb-2 text-on-surface">Unusual Reading Detected</h2>
+            <p className="text-secondary mb-6 leading-relaxed">BP <strong className="text-red-600">164/99 mmHg</strong> is very high with possible AFIB. Please confirm or re-measure.</p>
+            <div className="flex gap-3 w-full">
+              <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 border-2 border-outline-variant rounded-xl font-bold text-secondary active:scale-95 transition-transform">Re-measure</button>
+              <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 bg-red-500 text-white rounded-xl font-bold card-shadow-1 active:scale-95 transition-transform">Confirm</button>
             </div>
           </div>
         </div>
