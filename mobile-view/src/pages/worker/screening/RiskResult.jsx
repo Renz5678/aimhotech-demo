@@ -36,7 +36,7 @@ export default function RiskResult() {
         <div className="w-2 h-2 rounded-full bg-primary" />
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col space-y-6 page-enter pb-24">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 page-enter">
         <div>
           <h2 className="text-secondary font-bold text-xs tracking-widest uppercase mb-1">{t('step4Of4')}</h2>
           <h1 className="text-2xl font-bold text-primary">{t('riskAssessment')}</h1>
@@ -74,9 +74,9 @@ export default function RiskResult() {
         </div>
       </div>
 
-      <div className="p-4 bg-surface border-t border-outline-variant/30 flex gap-3">
-        <button onClick={handleDone} className="flex-1 py-4 border-2 border-primary text-primary rounded-xl font-bold">{t('doneAndSave')}</button>
-        <button onClick={() => setShowBottomSheet(true)} className="flex-1 py-4 bg-primary text-white rounded-xl font-bold card-shadow-1">{t('createReferral')}</button>
+      <div className="p-4 bg-surface border-t border-outline-variant/30 space-y-3">
+        <button onClick={() => setShowBottomSheet(true)} className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg active:scale-95 card-shadow-1 transition-transform">{t('createReferral')}</button>
+        <button onClick={() => navigate('/worker/home')} className="w-full bg-surface-container text-on-surface py-4 rounded-xl font-bold active:scale-95 transition-transform">{t('doneAndSave')}</button>
       </div>
 
       {showBottomSheet && (

@@ -33,7 +33,8 @@ const AppContent = () => {
   // Don't show bottom nav on auth screens
   const isAuthRoute = ['/login', '/onboarding', '/'].includes(location.pathname);
   const isGabayRoute = location.pathname === '/patient/gabay';
-  const showNav = !isAuthRoute && !isGabayRoute;
+  const isWorkerScreening = location.pathname.startsWith('/worker/screening');
+  const showNav = !isAuthRoute && !isGabayRoute && !isWorkerScreening;
   const showFab = mode === 'patient' && !isAuthRoute && !isGabayRoute;
 
   return (

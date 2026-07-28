@@ -28,7 +28,7 @@ export default function VitalsCapture() {
         <div className="w-2 h-2 rounded-full bg-outline-variant" />
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 page-enter pb-24">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 page-enter">
         
         <div>
           <h2 className="text-secondary font-bold text-xs tracking-widest uppercase mb-1">{t('step3Of4')}</h2>
@@ -78,8 +78,8 @@ export default function VitalsCapture() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-surface border-t border-outline-variant/30">
-        <button onClick={handleAnalyze} className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg active:scale-95 card-shadow-1">{t('analyzeRisk')}</button>
+      <div className="p-4 bg-surface border-t border-outline-variant/30">
+        <button onClick={handleAnalyze} className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg active:scale-95 card-shadow-1 transition-transform">{t('analyzeRisk')}</button>
       </div>
 
       {showConfirm && (
