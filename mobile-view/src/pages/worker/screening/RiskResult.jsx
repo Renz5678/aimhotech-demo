@@ -26,7 +26,7 @@ export default function RiskResult() {
 
   return (
     <div className="flex flex-col h-full bg-surface">
-      <TopBar title="Risk Assessment" subtitle="Step 3 of 3" />
+      <TopBar title="Risk Assessment" subtitle="Step 4 of 4" />
       
       <div className="flex justify-center gap-2 py-4">
         <div className="w-2 h-2 rounded-full bg-primary" />

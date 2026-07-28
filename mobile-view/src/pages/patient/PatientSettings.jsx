@@ -34,16 +34,17 @@ export default function PatientSettings() {
         </section>
 
         <section>
-          <h3 className="font-bold text-primary mb-3 text-sm tracking-widest uppercase">Consent</h3>
+          <h3 className="font-bold text-primary mb-3 text-sm tracking-widest uppercase">Your Data & Consent</h3>
           <div className="bg-surface-container rounded-xl p-4">
-            <div className="flex justify-between items-center mb-4">
-              <span className="font-semibold">Data Sharing</span>
-              <span className="text-green-600 font-bold bg-green-100 px-2 py-1 rounded">Enabled</span>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => navigate('/onboarding')} className="flex-1 py-2 border-2 border-primary text-primary rounded-xl font-bold">Review</button>
-              <button onClick={() => setShowConsent(true)} className="flex-1 py-2 bg-red-100 text-red-600 rounded-xl font-bold">Withdraw</button>
-            </div>
+            <p className="text-on-surface-variant font-body-md text-sm mb-4">
+              You agreed to health data recording on Mar 3, 2026. You can review or withdraw this anytime — data capture stops immediately.
+            </p>
+            <button 
+              onClick={() => navigate('/onboarding')} 
+              className="w-full py-3 border border-primary text-primary rounded-xl font-bold bg-white"
+            >
+              Review my consent
+            </button>
           </div>
         </section>
 

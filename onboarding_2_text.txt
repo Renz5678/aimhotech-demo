@@ -1,0 +1,24 @@
+AImhotech
+Mobile app · interactive prototype
+APP MODE
+Health Worker
+Patient
+DEMO CONTROLS
+Simulate offline
+Kiosk loses connectivity
+View as new patient
+Empty states in Patient Mode
+Reset demo
+JUMP TO SCREEN
+Onboarding & consent
+Login (ID + OTP)
+Home dashboard
+My Health · trends
+Appointments & referrals
+Settings & consent
+✦ Gabay AI assistant
+Offline-first: every action works without a connection and queues for sync. Try submitting a screening while offline, then go back online and press Sync now.
+9:30
+A gentle early warning
+After each check-up, smart software looks at your numbers and quietly flags anything worth a doctor’s attention — even without internet at the station.
+Next

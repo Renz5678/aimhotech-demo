@@ -1,0 +1,25 @@
+Health Worker
+3 pending
+Patient Lookup
+RECENT PATIENTS
+MS
+Maria Santos
+BGY-041-00217 · 58 · F · last seen Jul 12
+Low
+JR
+Jose Ramirez
+BGY-041-00342 · 64 · M · last seen Jul 20
+Moderate
+LB
+Lourdes Bautista
+BGY-041-00519 · 71 · F · last seen Jun 30
+Elevated
+AV
+Andres Villanueva
+BGY-041-00088 · 45 · M · last seen Jul 24
+Low
+✦
+Home
+Screening
+Lookup
+Settings

@@ -1,0 +1,28 @@
+AImhotech
+Mobile app · interactive prototype
+APP MODE
+Health Worker
+Patient
+DEMO CONTROLS
+Simulate offline
+Kiosk loses connectivity
+View as new patient
+Empty states in Patient Mode
+Reset demo
+JUMP TO SCREEN
+Onboarding & consent
+Login (ID + OTP)
+Home dashboard
+My Health · trends
+Appointments & referrals
+Settings & consent
+✦ Gabay AI assistant
+Offline-first: every action works without a connection and queues for sync. Try submitting a screening while offline, then go back online and press Sync now.
+9:30
+Your health record,
+in one place
+Kaya mo ‘to! AImhotech keeps your check-ups from the barangay kiosk, RHU, and hospitals together — so you never start from zero.
+English
+Filipino
+Next
+I already have an account

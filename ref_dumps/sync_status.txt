@@ -1,0 +1,21 @@
+Health Worker
+3 pending
+Sync Status
+3 items waiting
+Last successful sync: 7:42 AM
+Sync now
+WAITING TO SYNC (3)
+Screening — Maria Santos
+Vitals + risk flag · queued today
+ready
+Screening — Jose Ramirez
+Vitals + risk flag · queued today
+ready
+Screening — Lourdes Bautista
+Vitals + risk flag · queued today
+ready
+✦
+Home
+Screening
+Lookup
+Settings

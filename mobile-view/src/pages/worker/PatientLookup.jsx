@@ -22,7 +22,7 @@ export default function PatientLookup() {
 
   const onSelect = (id) => {
     selectPatient(id);
-    navigate('/worker/screening/device');
+    navigate('/worker/screening/confirm');
   };
 
   const filtered = search ? allPatients.filter(p => (p.firstName + ' ' + p.lastName).toLowerCase().includes(search.toLowerCase()) || p.id.toLowerCase().includes(search.toLowerCase())) : allPatients.slice(0,3);

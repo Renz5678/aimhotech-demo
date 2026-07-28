@@ -1,0 +1,24 @@
+Health Worker
+3 pending
+Settings
+STATION DEVICES
+Microlife B6 Connect
+Calibrated Jun 12, 2026 · battery OK
+Healthy
+Bionime RIGHTEST iFree
+Calibration due Aug 2 · weak signal reported
+Check
+STATION
+Assigned barangay
+San Isidro (041)
+App lock
+PIN + biometric ✓
+On-device AI model
+v2.4 · 41 MB
+App version
+1.0.3 (Expo)
+✦
+Home
+Screening
+Lookup
+Settings

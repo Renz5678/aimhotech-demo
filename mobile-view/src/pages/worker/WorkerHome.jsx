@@ -24,14 +24,14 @@ export default function WorkerHome() {
         </div>
 
         {syncQueueCount > 0 ? (
-          <div className="bg-amber-100 rounded-2xl p-4 flex justify-between items-center card-shadow-1">
+          <div className="bg-amber-100 rounded-2xl p-4 flex justify-between items-center card-shadow-1 cursor-pointer" onClick={() => navigate('/worker/sync')}>
             <div>
               <div className="text-amber-800 font-bold flex items-center gap-1"><span className="material-symbols-outlined">sync_problem</span> {syncQueueCount} pending</div>
             </div>
-            <button onClick={syncToBrain} className="bg-amber-600 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-sm active:scale-95">Sync Now</button>
+            <button className="bg-amber-600 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-sm active:scale-95">View & Sync</button>
           </div>
         ) : (
-          <div className="bg-green-100 rounded-2xl p-4 flex justify-between items-center card-shadow-1">
+          <div className="bg-green-100 rounded-2xl p-4 flex justify-between items-center card-shadow-1 cursor-pointer" onClick={() => navigate('/worker/sync')}>
             <div className="text-green-800 font-bold flex items-center gap-1"><span className="material-symbols-outlined">cloud_done</span> All synced ✔</div>
             <div className="text-green-700 text-sm">Just now</div>
           </div>

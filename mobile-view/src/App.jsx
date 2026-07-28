@@ -22,6 +22,9 @@ import VitalsCapture from './pages/worker/screening/VitalsCapture';
 import RiskResult from './pages/worker/screening/RiskResult';
 import WorkerSettings from './pages/worker/WorkerSettings';
 
+import ConfirmPatient from './pages/worker/screening/ConfirmPatient';
+import WorkerSync from './pages/worker/WorkerSync';
+
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +52,8 @@ const AppContent = () => {
 
           <Route path="/worker/home" element={<WorkerHome />} />
           <Route path="/worker/lookup" element={<PatientLookup />} />
+          <Route path="/worker/sync" element={<WorkerSync />} />
+          <Route path="/worker/screening/confirm" element={<ConfirmPatient />} />
           <Route path="/worker/screening/device" element={<DevicePairing />} />
           <Route path="/worker/screening/vitals" element={<VitalsCapture />} />
           <Route path="/worker/screening/result" element={<RiskResult />} />

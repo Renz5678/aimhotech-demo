@@ -1,0 +1,26 @@
+AImhotech
+Mobile app · interactive prototype
+APP MODE
+Health Worker
+Patient
+DEMO CONTROLS
+Simulate offline
+Kiosk loses connectivity
+View as new patient
+Empty states in Patient Mode
+Reset demo
+JUMP TO SCREEN
+Onboarding & consent
+Login (ID + OTP)
+Home dashboard
+My Health · trends
+Appointments & referrals
+Settings & consent
+✦ Gabay AI assistant
+Offline-first: every action works without a connection and queues for sync. Try submitting a screening while offline, then go back online and press Sync now.
+9:30
+Your data, your say
+We only record your check-up results with your permission, keep them encrypted, and share them only with the health workers caring for you. You can say no or change your mind anytime.
+What happens to my data?
+I agree — record my health data
+Turn on consent to continue
