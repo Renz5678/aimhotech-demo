@@ -62,10 +62,10 @@ export default function DevicePairing() {
       <div className="p-4 bg-surface border-t border-outline-variant/30">
         <button 
           onClick={handleContinue}
-          disabled={!allPaired}
-          className={`w-full py-4 rounded-2xl font-bold transition-all ${allPaired ? 'bg-primary text-white card-shadow-1 active:scale-95' : 'bg-surface-container text-secondary opacity-50'}`}
+          disabled={scanning}
+          className={`w-full py-4 rounded-2xl font-bold transition-all ${!scanning ? 'bg-primary text-white card-shadow-1 active:scale-95' : 'bg-surface-container text-secondary opacity-50'}`}
         >
-          {allPaired ? t('continueToVitals') : t('pairDevices')}
+          {!scanning ? t('continueToVitals') : t('pairDevices')}
         </button>
         <div className="text-center mt-4">
           <button onClick={() => setShowManual(true)} className="text-primary font-bold">{t('enterManually')}</button>
