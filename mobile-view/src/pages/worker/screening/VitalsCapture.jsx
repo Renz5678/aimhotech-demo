@@ -36,8 +36,10 @@ export default function VitalsCapture() {
         </div>
 
         <div className="bg-surface-container p-3 rounded-xl flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">{patient.firstName[0]}{patient.lastName[0]}</div>
-          <div><div className="font-bold">{patient.firstName} {patient.lastName}</div><div className="text-xs text-secondary">{patient.id}</div></div>
+          <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+            {patient.name.split(' ')[0][0]}{patient.name.split(' ').length > 1 ? patient.name.split(' ').pop()[0] : ''}
+          </div>
+          <div><div className="font-bold">{patient.name}</div><div className="text-xs text-secondary">{patient.id}</div></div>
         </div>
 
         <div className="bg-amber-100 border border-amber-300 rounded-xl p-4">

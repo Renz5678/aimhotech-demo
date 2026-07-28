@@ -59,15 +59,19 @@ export default function WorkerHome() {
         <div>
           <h3 className="font-bold text-on-surface mb-3 px-1 flex justify-between">{t('recentPatients')} <button className="text-primary text-sm">{t('viewAll')}</button></h3>
           <div className="space-y-3">
-            {patients.map(p => (
-              <div key={p.id} className="bg-surface-container p-3 rounded-xl flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold">{p.firstName[0]}{p.lastName[0]}</div>
-                <div className="flex-1">
-                  <div className="font-bold">{p.firstName} {p.lastName}</div>
-                  <div className="text-xs text-secondary">{p.id}</div>
+            {patients.map(p => {
+              const names = p.name.split(' ');
+              const initials = names[0][0] + (names.length > 1 ? names[names.length - 1][0] : '');
+              return (
+                <div key={p.id} className="bg-surface-container p-3 rounded-xl flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold">{initials}</div>
+                  <div className="flex-1">
+                    <div className="font-bold">{p.name}</div>
+                    <div className="text-xs text-secondary">{p.id}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

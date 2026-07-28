@@ -27,7 +27,7 @@ export default function PatientLookup() {
     navigate('/worker/screening/confirm');
   };
 
-  const filtered = search ? allPatients.filter(p => (p.firstName + ' ' + p.lastName).toLowerCase().includes(search.toLowerCase()) || p.id.toLowerCase().includes(search.toLowerCase())) : allPatients.slice(0,3);
+  const filtered = search ? allPatients.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.id.toLowerCase().includes(search.toLowerCase())) : allPatients.slice(0,3);
 
   return (
     <div className="flex flex-col h-full bg-surface">
