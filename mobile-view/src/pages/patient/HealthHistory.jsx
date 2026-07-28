@@ -35,29 +35,29 @@ export default function HealthHistory() {
           <h3 className="font-bold text-on-surface px-1">Screening Timeline</h3>
           {screenings.length === 0 && <div className="text-center text-secondary py-8">No screenings found.</div>}
           {screenings.map((sc, i) => {
-            const isHighBP = sc.vitals.bpSystolic > 140;
-            const isHighGlucose = sc.vitals.glucose > 100;
+            const isHighBP = (sc.bpSystolic ?? 0) > 140;
+            const isHighGlucose = (sc.glucoseValue ?? 0) > 100;
             return (
               <div key={sc.id} className="bg-surface-container rounded-2xl p-4 flex flex-col gap-3">
                 <div className="flex justify-between items-center">
                   <div className="font-bold text-sm text-secondary">{new Date(sc.timestamp).toLocaleDateString()}</div>
-                  <div className="bg-[#B0523F]/10 text-[#B0523F] px-2 py-0.5 rounded text-xs font-bold">{sc.calculatedRiskScore > 0.5 ? 'Elevated' : 'Low'}</div>
+                  {sc.gradeLevel === 'diagnostic' && <div className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-bold">Diagnostic</div>}
                 </div>
                 <div className="flex justify-between items-center bg-surface p-3 rounded-xl border border-outline-variant">
                   <div className="flex-1">
                     <div className="text-xs text-secondary">BP</div>
-                    <div className={`font-bold ${isHighBP ? 'text-[#B0523F]' : 'text-on-surface'}`}>{sc.vitals.bpSystolic}/{sc.vitals.bpDiastolic}</div>
+                    <div className={`font-bold ${isHighBP ? 'text-[#B0523F]' : 'text-on-surface'}`}>{sc.bpSystolic}/{sc.bpDiastolic}</div>
                   </div>
                   <div className="flex-1 border-l border-outline-variant pl-3">
                     <div className="text-xs text-secondary">Glucose</div>
-                    <div className={`font-bold ${isHighGlucose ? 'text-amber-600' : 'text-on-surface'}`}>{sc.vitals.glucose}</div>
+                    <div className={`font-bold ${isHighGlucose ? 'text-amber-600' : 'text-on-surface'}`}>{sc.glucoseValue}</div>
                   </div>
                   <div className="flex-1 border-l border-outline-variant pl-3">
                     <div className="text-xs text-secondary">HR</div>
-                    <div className="font-bold text-on-surface">{sc.vitals.heartRate}</div>
+                    <div className="font-bold text-on-surface">{sc.heartRate}</div>
                   </div>
                 </div>
-                <div className="text-xs font-semibold text-primary bg-primary/10 self-start px-2 py-1 rounded">Source: {sc.deviceSource}</div>
+                <div className="text-xs font-semibold text-primary bg-primary/10 self-start px-2 py-1 rounded">Source: {sc.source}</div>
               </div>
             );
           })}
