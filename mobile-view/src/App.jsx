@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import MobileContainer from './components/layout/MobileContainer';
-import BottomNavigation from './components/layout/BottomNavigation';
+import BottomNav from './components/layout/BottomNav';
 import { useMobileStore } from './store/useMobileStore';
 
 import Login from './pages/auth/Login';
@@ -39,7 +39,7 @@ const AppContent = () => {
 
   return (
     <div className="flex flex-col h-full w-full relative">
-      <div className="flex-1 overflow-hidden relative">
+      <div className={`flex-1 overflow-y-auto relative ${showNav ? 'pb-20' : ''}`}>
         <Routes>
           <Route path="/" element={<Navigate to="/onboarding" replace />} />
           <Route path="/login" element={<Login />} />
@@ -61,7 +61,7 @@ const AppContent = () => {
           <Route path="/worker/settings" element={<WorkerSettings />} />
         </Routes>
       </div>
-      {showNav && <BottomNavigation mode={mode} />}
+      {showNav && <BottomNav mode={mode} />}
       
       {showFab && (
         <button 

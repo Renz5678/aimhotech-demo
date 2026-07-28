@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -11,7 +12,7 @@
   --color-secondary-fixed: #d9e8bf;
   --color-secondary-fixed-dim: #becca4;
   
-  --color-surface: #faf9f7;
+  --color-surface: #F5F4F0;
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low: #f4f3f1;
   --color-surface-container: #eeeeeb;
@@ -89,7 +90,7 @@
 
 body {
   background-color: var(--color-background);
-  font-family: 'Figtree', sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 

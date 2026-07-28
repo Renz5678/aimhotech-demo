@@ -1,253 +1,106 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Search, ChevronLeft, ChevronRight, ArrowUpDown, Download, User } from "lucide-react";
-import Link from "next/link";
-import { useDemoStore, getRiskColor, getRiskLabel, formatDate, calculateAge, exportToCSV } from "@/store/useDemoStore";
+import React, { useState } from "react";
+import { Search, Filter, Clock, FilePlus, X } from "lucide-react";
 
 export default function PatientsPage() {
-  const { patients, riskFlags, facilities } = useDemoStore();
-  
-  const [searchTerm, setSearchTerm] = useState("");
-  const [riskFilter, setRiskFilter] = useState("all");
-  const [facilityFilter, setFacilityFilter] = useState("all");
-  const [sortField, setSortField] = useState<"name" | "id" | "dob" | "risk">("name");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [selectedPatient, setSelectedPatient] = useState<any>(null);
 
-  const getPatientRisk = (patientId: string) => {
-    return riskFlags.find(f => f.patientId === patientId)?.category ?? "low";
-  };
-
-  const filteredAndSortedPatients = useMemo(() => {
-    let result = [...patients];
-
-    if (searchTerm) {
-      const lowerTerm = searchTerm.toLowerCase();
-      result = result.filter(p => 
-        p.name.toLowerCase().includes(lowerTerm) || 
-        p.id.toLowerCase().includes(lowerTerm)
-      );
-    }
-
-    if (riskFilter !== "all") {
-      result = result.filter(p => getPatientRisk(p.id) === riskFilter);
-    }
-
-    if (facilityFilter !== "all") {
-      result = result.filter(p => p.facilityId === facilityFilter);
-    }
-
-    result.sort((a, b) => {
-      let aVal: any = "";
-      let bVal: any = "";
-      
-      if (sortField === "name") {
-        aVal = a.name;
-        bVal = b.name;
-      } else if (sortField === "id") {
-        aVal = a.id;
-        bVal = b.id;
-      } else if (sortField === "dob") {
-        aVal = a.dob;
-        bVal = b.dob;
-      } else if (sortField === "risk") {
-        const riskScore = { elevated: 3, moderate: 2, low: 1 };
-        aVal = riskScore[getPatientRisk(a.id) as keyof typeof riskScore] || 1;
-        bVal = riskScore[getPatientRisk(b.id) as keyof typeof riskScore] || 1;
-      }
-
-      if (aVal < bVal) return sortDirection === "asc" ? -1 : 1;
-      if (aVal > bVal) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    return result;
-  }, [patients, riskFlags, searchTerm, riskFilter, facilityFilter, sortField, sortDirection]);
-
-  const totalPages = Math.ceil(filteredAndSortedPatients.length / itemsPerPage) || 1;
-  const paginatedPatients = filteredAndSortedPatients.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handleSort = (field: typeof sortField) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const handleExport = () => {
-    const data = filteredAndSortedPatients.map(p => ({
-      ID: p.id,
-      Name: p.name,
-      DOB: p.dob,
-      Sex: p.sex,
-      Facility: facilities.find(f => f.id === p.facilityId)?.name ?? p.facilityId,
-      RiskLevel: getRiskLabel(getPatientRisk(p.id) as any),
-      ConsentStatus: p.consentStatus
-    }));
-    exportToCSV(data, "patients-export");
-  };
+  const patients = [
+    { name: "Rosario Dimagiba", id: "QC-097-00214", barangay: "San Isidro", risk: "Elevated", lastScreening: "Today, 09:15 AM", vitals: "158/98 BP · 112 mg/dL", riskColor: "#B0523F" },
+    { name: "Eduardo Santos", id: "QC-097-00215", barangay: "Poblacion", risk: "Moderate", lastScreening: "Yesterday", vitals: "145/90 BP · 102 mg/dL", riskColor: "#C79A3C" },
+    { name: "Teresita Manalo", id: "QC-133-00089", barangay: "Malanday", risk: "Low", lastScreening: "Jul 20", vitals: "128/82 BP · 95 mg/dL", riskColor: "#4C7A5A" }
+  ];
 
   return (
-    <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-[#1E3A2F]">Patient Registry</h1>
-        <button 
-          onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-border text-[#1E3A2F] rounded-lg text-sm font-medium hover:bg-muted transition-colors"
-        >
-          <Download className="w-4 h-4" /> Export CSV
-        </button>
-      </div>
-
-      <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden flex flex-col">
-        <div className="p-4 border-b border-border flex flex-col sm:flex-row gap-4 items-center justify-between bg-muted/30">
-          <div className="relative w-full sm:max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search by name or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-[#A3B18B]"
-            />
-          </div>
-          
-          <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-            <select
-              value={facilityFilter}
-              onChange={(e) => setFacilityFilter(e.target.value)}
-              className="px-3 py-2 border border-border rounded-lg text-sm bg-background"
-            >
-              <option value="all">All Facilities</option>
-              {facilities.filter(f => f.type.includes('station')).map(f => (
-                <option key={f.id} value={f.id}>{f.name}</option>
-              ))}
-            </select>
-
-            <select
-              value={riskFilter}
-              onChange={(e) => setRiskFilter(e.target.value)}
-              className="px-3 py-2 border border-border rounded-lg text-sm bg-background"
-            >
-              <option value="all">All Risks</option>
-              <option value="low">Low Risk</option>
-              <option value="moderate">Moderate Risk</option>
-              <option value="elevated">Elevated Risk</option>
-            </select>
-          </div>
+    <div className="flex h-full bg-[#F5F4F0] min-h-screen">
+      {/* Main Table Area */}
+      <div className={`p-8 transition-all duration-300 ${selectedPatient ? "w-[calc(100%-300px)]" : "w-full"}`}>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-[#1E3A2F]">Patient Registry</h1>
+          <div className="text-sm font-medium text-gray-500">{patients.length} patients in scope</div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-muted/50 border-b border-border">
-              <tr>
-                <th className="text-left px-6 py-3 font-medium text-muted-foreground uppercase tracking-wider text-xs cursor-pointer hover:text-foreground" onClick={() => handleSort("name")}>
-                  <div className="flex items-center gap-1">Patient Name <ArrowUpDown className="w-3 h-3" /></div>
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-muted-foreground uppercase tracking-wider text-xs cursor-pointer hover:text-foreground" onClick={() => handleSort("id")}>
-                  <div className="flex items-center gap-1">Patient ID <ArrowUpDown className="w-3 h-3" /></div>
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-muted-foreground uppercase tracking-wider text-xs cursor-pointer hover:text-foreground" onClick={() => handleSort("dob")}>
-                  <div className="flex items-center gap-1">Date of Birth <ArrowUpDown className="w-3 h-3" /></div>
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-muted-foreground uppercase tracking-wider text-xs">
-                  Facility
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-muted-foreground uppercase tracking-wider text-xs cursor-pointer hover:text-foreground" onClick={() => handleSort("risk")}>
-                  <div className="flex items-center gap-1">Risk Level <ArrowUpDown className="w-3 h-3" /></div>
-                </th>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col">
+          <div className="p-4 border-b border-gray-100 flex gap-4">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+              <input type="text" placeholder="Search patients..." className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#4C7A5A]" />
+            </div>
+            <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <Filter className="w-4 h-4" /> Filter
+            </button>
+          </div>
+
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-gray-100 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th className="py-3 px-6">PATIENT</th>
+                <th className="py-3 px-6">ID</th>
+                <th className="py-3 px-6">BARANGAY</th>
+                <th className="py-3 px-6">RISK</th>
+                <th className="py-3 px-6">LAST SCREENING</th>
+                <th className="py-3 px-6">LATEST VITALS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
-              {paginatedPatients.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
-                    <User className="w-8 h-8 mx-auto mb-3 opacity-20" />
-                    <p>No patients found matching your criteria</p>
+            <tbody>
+              {patients.map((p, i) => (
+                <tr key={i} onClick={() => setSelectedPatient(p)} className={`cursor-pointer border-b border-gray-50 hover:bg-[#F9F8F6] ${selectedPatient?.id === p.id ? 'bg-[#F9F8F6]' : ''}`}>
+                  <td className="py-4 px-6 font-bold text-[#1E3A2F]">{p.name}</td>
+                  <td className="py-4 px-6 font-mono text-xs text-gray-500">{p.id}</td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{p.barangay}</td>
+                  <td className="py-4 px-6">
+                    <span className="px-2 py-1 rounded text-xs font-bold text-white" style={{ backgroundColor: p.riskColor }}>
+                      {p.risk}
+                    </span>
                   </td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{p.lastScreening}</td>
+                  <td className="py-4 px-6 text-sm font-medium text-gray-700">{p.vitals}</td>
                 </tr>
-              ) : (
-                paginatedPatients.map((patient) => {
-                  const riskCategory = getPatientRisk(patient.id) as "low" | "moderate" | "elevated";
-                  const riskColor = getRiskColor(riskCategory);
-                  const facility = facilities.find(f => f.id === patient.facilityId);
-
-                  return (
-                    <tr 
-                      key={patient.id} 
-                      className="even:bg-[#F1EEE7]/40 hover:bg-muted/50 transition-colors cursor-pointer group"
-                    >
-                      <td className="px-6 py-4">
-                        <Link href={`/patient/${patient.id}`} className="flex items-center gap-3">
-                          <div 
-                            className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
-                            style={{ backgroundColor: `${riskColor.hex}20`, color: riskColor.hex }}
-                          >
-                            {patient.name.substring(0, 2).toUpperCase()}
-                          </div>
-                          <div>
-                            <p className="font-semibold text-foreground group-hover:text-[#1E3A2F] transition-colors">{patient.name}</p>
-                            <p className="text-xs text-muted-foreground">{patient.sex === 'F' ? 'Female' : 'Male'} · {calculateAge(patient.dob)} yrs</p>
-                          </div>
-                        </Link>
-                      </td>
-                      <td className="px-6 py-4 font-mono text-xs text-muted-foreground">
-                        {patient.id}
-                      </td>
-                      <td className="px-6 py-4 text-xs">
-                        {formatDate(patient.dob)}
-                      </td>
-                      <td className="px-6 py-4 text-xs truncate max-w-[200px]">
-                        {facility?.name ?? patient.facilityId}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span 
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider"
-                          style={{ backgroundColor: `${riskColor.hex}18`, color: riskColor.hex }}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: riskColor.hex }} />
-                          {getRiskLabel(riskCategory)}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
+              ))}
             </tbody>
           </table>
         </div>
+      </div>
 
-        {filteredAndSortedPatients.length > 0 && (
-          <div className="p-4 border-t border-border flex items-center justify-between bg-muted/30">
-            <p className="text-sm text-muted-foreground">
-              Showing <span className="font-medium text-foreground">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="font-medium text-foreground">{Math.min(currentPage * itemsPerPage, filteredAndSortedPatients.length)}</span> of <span className="font-medium text-foreground">{filteredAndSortedPatients.length}</span> patients
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="p-1.5 rounded border border-border bg-background disabled:opacity-50"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="p-1.5 rounded border border-border bg-background disabled:opacity-50"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+      {/* Right Sidebar */}
+      {selectedPatient && (
+        <div className="w-[300px] border-l border-gray-200 bg-white h-screen fixed right-0 top-0 pt-16 flex flex-col shadow-xl">
+          <div className="p-6 border-b border-gray-100 flex justify-between items-start">
+            <div>
+              <h2 className="text-lg font-bold text-[#1E3A2F]">{selectedPatient.name}</h2>
+              <p className="font-mono text-xs text-gray-500 mt-1">{selectedPatient.id}</p>
+            </div>
+            <button onClick={() => setSelectedPatient(null)} className="p-1 hover:bg-gray-100 rounded">
+              <X className="w-5 h-5 text-gray-400" />
+            </button>
+          </div>
+          
+          <div className="p-6 flex-1 overflow-y-auto">
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-6">Screening History</h3>
+            <div className="space-y-6 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-px before:bg-gray-200">
+              <div className="relative z-10 flex gap-4">
+                <div className="w-6 h-6 rounded-full bg-[#1E3A2F] text-white flex items-center justify-center shrink-0 border-2 border-white shadow-sm mt-1">
+                  <Clock className="w-3 h-3" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-gray-800">Today, 09:15 AM</p>
+                  <p className="text-xs text-gray-500 mt-1">Kiosk • San Isidro</p>
+                  <div className="mt-2 bg-gray-50 p-3 rounded-lg border border-gray-100 text-sm font-medium text-gray-700">
+                    {selectedPatient.vitals}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        )}
-      </div>
+          
+          <div className="p-6 border-t border-gray-100">
+            <button className="w-full py-3 bg-[#1E3A2F] text-white rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-[#152a22] transition-colors">
+              <FilePlus className="w-4 h-4" /> New Clinical Entry
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

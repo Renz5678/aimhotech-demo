@@ -1,113 +1,85 @@
 "use client";
-
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, Users, AlertTriangle, FileText, 
-  CheckSquare, BarChart, Settings, UserCircle,
-  Menu, ChevronLeft, Brain, Monitor, UserCog, History
-} from 'lucide-react';
-// Import the custom store (adjust path as necessary)
+import { LayoutDashboard, Users, AlertTriangle, FileText, CheckSquare, BarChart3, Settings } from 'lucide-react';
 import { useAdminStore } from '@/store/useAdminStore';
+import { useDemoStore } from '@/store/useDemoStore';
 
 export const Sidebar: React.FC = () => {
   const pathname = usePathname() || '/';
-  const [collapsed, setCollapsed] = useState(false);
-  const role = useAdminStore((state: any) => state.currentRole || 'admin');
   
-  const mainLinks = [
+  const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'Patient Registry', path: '/patients', icon: Users },
-    { name: 'Risk Queue', path: '/risk-queue', icon: AlertTriangle },
+    { name: 'Risk Queue', path: '/risk-queue', icon: AlertTriangle, hasBadge: true },
     { name: 'Referrals', path: '/referrals', icon: FileText },
-    { name: 'AI Brain & IFA', path: '/aibrain', icon: Brain },
     { name: 'Clinical Validation', path: '/clinical-validation', icon: CheckSquare },
-    { name: 'Device Fleet', path: '/devices', icon: Monitor },
-    { name: 'Reports & Analytics', path: '/reports', icon: BarChart },
-  ];
-
-  const adminLinks = [
-    { name: 'Users & Roles', path: '/users', icon: UserCog },
-    { name: 'Audit Log', path: '/audit-log', icon: History },
-  ];
-
-  const bottomLinks = [
+    { name: 'Reports & Analytics', path: '/reports', icon: BarChart3 },
     { name: 'Settings', path: '/settings', icon: Settings },
-    { name: 'Role Switch', path: '/role-switch', icon: UserCircle },
   ];
 
-  const NavLink = ({ item }: { item: any }) => {
-    const isActive = item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
-    return (
-      <Link 
-        href={item.path}
-        className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 mb-1.5 font-medium ${
-          isActive 
-            ? 'bg-[#A3B18B]/20 text-[#F9F8F6] border-l-4 border-[#A3B18B] shadow-sm' 
-            : 'text-[#F9F8F6]/70 hover:bg-[#A3B18B]/10 hover:text-[#F9F8F6] border-l-4 border-transparent'
-        }`}
-        title={collapsed ? item.name : undefined}
-      >
-        <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-[#A3B18B]' : ''}`} />
-        {!collapsed && <span className="whitespace-nowrap">{item.name}</span>}
-      </Link>
-    );
-  };
+  const riskFlags = useDemoStore((state: any) => state.riskFlags || []);
+  const activeRisks = riskFlags.length;
 
   return (
-    <aside 
-      className={`h-full flex flex-col transition-all duration-300 shadow-xl z-20 shrink-0`}
-      style={{ backgroundColor: '#1E3A2F', width: collapsed ? '88px' : '280px' }}
-    >
-      {/* Logo Area */}
-      <div className="flex items-center justify-between h-20 px-5 border-b border-[#A3B18B]/10">
-        {!collapsed && (
-          <div className="flex items-center space-x-3 overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#A3B18B] to-[#4C7A5A] flex items-center justify-center text-[#F9F8F6] font-bold shadow-sm">
-              AI
-            </div>
-            <span className="text-[#F9F8F6] font-bold text-xl tracking-tight">AImhotech</span>
+    <aside className="h-full flex flex-col shadow-xl z-20 shrink-0 bg-[#1E3A2F] w-[216px]">
+      <div className="flex items-center h-20 px-4 border-b border-white/10">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-xl bg-[#132820] flex items-center justify-center text-white font-bold shadow-sm relative">
+            <span className="text-xl">+</span>
           </div>
-        )}
-        {collapsed && (
-           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#A3B18B] to-[#4C7A5A] flex items-center justify-center text-[#F9F8F6] font-bold shadow-sm mx-auto">
-             AI
-           </div>
-        )}
-        <button 
-          onClick={() => setCollapsed(!collapsed)}
-          className={`text-[#F9F8F6]/50 hover:text-[#F9F8F6] p-1.5 rounded-lg hover:bg-[#A3B18B]/20 transition-colors ${collapsed ? 'absolute -right-4 top-6 bg-[#1E3A2F] border border-[#A3B18B]/20 rounded-full shadow-md z-30' : ''}`}
-        >
-          {collapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-5 h-5" />}
-        </button>
-      </div>
-
-      <div className="flex-1 overflow-y-auto py-6 px-4 flex flex-col space-y-8 custom-scrollbar">
-        {/* Main Section */}
-        <div>
-          {!collapsed && <p className="px-4 text-[10px] font-bold text-[#A3B18B] uppercase tracking-widest mb-3 opacity-80">Platform</p>}
-          <nav>
-            {mainLinks.map(item => <NavLink key={item.path} item={item} />)}
-          </nav>
+          <div className="flex flex-col">
+            <span className="text-white font-bold text-lg leading-tight">AImhotech</span>
+            <span className="text-white/50 text-[10px] font-bold tracking-wider">WEB ADMIN</span>
+          </div>
         </div>
-
-        {/* Admin Section */}
-        {role === 'super_admin' && (
-          <div>
-            {!collapsed && <p className="px-4 text-[10px] font-bold text-[#A3B18B] uppercase tracking-widest mb-3 opacity-80">Administration</p>}
-            <nav>
-              {adminLinks.map(item => <NavLink key={item.path} item={item} />)}
-            </nav>
-          </div>
-        )}
       </div>
 
-      {/* Settings Section */}
-      <div className="p-4 border-t border-[#A3B18B]/10 bg-[#1E3A2F]">
-         <nav>
-           {bottomLinks.map(item => <NavLink key={item.path} item={item} />)}
-         </nav>
+      <div className="flex-1 overflow-y-auto py-6 px-3 flex flex-col space-y-1">
+        {navItems.map(item => {
+          const isActive = item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
+          return (
+            <Link 
+              key={item.path}
+              href={item.path}
+              className={`flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive 
+                  ? 'bg-white/10 text-white' 
+                  : 'text-white/60 hover:bg-white/5 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                <span>{item.name}</span>
+              </div>
+              {item.hasBadge && activeRisks > 0 && (
+                <span className="bg-[#B0523F] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  {activeRisks}
+                </span>
+              )}
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className="p-4 border-t border-white/10 bg-[#1E3A2F]">
+        <div className="text-[10px] font-bold text-white/50 uppercase tracking-wider mb-2">VIEWING AS</div>
+        <select className="w-full bg-white/5 border border-white/10 rounded text-xs text-white p-1.5 outline-none mb-3">
+          <option>RHU Physician</option>
+          <option>Super Admin</option>
+          <option>DOH Officer</option>
+          <option>BHW</option>
+        </select>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
+            AR
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="text-white text-sm font-medium truncate">Dr. Amelia Reyes</span>
+            <span className="text-white/50 text-xs truncate">RHU Physician</span>
+          </div>
+        </div>
       </div>
     </aside>
   );

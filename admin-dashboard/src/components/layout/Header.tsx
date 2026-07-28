@@ -1,57 +1,74 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { Bell, ChevronRight, User, CheckCircle2 } from 'lucide-react';
+import { Bell, CheckCircle2 } from 'lucide-react';
 import { useAdminStore } from '@/store/useAdminStore';
-import { SyncIndicator } from '../ui/SyncIndicator';
 
 export const Header: React.FC = () => {
   const pathname = usePathname() || '/dashboard';
-  const { role, notifications, pendingSync } = useAdminStore((state: any) => ({
-    role: state.role || 'admin',
+  const { notifications } = useAdminStore((state: any) => ({
     notifications: state.notifications || [],
-    pendingSync: state.pendingSync || 0
   }));
   const [showNotifications, setShowNotifications] = useState(false);
+  const [datetime, setDatetime] = useState('Sat, Jul 26 2026 • 09:41 PHT');
 
-  const paths = pathname.split('/').filter(Boolean);
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const format = new Intl.DateTimeFormat('en-US', {
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      }).format(now);
+      setDatetime(`${format} PHT`);
+    };
+    updateTime();
+    const int = setInterval(updateTime, 60000);
+    return () => clearInterval(int);
+  }, []);
+
+  const titleMap: Record<string, string> = {
+    '/': 'Population Health Dashboard',
+    '/patients': 'Patient Registry',
+    '/risk-queue': 'Risk Queue',
+    '/referrals': 'Referral Management',
+    '/clinical-validation': 'Clinical Validation',
+    '/reports': 'Reports & Analytics',
+    '/settings': 'Settings'
+  };
+
+  const title = titleMap[pathname] || 'Dashboard';
 
   return (
-    <header className="shrink-0 h-20 border-b border-[#E4E1D8] bg-[#F9F8F6] flex items-center justify-between px-8 z-10 shadow-sm">
-      {/* Breadcrumbs / Title */}
-      <div className="flex items-center space-x-2">
-        <div className="flex items-center text-sm font-medium text-gray-500">
-          <span className="hover:text-gray-800 cursor-pointer transition-colors">Home</span>
-          {paths.map((p, i) => (
-            <React.Fragment key={p}>
-              <ChevronRight className="w-4 h-4 mx-2 text-gray-300" />
-              <span className={`capitalize ${i === paths.length - 1 ? 'font-bold text-[#1E3A2F]' : 'hover:text-gray-800 cursor-pointer transition-colors'}`}>
-                {p.replace('-', ' ')}
-              </span>
-            </React.Fragment>
-          ))}
-        </div>
+    <header className="shrink-0 h-16 border-b border-gray-200 bg-white flex items-center justify-between px-8 z-10">
+      <div className="flex items-center space-x-4">
+        <h1 className="text-xl font-bold text-[#1E3A2F]">{title}</h1>
+        {pathname === '/' && (
+          <div className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-xs text-gray-600 font-medium border border-gray-200 shadow-sm">
+            <div className="w-2 h-2 rounded-full bg-[#4C7A5A]"></div>
+            RHU Malanday • 8 stations
+          </div>
+        )}
       </div>
 
       <div className="flex items-center space-x-6">
-        <SyncIndicator pendingCount={pendingSync} />
+        <div className="text-xs text-gray-500 font-mono tracking-wide">
+          {datetime}
+        </div>
         
-        {/* Notification Bell */}
         <div className="relative">
           <button 
             onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 text-gray-500 hover:bg-white hover:shadow-sm rounded-full transition-all"
+            className="relative p-2 text-gray-500 hover:bg-gray-50 rounded-full transition-all"
           >
             <Bell className="w-5 h-5" />
             {notifications.length > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#B0523F] rounded-full border-2 border-[#F9F8F6]"></span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#B0523F] rounded-full border-2 border-white"></span>
             )}
           </button>
           
-          {/* Notification Popover */}
           {showNotifications && (
-            <div className="absolute right-0 mt-3 w-80 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50 transform origin-top-right transition-all">
+            <div className="absolute right-0 mt-3 w-80 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
               <div className="px-5 py-3 border-b border-gray-50 flex justify-between items-center">
                 <h3 className="font-bold text-[#1E3A2F]">Notifications</h3>
                 <span className="text-xs bg-[#A3B18B]/20 text-[#1E3A2F] font-bold px-2 py-0.5 rounded-full">{notifications.length}</span>
@@ -78,22 +95,6 @@ export const Header: React.FC = () => {
               </div>
             </div>
           )}
-        </div>
-
-        {/* User Profile */}
-        <div className="flex items-center space-x-4 border-l border-gray-200 pl-6">
-          <div className="flex flex-col items-end">
-            <span className="text-sm font-bold text-[#1E3A2F]">Admin User</span>
-            <span 
-              className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mt-1" 
-              style={{ backgroundColor: '#EDF2EE', color: '#4C7A5A' }}
-            >
-              {role === 'super_admin' ? 'Super Admin' : 'Admin'}
-            </span>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1E3A2F] to-[#2A4D3E] flex items-center justify-center text-[#F9F8F6] shadow-sm cursor-pointer hover:shadow-md transition-shadow">
-            <User className="w-5 h-5" />
-          </div>
         </div>
       </div>
     </header>
