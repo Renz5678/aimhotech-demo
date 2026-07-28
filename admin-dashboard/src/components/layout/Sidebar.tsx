@@ -57,7 +57,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside 
-      className={`h-screen flex flex-col transition-all duration-300 relative shadow-xl z-20 shrink-0`}
+      className={`h-full flex flex-col transition-all duration-300 shadow-xl z-20 shrink-0`}
       style={{ backgroundColor: '#1E3A2F', width: collapsed ? '88px' : '280px' }}
     >
       {/* Logo Area */}

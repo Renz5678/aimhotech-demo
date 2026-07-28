@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../../components/layout/TopBar';
 import { useMobileStore } from '../../../store/useMobileStore';
-import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore.ts';
+import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore';
 import PatientCard from '../../../components/ui/PatientCard';
 import { useLanguage } from '../../../hooks/useLanguage';
 

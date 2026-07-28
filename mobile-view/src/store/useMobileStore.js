@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { useLiveDemoStore } from '../../../packages/shared/src/store/useLiveDemoStore.ts';
+import { useLiveDemoStore } from '../../../packages/shared/src/store/useLiveDemoStore';
 
 export const useMobileStore = create((set, get) => ({
   currentMode: 'patient',

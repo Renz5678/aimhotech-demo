@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../../components/layout/TopBar';
 import { useMobileStore } from '../../../store/useMobileStore';
-import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore.ts';
+import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore';
 import { useLanguage } from '../../../hooks/useLanguage';
 
 export default function RiskResult() {
@@ -80,7 +80,7 @@ export default function RiskResult() {
       </div>
 
       {showBottomSheet && (
-        <div className="absolute inset-0 bg-black/60 z-50 flex items-end">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end">
           <div className="bg-surface w-full p-6 rounded-t-3xl shadow-2xl">
             <h2 className="text-xl font-bold mb-4">{t('selectFacility')}</h2>
             <div className="space-y-3 mb-6">

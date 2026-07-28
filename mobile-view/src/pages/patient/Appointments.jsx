@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore.ts';
+import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
 import TopBar from '../../components/layout/TopBar';
 import ReferralStepper from '../../components/ui/ReferralStepper';
 

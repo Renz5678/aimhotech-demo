@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
   const paths = pathname.split('/').filter(Boolean);
 
   return (
-    <header className="h-20 border-b border-gray-100 bg-[#F9F8F6] flex items-center justify-between px-8 z-10 sticky top-0 shadow-sm backdrop-blur-sm bg-opacity-95">
+    <header className="shrink-0 h-20 border-b border-[#E4E1D8] bg-[#F9F8F6] flex items-center justify-between px-8 z-10 shadow-sm">
       {/* Breadcrumbs / Title */}
       <div className="flex items-center space-x-2">
         <div className="flex items-center text-sm font-medium text-gray-500">

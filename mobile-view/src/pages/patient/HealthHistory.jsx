@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore.ts';
+import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
 import TopBar from '../../components/layout/TopBar';
 import { useLanguage } from '../../hooks/useLanguage';
 
@@ -28,8 +28,8 @@ export default function HealthHistory() {
             <div className="border-l border-r border-outline-variant"><div className="text-xs text-secondary mb-1">{t('latestBP')}</div><div className="font-bold text-on-surface">142/90</div></div>
             <div><div className="text-xs text-secondary mb-1">{t('glucose')}</div><div className="font-bold text-on-surface">105</div></div>
           </div>
-          <svg viewBox="0 0 100 80" className="w-full h-20 overflow-visible" preserveAspectRatio="none">
-            <path d={chartPoints} fill="none" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <svg viewBox="0 0 100 80" className="w-full h-20 overflow-visible text-primary" preserveAspectRatio="none">
+            <path d={chartPoints} fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
 
