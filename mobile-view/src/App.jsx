@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import MobileContainer from './components/layout/MobileContainer';
 import BottomNavigation from './components/layout/BottomNavigation';
 import { useMobileStore } from './store/useMobileStore';
