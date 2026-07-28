@@ -47,6 +47,7 @@ const AppContent = () => {
           
           <Route path="/patient/home" element={<PatientHome />} />
           <Route path="/patient/history" element={<HealthHistory />} />
+          <Route path="/patient/health-history" element={<HealthHistory />} />
           <Route path="/patient/appointments" element={<Appointments />} />
           <Route path="/patient/settings" element={<PatientSettings />} />
           <Route path="/patient/gabay" element={<GabayChat />} />

@@ -1,69 +1,199 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useDemoStore } from "@/store/useDemoStore";
+import { ShieldCheck, QrCode, CheckCircle } from 'lucide-react';
+
+type ScanState = 'idle' | 'scanning' | 'verified';
+
+const PENDING_RECORDS = [
+  { id: 'S-8902', patient: 'Ernesto Salvador', date: 'Jul 26, 2026', bp: '178/108', glucose: 245, spo2: 94, summary: 'Patient complains of persistent dizziness and headache for 3 days. BP consistently elevated across 4 readings.' },
+  { id: 'S-8842', patient: 'Eduardo Santos', date: 'Jul 24, 2026', bp: '165/102', glucose: 212, spo2: 96, summary: 'Chest discomfort reported. Possible AFIB pattern detected. Glucose borderline.' },
+  { id: 'S-8830', patient: 'Rosario Dimagiba', date: 'Jul 21, 2026', bp: '152/95', glucose: 188, spo2: 97, summary: 'Follow-up screening. Blood pressure remains elevated despite medication.' },
+];
+
+const RECENTLY_VALIDATED = [
+  { id: 'S-8841', patient: 'Rosario Dimagiba', doctor: 'Dr. Amelia Reyes', initials: 'AR', time: '2 hours ago' },
+  { id: 'S-8840', patient: 'Teresita Manalo', doctor: 'Dr. Emmanuel Cruz', initials: 'EC', time: 'Yesterday' },
+  { id: 'S-8835', patient: 'Juanito Bartolome', doctor: 'Dr. Amelia Reyes', initials: 'AR', time: '2 days ago' },
+];
 
 export default function ClinicalValidationPage() {
-  const [license, setLicense] = useState("");
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [license, setLicense] = useState('');
+  const [scanState, setScanState] = useState<ScanState>('idle');
+  const [submitted, setSubmitted] = useState(false);
+
+  const record = PENDING_RECORDS[selectedIdx];
+
+  const handleScan = () => {
+    setScanState('scanning');
+    setTimeout(() => setScanState('verified'), 2000);
+  };
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
+  };
 
   return (
-    <div className="p-8 max-w-[1400px] mx-auto space-y-6 bg-[#F5F4F0] min-h-screen">
-      <h1 className="text-2xl font-bold text-[#1E3A2F]">Clinical Validation</h1>
-
+    <div className="p-8 max-w-[1400px] mx-auto space-y-8 bg-[#F5F4F0] min-h-screen">
       <div className="flex gap-8">
-        <div className="w-1/2 flex flex-col gap-6">
+        {/* LEFT: Pending record selector + preview */}
+        <div className="w-[45%] flex flex-col gap-6">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-[#1E3A2F] mb-4">Pending Record</h2>
-            <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:border-[#4C7A5A] mb-6">
-              <option>Screening #S-8842 — Eduardo Santos</option>
-            </select>
-            
-            <div className="bg-[#F5F4F0] p-4 rounded-xl border border-gray-200/50">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Vitals & Summary</h3>
-              <p className="text-sm font-medium text-gray-800">178/108 BP · 245 mg/dL Glucose</p>
-              <p className="text-sm text-gray-600 mt-2 italic">"Patient complains of dizziness and headache for 3 days."</p>
+            <div className="mb-6">
+              <p className="text-xs font-bold text-gray-400 tracking-widest uppercase mb-1">Validate record</p>
+              <h2 className="text-xl font-bold text-[#1E3A2F]">Clinical Validation Workflow</h2>
+              <p className="text-sm text-gray-500 mt-2 leading-relaxed">Records become diagnostic-grade only after verification against clinician credentials.</p>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-2">Pending Record</p>
+              <div className="flex flex-col gap-2">
+                {PENDING_RECORDS.map((r, i) => (
+                  <button
+                    key={r.id}
+                    onClick={() => setSelectedIdx(i)}
+                    className={`text-left p-3 rounded-xl border transition-all ${selectedIdx === i ? 'border-[#1E3A2F] bg-[#F5F4F0]' : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50'}`}
+                  >
+                    <span className="text-xs font-mono font-bold text-gray-500">Screening #{r.id}</span>
+                    <span className="text-sm font-bold text-[#1E3A2F] ml-2">— {r.patient}</span>
+                    <span className="text-xs text-gray-400 block mt-0.5">{r.date}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-[#F5F4F0] rounded-xl border border-gray-200/50 p-5">
+              <p className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-4">Record Preview</p>
+              <h3 className="font-bold text-[#1E3A2F] text-lg mb-1">{record.patient}</h3>
+              <p className="text-xs font-mono text-gray-400 mb-4">#{record.id} · {record.date}</p>
+              
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-white rounded-lg p-3 border border-gray-100">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Primary Metric</p>
+                  <p className="text-lg font-black text-[#B0523F]">{record.bp}</p>
+                  <p className="text-xs font-bold text-[#B0523F] mt-0.5">Elevated</p>
+                </div>
+                <div className="bg-white rounded-lg p-3 border border-gray-100">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">SpO2 Level</p>
+                  <p className="text-lg font-black text-[#1E3A2F]">{record.spo2}%</p>
+                  <p className="text-xs font-bold text-[#4C7A5A] mt-0.5">Normal</p>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-lg p-3 border border-gray-100">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Clinical Findings Summary</p>
+                <p className="text-sm text-gray-600 italic leading-relaxed">"{record.summary}"</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="w-1/2 flex flex-col gap-6">
+        {/* RIGHT: Verification form */}
+        <div className="w-[55%] flex flex-col gap-6">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-[#1E3A2F] mb-4">Validate with PRC License</h2>
-            
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-[#F5F4F0] rounded-xl flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5 text-[#1E3A2F]" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-[#1E3A2F]">Clinician Verification</h2>
+                <p className="text-xs text-gray-400">Match PRC license with QR scan to upgrade record</p>
+              </div>
+            </div>
+
+            {/* License input */}
+            <div className="mb-5">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
+                Clinician PRC License Number
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={license}
+                  onChange={e => setLicense(e.target.value)}
+                  placeholder="Enter 7-digit license number"
+                  className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-mono focus:outline-none focus:border-[#4C7A5A] pr-10"
+                />
+                {license.length >= 7 && (
+                  <CheckCircle className="absolute right-3 top-3.5 w-4 h-4 text-[#4C7A5A]" />
+                )}
+              </div>
+            </div>
+
+            {/* QR Scan area */}
             <div className="mb-6">
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">PRC License Number</label>
-              <input 
-                type="text" 
-                value={license}
-                onChange={e => setLicense(e.target.value)}
-                placeholder="Enter 7-digit license number" 
-                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm font-mono focus:outline-none focus:border-[#4C7A5A]" 
-              />
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">QR Scan</label>
+              {scanState === 'idle' && (
+                <button
+                  onClick={handleScan}
+                  className="w-full h-36 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors gap-3 group"
+                >
+                  <QrCode className="w-8 h-8 text-gray-300 group-hover:text-[#4C7A5A] transition-colors" />
+                  <p className="text-sm font-medium text-gray-400 group-hover:text-[#4C7A5A] transition-colors">Click to scan QR code</p>
+                </button>
+              )}
+              {scanState === 'scanning' && (
+                <div className="w-full h-36 border-2 border-[#C79A3C] rounded-xl flex flex-col items-center justify-center bg-[#C79A3C]/5 gap-3 animate-pulse">
+                  <div className="w-8 h-8 border-4 border-[#C79A3C] border-t-transparent rounded-full animate-spin" />
+                  <p className="text-sm font-bold text-[#C79A3C]">Scanning...</p>
+                </div>
+              )}
+              {scanState === 'verified' && (
+                <div className="w-full h-36 border-2 border-[#4C7A5A] rounded-xl flex flex-col items-center justify-center bg-[#4C7A5A]/5 gap-2">
+                  <CheckCircle className="w-8 h-8 text-[#4C7A5A]" />
+                  <p className="text-sm font-bold text-[#4C7A5A]">License & QR Matched</p>
+                  <p className="text-xs text-gray-500">Validated against PRC database</p>
+                </div>
+              )}
             </div>
 
-            <div className="h-32 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center bg-gray-50 mb-6">
-              <p className="text-sm text-gray-400 font-medium">QR Scan Area</p>
-            </div>
+            {/* CTA */}
+            {submitted ? (
+              <div className="w-full py-4 bg-[#4C7A5A] text-white rounded-xl font-bold text-center flex items-center justify-center gap-2">
+                <CheckCircle className="w-4 h-4" /> Upgraded to Diagnostic-grade ✓
+              </div>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                disabled={scanState !== 'verified' || license.length < 7}
+                className="w-full py-4 bg-[#1E3A2F] text-white rounded-xl font-bold hover:bg-[#152a22] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                Confirm & Upgrade to Diagnostic-grade
+              </button>
+            )}
 
-            <button className="w-full py-4 bg-[#4C7A5A] text-white rounded-xl font-bold hover:bg-[#3d6349] transition-colors">
-              SUBMIT AS DIAGNOSTIC-GRADE
-            </button>
+            <p className="text-[10px] font-bold text-gray-300 text-center uppercase tracking-widest mt-3">
+              Action will be recorded under Dr. Amelia Reyes
+            </p>
           </div>
         </div>
       </div>
 
+      {/* Recently Validated */}
       <div>
-        <h2 className="text-lg font-bold text-[#1E3A2F] mb-4 mt-4">Recently Validated</h2>
-        <div className="flex gap-4">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex-1">
-            <p className="text-sm font-bold text-gray-800">Screening #S-8841 — Rosario Dimagiba</p>
-            <p className="text-xs text-gray-500 mt-1">by Dr. Amelia Reyes • 2 hours ago</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex-1">
-            <p className="text-sm font-bold text-gray-800">Screening #S-8840 — Teresita Manalo</p>
-            <p className="text-xs text-gray-500 mt-1">by Dr. Emmanuel Cruz • Yesterday</p>
-          </div>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-bold text-[#1E3A2F]">Recently Validated</h2>
+          <button className="text-sm font-bold text-[#4C7A5A] hover:text-[#1E3A2F] transition-colors">VIEW ALL HISTORY →</button>
         </div>
+        <div className="flex gap-4">
+          {RECENTLY_VALIDATED.map(v => (
+            <div key={v.id} className="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-start gap-3">
+              <div className="w-9 h-9 rounded-full bg-[#1E3A2F] text-white flex items-center justify-center text-xs font-bold shrink-0">{v.initials}</div>
+              <div>
+                <p className="text-sm font-bold text-[#1E3A2F]">{v.patient}</p>
+                <p className="text-xs font-mono text-gray-400 mt-0.5">Screening #{v.id}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-[10px] font-bold bg-[#4C7A5A]/10 text-[#4C7A5A] px-2 py-0.5 rounded-full">DIAGNOSTIC</span>
+                  <span className="text-[10px] text-gray-400">{v.time}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-gray-400 mt-4">Screening-grade kiosk data is never upgraded automatically — clinician review is always required.</p>
       </div>
     </div>
   );
