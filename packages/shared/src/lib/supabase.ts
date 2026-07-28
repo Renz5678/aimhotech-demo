@@ -7,7 +7,7 @@ const getUrl = () => {
   if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.VITE_SUPABASE_URL) {
     return (import.meta as any).env.VITE_SUPABASE_URL;
   }
-  return '';
+  return 'https://dummy.supabase.co';
 };
 
 const getKey = () => {
@@ -17,7 +17,7 @@ const getKey = () => {
   if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.VITE_SUPABASE_ANON_KEY) {
     return (import.meta as any).env.VITE_SUPABASE_ANON_KEY;
   }
-  return '';
+  return 'dummy';
 };
 
 export const supabase: SupabaseClient = createClient(getUrl(), getKey());
