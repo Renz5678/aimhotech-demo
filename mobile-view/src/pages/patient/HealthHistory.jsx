@@ -27,7 +27,7 @@ export default function HealthHistory() {
             <div><div className="text-xs text-secondary mb-1">Glucose</div><div className="font-bold text-on-surface">105</div></div>
           </div>
           <svg viewBox="0 0 100 80" className="w-full h-20 overflow-visible" preserveAspectRatio="none">
-            <path d={chartPoints} fill="none" stroke="var(--primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <path d={chartPoints} fill="none" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
 
