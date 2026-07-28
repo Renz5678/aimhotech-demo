@@ -62,7 +62,7 @@ const AppContent = () => {
           onClick={() => navigate('/patient/gabay')}
           className="absolute bottom-24 right-4 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center card-shadow-2 hover:scale-105 active:scale-95 transition-transform z-40"
         >
-          <span className="material-symbols-outlined text-3xl">add</span>
+          <span className="material-symbols-outlined text-3xl">auto_awesome</span>
         </button>
       )}
     </div>

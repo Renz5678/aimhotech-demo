@@ -9,13 +9,13 @@ export default function Onboarding() {
   const setLanguage = useMobileStore(s => s.setLanguage);
 
   return (
-    <div className="flex flex-col min-h-screen bg-surface page-enter relative overflow-hidden items-center justify-center p-6 text-center">
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-sm mx-auto">
+    <div className="flex flex-col h-full w-full bg-surface page-enter relative overflow-hidden p-8 text-center">
+      <div className="flex-1 flex flex-col items-center justify-center w-full">
         
         {/* Animated App Icon Wrapper */}
         <div className="w-24 h-24 bg-primary rounded-[32px] flex items-center justify-center mb-10 card-shadow-2 relative group">
           <div className="absolute inset-0 bg-primary/20 rounded-[32px] animate-ping opacity-75 duration-1000" />
-          <span className="material-symbols-outlined text-white text-5xl relative z-10">temp_preferences_custom</span>
+          <span className="material-symbols-outlined text-white text-5xl relative z-10">spa</span>
         </div>
 
         {/* Hero Copy */}
@@ -45,7 +45,7 @@ export default function Onboarding() {
       </div>
 
       {/* Footer Actions */}
-      <div className="w-full max-w-sm mx-auto mt-auto pt-6 space-y-4">
+      <div className="w-full mt-auto pt-6 space-y-4">
         <button 
           onClick={() => navigate('/login')}
           className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg card-shadow-1 hover:scale-[1.02] active:scale-[0.98] transition-transform"

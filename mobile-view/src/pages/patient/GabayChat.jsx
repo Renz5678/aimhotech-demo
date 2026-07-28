@@ -34,7 +34,7 @@ export default function GabayChat() {
           <span className="material-symbols-outlined text-on-surface">arrow_back</span>
         </button>
         <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shrink-0">
-          <span className="material-symbols-outlined text-white text-xl">temp_preferences_custom</span>
+          <span className="material-symbols-outlined text-white text-xl">auto_awesome</span>
         </div>
         <div className="flex-1">
           <h2 className="font-bold text-lg leading-tight text-on-surface">Gabay</h2>
