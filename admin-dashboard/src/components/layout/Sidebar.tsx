@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, Users, AlertTriangle, FileText, 
-  CheckSquare, BarChart, ShieldAlert, Settings, UserCircle,
-  Menu, ChevronLeft
+  CheckSquare, BarChart, Settings, UserCircle,
+  Menu, ChevronLeft, Brain, Monitor, UserCog, History
 } from 'lucide-react';
 // Import the custom store (adjust path as necessary)
 import { useAdminStore } from '@/store/useAdminStore';
@@ -14,19 +14,22 @@ import { useAdminStore } from '@/store/useAdminStore';
 export const Sidebar: React.FC = () => {
   const pathname = usePathname() || '/';
   const [collapsed, setCollapsed] = useState(false);
-  const role = useAdminStore((state: any) => state.role || 'admin');
+  const role = useAdminStore((state: any) => state.currentRole || 'admin');
   
   const mainLinks = [
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Registry', path: '/registry', icon: Users },
-    { name: 'Risk', path: '/risk', icon: AlertTriangle },
+    { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+    { name: 'Patient Registry', path: '/patients', icon: Users },
+    { name: 'Risk Queue', path: '/risk-queue', icon: AlertTriangle },
     { name: 'Referrals', path: '/referrals', icon: FileText },
-    { name: 'Validation', path: '/validation', icon: CheckSquare },
-    { name: 'Reports', path: '/reports', icon: BarChart },
+    { name: 'AI Brain & IFA', path: '/aibrain', icon: Brain },
+    { name: 'Clinical Validation', path: '/clinical-validation', icon: CheckSquare },
+    { name: 'Device Fleet', path: '/devices', icon: Monitor },
+    { name: 'Reports & Analytics', path: '/reports', icon: BarChart },
   ];
 
   const adminLinks = [
-    { name: 'Admin Console', path: '/admin', icon: ShieldAlert },
+    { name: 'Users & Roles', path: '/users', icon: UserCog },
+    { name: 'Audit Log', path: '/audit-log', icon: History },
   ];
 
   const bottomLinks = [
@@ -35,7 +38,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   const NavLink = ({ item }: { item: any }) => {
-    const isActive = pathname.startsWith(item.path);
+    const isActive = item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
     return (
       <Link 
         href={item.path}
@@ -54,7 +57,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside 
-      className={`h-screen flex flex-col transition-all duration-300 relative shadow-xl z-20`}
+      className={`h-screen flex flex-col transition-all duration-300 relative shadow-xl z-20 shrink-0`}
       style={{ backgroundColor: '#1E3A2F', width: collapsed ? '88px' : '280px' }}
     >
       {/* Logo Area */}

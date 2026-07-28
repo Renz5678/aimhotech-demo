@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { AlertTriangle, Filter, Search, ChevronRight, Activity, Clock, MoreVertical, ShieldAlert } from "lucide-react";
+import { AlertTriangle, Clock, ArrowUpDown, ShieldAlert, BadgeInfo, Stethoscope, Search, Eye, Filter, ChevronRight, Activity, MoreVertical } from 'lucide-react';
 import Link from "next/link";
 import { useDemoStore, getRiskColor, getRiskLabel, formatDate, formatDateTime, calculateAge } from "@/store/useDemoStore";
 import { useAdminStore } from "@/store/useAdminStore";

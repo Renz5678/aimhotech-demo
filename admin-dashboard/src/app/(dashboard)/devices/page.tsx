@@ -1,80 +1,148 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useDemoStore, formatDateTime } from "@/store/useDemoStore";
+import { Monitor } from 'lucide-react';
+// Removed duplicate getRelativeTime import
+
+// A simple relative time formatter if we don't have one in utils:
+function timeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days} d ago`;
+}
 
 export default function DevicesPage() {
-  const devices = [
-    { id: 'DEV-001', type: 'Wearable ECG', patient: 'Alice Smith', status: 'active', battery: '85%' },
-    { id: 'DEV-002', type: 'Gateway Hub', patient: 'Alice Smith', status: 'active', battery: 'AC' },
-    { id: 'DEV-003', type: 'Wearable ECG', patient: 'Bob Jones', status: 'offline', battery: '12%' },
-    { id: 'DEV-004', type: 'Smart Scale', patient: 'Carol Williams', status: 'active', battery: '60%' },
-  ];
+  const { devices, facilities } = useDemoStore();
+
+  const devStats = useMemo(() => {
+    const online = devices.filter(d => d.status === 'online').length;
+    const attention = devices.filter(d => d.status !== 'online').length;
+    const stations = new Set(devices.map(d => d.facilityId)).size;
+
+    return [
+      { label: 'Devices online', value: `${online} / ${devices.length}`, color: '#4C7A5A' },
+      { label: 'Needs attention', value: String(attention), color: '#B0523F' },
+      { label: 'Stations covered', value: String(stations), color: '#24291F' }
+    ];
+  }, [devices]);
+
+  const deviceRows = useMemo(() => {
+    const typeNames: Record<string, string> = {
+      'microlife_b6_connect': 'Microlife BP A7',
+      'bionime_rightest_ifree': 'Bionime GM700',
+      'kiosk_terminal': 'Kiosk terminal'
+    };
+    
+    const stMap: Record<string, any> = {
+      online: ['Online', '#4C7A5A', 'animate-ping-dot'],
+      offline: ['Offline', '#B0523F', ''],
+      maintenance_needed: ['Maintenance due', '#C79A3C', '']
+    };
+
+    return devices.map(d => {
+      const facilityName = facilities.find(f => f.id === d.facilityId)?.name ?? d.facilityId;
+      const statusInfo = stMap[d.status] || stMap['offline'];
+      
+      let fwColor = '#24291F';
+      if (d.firmwareVersion && d.firmwareVersion < 'v2' && d.type !== 'kiosk_terminal') fwColor = '#24291F';
+      if (d.firmwareVersion === 'v2.3.9') fwColor = '#C79A3C'; // highlight older firmwares like reference
+
+      return {
+        ...d,
+        typeName: typeNames[d.type] || d.type,
+        facilityName,
+        statusLabel: statusInfo[0],
+        stColor: statusInfo[1],
+        anim: statusInfo[2],
+        fw: d.firmwareVersion ?? 'unknown',
+        fwColor,
+        sync: d.lastSeen ? timeAgo(d.lastSeen) : 'Never'
+      };
+    });
+  }, [devices, facilities]);
 
   return (
-    <div className="p-6 bg-[#F9F8F6] min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-[#1E3A2F]">Device Fleet Management</h1>
-          <p className="text-gray-600 mt-1">Monitor and manage connected patient devices.</p>
-        </div>
-        <button className="bg-[#1E3A2F] text-white px-4 py-2 rounded shadow hover:bg-[#2A4D3F] transition-colors">
-          Register New Device
-        </button>
+    <div className="p-6 max-w-[1400px] mx-auto space-y-6 animate-fade-in-up">
+      <div className="mb-2">
+        <h1 className="text-2xl font-bold text-[#1E3A2F] flex items-center gap-2">
+          <Monitor className="w-6 h-6 text-[#A3B18B]" />
+          Device Fleet Management
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">Monitor and manage connected patient devices.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow border border-[#A3B18B]/20">
-          <div className="text-sm text-gray-500 font-medium">Total Devices</div>
-          <div className="text-2xl font-bold text-[#1E3A2F] mt-1">1,248</div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow border border-[#A3B18B]/20">
-          <div className="text-sm text-gray-500 font-medium">Active Online</div>
-          <div className="text-2xl font-bold text-green-600 mt-1">1,102</div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow border border-[#A3B18B]/20">
-          <div className="text-sm text-gray-500 font-medium">Offline/Needs Attention</div>
-          <div className="text-2xl font-bold text-red-600 mt-1">146</div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow border border-[#A3B18B]/20">
-          <div className="text-sm text-gray-500 font-medium">Low Battery Warnings</div>
-          <div className="text-2xl font-bold text-orange-500 mt-1">32</div>
-        </div>
+      <div className="flex gap-4 mb-4 flex-wrap md:flex-nowrap">
+        {devStats.map((s, i) => (
+          <div key={i} className="flex-1 bg-white border border-[#E4E1D8] rounded-xl p-4 min-w-[200px]">
+            <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
+            <div className="text-xs text-[#6B7566] font-medium mt-1">{s.label}</div>
+          </div>
+        ))}
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden border border-[#A3B18B]/30">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned To</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Battery</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {devices.map((device) => (
-              <tr key={device.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#1E3A2F]">{device.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{device.type}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{device.patient}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    device.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
-                    {device.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{device.battery}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-[#1E3A2F] hover:text-[#A3B18B] mr-3">Diagnostics</button>
-                  <button className="text-gray-500 hover:text-gray-700">Unpair</button>
-                </td>
+      <div className="bg-white border border-[#E4E1D8] rounded-xl overflow-hidden shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-[14px]">
+            <thead className="bg-[#F9F8F6]">
+              <tr className="text-left border-b border-[#E4E1D8]">
+                <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Device</th>
+                <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Type</th>
+                <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Facility</th>
+                <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Status</th>
+                <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Firmware</th>
+                <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Last sync</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-[#F1EEE7]">
+              {deviceRows.map((d, i) => (
+                <tr key={d.id} className="even:bg-[#F1EEE7]/50 hover:bg-[#EFF2EA]/50 transition-colors">
+                  <td className="px-5 py-3.5 font-mono text-[12.5px] font-medium text-foreground">{d.id}</td>
+                  <td className="px-5 py-3.5 text-foreground">{d.typeName}</td>
+                  <td className="px-5 py-3.5 text-foreground">{d.facilityName}</td>
+                  <td className="px-5 py-3.5">
+                    <span 
+                      className="inline-flex items-center gap-2 text-[12.5px] font-semibold"
+                      style={{ color: d.stColor }}
+                    >
+                      <span className="relative flex h-2 w-2">
+                        {d.anim && (
+                          <span 
+                            className={`absolute inline-flex h-full w-full rounded-full opacity-75 ${d.anim}`}
+                            style={{ backgroundColor: d.stColor }}
+                          />
+                        )}
+                        <span 
+                          className="relative inline-flex rounded-full h-2 w-2" 
+                          style={{ backgroundColor: d.stColor }}
+                        />
+                      </span>
+                      {d.statusLabel}
+                    </span>
+                  </td>
+                  <td 
+                    className="px-5 py-3.5 font-mono text-[12.5px]"
+                    style={{ color: d.fwColor }}
+                  >
+                    {d.fw}
+                  </td>
+                  <td className="px-5 py-3.5 text-[13px] text-[#6B7566]">{d.sync}</td>
+                </tr>
+              ))}
+              {deviceRows.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground text-sm">
+                    No devices provisioned.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
