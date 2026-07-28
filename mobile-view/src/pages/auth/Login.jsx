@@ -67,7 +67,7 @@ export default function Login() {
             Continue
           </button>
           <div className="text-center">
-            <button className="text-primary font-semibold">{t('newHere')}</button>
+            <button onClick={() => navigate('/onboarding')} className="text-primary font-semibold">{t('newHere')}</button>
           </div>
         </div>
 

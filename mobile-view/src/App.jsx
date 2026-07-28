@@ -25,7 +25,7 @@ import WorkerSettings from './pages/worker/WorkerSettings';
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const mode = useMobileStore(s => s.mode);
+  const mode = useMobileStore(s => s.currentMode);
   
   // Don't show bottom nav on auth screens
   const isAuthRoute = ['/login', '/onboarding', '/'].includes(location.pathname);
@@ -37,7 +37,7 @@ const AppContent = () => {
     <div className="flex flex-col h-full w-full relative">
       <div className="flex-1 overflow-hidden relative">
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/onboarding" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/onboarding" element={<Onboarding />} />
           
