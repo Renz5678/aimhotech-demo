@@ -83,9 +83,9 @@ export default function Login() {
               <input
                 key={i}
                 ref={(el) => otpRefs.current[i] = el}
-                type="text"
+                type="tel"
                 maxLength={1}
-                className="otp-box"
+                className="w-12 h-14 text-center text-2xl font-bold border-2 border-outline-variant rounded-xl focus:border-primary focus:outline-none text-on-surface bg-surface-container transition-colors"
                 value={d}
                 onChange={(e) => handleOtpChange(i, e.target.value)}
               />
