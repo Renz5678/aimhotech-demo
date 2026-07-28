@@ -119,3 +119,17 @@ body {
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+@keyframes slideInRight { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slideInUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ripple { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(2.5); opacity: 0; } }
+.page-enter { animation: slideInRight 0.25s ease-out; }
+.bottom-sheet { animation: slideInUp 0.3s ease-out; }
+.card-shadow-1 { box-shadow: 0 1px 3px rgba(30,58,47,0.08), 0 1px 2px rgba(30,58,47,0.06); }
+.card-shadow-2 { box-shadow: 0 4px 12px rgba(30,58,47,0.12), 0 2px 4px rgba(30,58,47,0.08); }
+.otp-box { width: 44px; height: 52px; border: 2px solid var(--outline-variant); border-radius: 12px; text-align: center; font-size: 24px; font-weight: 700; background: var(--surface-container-lowest); color: var(--on-surface); }
+.otp-box:focus { border-color: var(--primary); outline: none; }
+.bt-ripple { position: relative; }
+.bt-ripple::before, .bt-ripple::after { content: ''; position: absolute; inset: -20px; border-radius: 50%; border: 2px solid var(--primary); animation: ripple 1.5s ease-out infinite; }
+.bt-ripple::after { animation-delay: 0.5s; }

@@ -1,117 +1,111 @@
 "use client";
 
-import Link from "next/link";
-import {
-  LayoutDashboard,
-  Users,
-  AlertTriangle,
-  ArrowRightLeft,
-  CheckCircle,
-  BarChart,
-  Settings,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { 
+  LayoutDashboard, Users, AlertTriangle, FileText, 
+  CheckSquare, BarChart, ShieldAlert, Settings, UserCircle,
+  Menu, ChevronLeft
+} from 'lucide-react';
+// Import the custom store (adjust path as necessary)
+import { useAdminStore } from '@/store/useAdminStore';
 
-const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Patient Registry", href: "/patients", icon: Users },
-  { name: "Risk Queue", href: "/risk-queue", icon: AlertTriangle, badge: 6 },
-  { name: "Referrals", href: "/referrals", icon: ArrowRightLeft },
-  { name: "Clinical Validation", href: "/clinical-validation", icon: CheckCircle },
-  { name: "Reports & Analytics", href: "/reports", icon: BarChart },
-  { name: "Settings", href: "/settings", icon: Settings },
-];
+export const Sidebar: React.FC = () => {
+  const pathname = usePathname() || '/';
+  const [collapsed, setCollapsed] = useState(false);
+  const role = useAdminStore((state: any) => state.role || 'admin');
+  
+  const mainLinks = [
+    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+    { name: 'Registry', path: '/registry', icon: Users },
+    { name: 'Risk', path: '/risk', icon: AlertTriangle },
+    { name: 'Referrals', path: '/referrals', icon: FileText },
+    { name: 'Validation', path: '/validation', icon: CheckSquare },
+    { name: 'Reports', path: '/reports', icon: BarChart },
+  ];
 
-import { usePathname } from "next/navigation";
-import { useDemoStore } from "@/store/useDemoStore";
+  const adminLinks = [
+    { name: 'Admin Console', path: '/admin', icon: ShieldAlert },
+  ];
 
-export function Sidebar() {
-  const [mounted, setMounted] = useState(false);
-  const pathname = usePathname();
-  useEffect(() => setMounted(true), []);
+  const bottomLinks = [
+    { name: 'Settings', path: '/settings', icon: Settings },
+    { name: 'Role Switch', path: '/role-switch', icon: UserCircle },
+  ];
 
-  const { triggerLiveSync, liveTriggerFired } = useDemoStore();
-
-  if (!mounted) {
-    return <aside className="fixed left-0 top-0 h-full w-[228px] bg-sidebar flex flex-col py-8 z-50 text-sidebar-foreground"></aside>;
-  }
+  const NavLink = ({ item }: { item: any }) => {
+    const isActive = pathname.startsWith(item.path);
+    return (
+      <Link 
+        href={item.path}
+        className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 mb-1.5 font-medium ${
+          isActive 
+            ? 'bg-[#A3B18B]/20 text-[#F9F8F6] border-l-4 border-[#A3B18B] shadow-sm' 
+            : 'text-[#F9F8F6]/70 hover:bg-[#A3B18B]/10 hover:text-[#F9F8F6] border-l-4 border-transparent'
+        }`}
+        title={collapsed ? item.name : undefined}
+      >
+        <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-[#A3B18B]' : ''}`} />
+        {!collapsed && <span className="whitespace-nowrap">{item.name}</span>}
+      </Link>
+    );
+  };
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-[228px] bg-sidebar flex flex-col py-8 z-50 text-sidebar-foreground">
-      <div className="px-6 mb-10 flex items-center gap-3 relative group">
-        <div className="w-10 h-10 bg-sidebar-primary/20 rounded-lg flex items-center justify-center text-sidebar-primary font-bold text-xl">
-          A
-        </div>
-        <div>
-          <h1 className="text-xl font-bold leading-none">AImhotech</h1>
-          <p className="text-[10px] tracking-widest text-sidebar-foreground/60 mt-1 uppercase">
-            WEB ADMIN
-          </p>
-        </div>
-        
-        {/* Hidden Dev Trigger for Live Demo */}
+    <aside 
+      className={`h-screen flex flex-col transition-all duration-300 relative shadow-xl z-20`}
+      style={{ backgroundColor: '#1E3A2F', width: collapsed ? '88px' : '280px' }}
+    >
+      {/* Logo Area */}
+      <div className="flex items-center justify-between h-20 px-5 border-b border-[#A3B18B]/10">
+        {!collapsed && (
+          <div className="flex items-center space-x-3 overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#A3B18B] to-[#4C7A5A] flex items-center justify-center text-[#F9F8F6] font-bold shadow-sm">
+              AI
+            </div>
+            <span className="text-[#F9F8F6] font-bold text-xl tracking-tight">AImhotech</span>
+          </div>
+        )}
+        {collapsed && (
+           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#A3B18B] to-[#4C7A5A] flex items-center justify-center text-[#F9F8F6] font-bold shadow-sm mx-auto">
+             AI
+           </div>
+        )}
         <button 
-          onClick={triggerLiveSync}
-          className={`absolute top-0 right-0 w-4 h-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity ${
-            liveTriggerFired ? 'bg-primary' : 'bg-muted/50 cursor-pointer hover:bg-muted'
-          }`}
-          title="Dev Trigger: Inject Maria Dela Cruz"
-        />
+          onClick={() => setCollapsed(!collapsed)}
+          className={`text-[#F9F8F6]/50 hover:text-[#F9F8F6] p-1.5 rounded-lg hover:bg-[#A3B18B]/20 transition-colors ${collapsed ? 'absolute -right-4 top-6 bg-[#1E3A2F] border border-[#A3B18B]/20 rounded-full shadow-md z-30' : ''}`}
+        >
+          {collapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-5 h-5" />}
+        </button>
       </div>
 
-      <nav className="flex-1 space-y-1">
-        {navigation.map((item) => {
-          // Check if current path starts with item.href (except for exact match on "/")
-          const isActive = item.href === "/" 
-            ? pathname === "/" 
-            : pathname.startsWith(item.href);
-            
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={cn(
-                "flex items-center w-full px-6 py-3 transition-colors text-sm",
-                isActive
-                  ? "bg-white/10 border-l-4 border-sidebar-primary"
-                  : "text-sidebar-foreground/70 hover:bg-white/5 hover:text-sidebar-foreground"
-              )}
-            >
-              <div className="flex items-center flex-1">
-                <item.icon className="mr-3 h-5 w-5" />
-                <span>{item.name}</span>
-              </div>
-              {item.badge && (
-                <span className="bg-destructive px-2 py-0.5 rounded-full text-[10px] font-bold text-destructive-foreground">
-                  {item.badge}
-                </span>
-              )}
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="px-6 pt-6 mt-6 border-t border-white/10">
-        <p className="text-[11px] font-bold tracking-wider text-sidebar-foreground/40 uppercase mb-4">
-          VIEWING AS
-        </p>
-        <select className="w-full bg-primary text-primary-foreground text-sm rounded-lg border-white/20 focus:ring-sidebar-ring focus:border-sidebar-ring mb-6 py-2 px-3 appearance-none">
-          <option>RHU Physician</option>
-          <option>Admin</option>
-        </select>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center font-bold">
-            DA
-          </div>
-          <div className="overflow-hidden">
-            <p className="text-sm font-semibold truncate">Dr. Carmela Ramos</p>
-            <p className="text-[11px] text-sidebar-foreground/50 leading-tight">
-              RHU Physician
-            </p>
-          </div>
+      <div className="flex-1 overflow-y-auto py-6 px-4 flex flex-col space-y-8 custom-scrollbar">
+        {/* Main Section */}
+        <div>
+          {!collapsed && <p className="px-4 text-[10px] font-bold text-[#A3B18B] uppercase tracking-widest mb-3 opacity-80">Platform</p>}
+          <nav>
+            {mainLinks.map(item => <NavLink key={item.path} item={item} />)}
+          </nav>
         </div>
+
+        {/* Admin Section */}
+        {role === 'super_admin' && (
+          <div>
+            {!collapsed && <p className="px-4 text-[10px] font-bold text-[#A3B18B] uppercase tracking-widest mb-3 opacity-80">Administration</p>}
+            <nav>
+              {adminLinks.map(item => <NavLink key={item.path} item={item} />)}
+            </nav>
+          </div>
+        )}
+      </div>
+
+      {/* Settings Section */}
+      <div className="p-4 border-t border-[#A3B18B]/10 bg-[#1E3A2F]">
+         <nav>
+           {bottomLinks.map(item => <NavLink key={item.path} item={item} />)}
+         </nav>
       </div>
     </aside>
   );
-}
+};

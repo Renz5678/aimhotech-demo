@@ -1,21 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore.ts';
 import TopBar from '../../components/layout/TopBar';
-import BottomNavigation from '../../components/layout/BottomNavigation';
-import Card from '../../components/ui/Card';
 
 export default function HealthHistory() {
+  const [filter, setFilter] = useState('all');
+  const screenings = useLiveDemoStore(s => s.screenings.filter(sc => sc.patientId === 'QC-097-00214'));
+
+  // SVG Chart data
+  const chartPoints = "M0,70 L20,40 L40,60 L60,30 L80,50 L100,20";
+
   return (
-    <div className="flex flex-col h-full w-full">
-      <TopBar title="My Health" showNotification />
-      <main className="flex-1 overflow-y-auto px-edge_margin py-md space-y-stack_gap">
-        <Card>
-          <h3 className="text-primary font-headline-sm mb-sm">History & Trends</h3>
-          <p className="text-on-surface-variant font-body-md">
-            This is where the chronological screening list and vitals trends will go.
-          </p>
-        </Card>
-      </main>
-      <BottomNavigation mode="patient" />
+    <div className="flex flex-col h-full bg-surface">
+      <TopBar title="My Health" />
+      <div className="flex gap-2 p-4 overflow-x-auto no-scrollbar">
+        {['All', 'Blood Pressure', 'Glucose'].map(f => (
+          <button key={f} onClick={() => setFilter(f.toLowerCase())} className={`px-4 py-1.5 rounded-full whitespace-nowrap font-bold text-sm transition-colors ${filter === f.toLowerCase() ? 'bg-primary text-white' : 'bg-surface-container text-secondary'}`}>{f}</button>
+        ))}
+      </div>
+      
+      <div className="flex-1 overflow-y-auto p-4 pt-0 pb-24 space-y-6 page-enter">
+        <div className="bg-surface-container rounded-2xl p-5 card-shadow-1">
+          <h3 className="font-bold mb-4 text-on-surface">Vitals Summary</h3>
+          <div className="grid grid-cols-3 gap-2 text-center mb-6">
+            <div><div className="text-xs text-secondary mb-1">Risk</div><div className="font-bold text-[#B0523F]">Elevated</div></div>
+            <div className="border-l border-r border-outline-variant"><div className="text-xs text-secondary mb-1">Latest BP</div><div className="font-bold text-on-surface">142/90</div></div>
+            <div><div className="text-xs text-secondary mb-1">Glucose</div><div className="font-bold text-on-surface">105</div></div>
+          </div>
+          <svg viewBox="0 0 100 80" className="w-full h-20 overflow-visible" preserveAspectRatio="none">
+            <path d={chartPoints} fill="none" stroke="var(--primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-bold text-on-surface px-1">Screening Timeline</h3>
+          {screenings.length === 0 && <div className="text-center text-secondary py-8">No screenings found.</div>}
+          {screenings.map((sc, i) => {
+            const isHighBP = sc.vitals.bpSystolic > 140;
+            const isHighGlucose = sc.vitals.glucose > 100;
+            return (
+              <div key={sc.id} className="bg-surface-container rounded-2xl p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-center">
+                  <div className="font-bold text-sm text-secondary">{new Date(sc.timestamp).toLocaleDateString()}</div>
+                  <div className="bg-[#B0523F]/10 text-[#B0523F] px-2 py-0.5 rounded text-xs font-bold">{sc.calculatedRiskScore > 0.5 ? 'Elevated' : 'Low'}</div>
+                </div>
+                <div className="flex justify-between items-center bg-surface p-3 rounded-xl border border-outline-variant">
+                  <div className="flex-1">
+                    <div className="text-xs text-secondary">BP</div>
+                    <div className={`font-bold ${isHighBP ? 'text-[#B0523F]' : 'text-on-surface'}`}>{sc.vitals.bpSystolic}/{sc.vitals.bpDiastolic}</div>
+                  </div>
+                  <div className="flex-1 border-l border-outline-variant pl-3">
+                    <div className="text-xs text-secondary">Glucose</div>
+                    <div className={`font-bold ${isHighGlucose ? 'text-amber-600' : 'text-on-surface'}`}>{sc.vitals.glucose}</div>
+                  </div>
+                  <div className="flex-1 border-l border-outline-variant pl-3">
+                    <div className="text-xs text-secondary">HR</div>
+                    <div className="font-bold text-on-surface">{sc.vitals.heartRate}</div>
+                  </div>
+                </div>
+                <div className="text-xs font-semibold text-primary bg-primary/10 self-start px-2 py-1 rounded">Source: {sc.deviceSource}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,22 @@
+{
+  "name": "aimhotech",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*",
+    "admin-dashboard",
+    "mobile-view"
+  ],
+  "scripts": {
+    "dev:admin": "npm run dev --workspace=admin-dashboard",
+    "dev:mobile": "npm run dev --workspace=mobile-view",
+    "build:admin": "npm run build --workspace=admin-dashboard",
+    "build:mobile": "npm run build --workspace=mobile-view",
+    "build:shared": "npm run build --workspace=@aimhotech/shared",
+    "build": "npm run build:shared && npm run build:admin && npm run build:mobile",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

@@ -1,55 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../../components/layout/TopBar';
-import Card from '../../../components/ui/Card';
-import Button from '../../../components/ui/Button';
+import { useMobileStore } from '../../../store/useMobileStore';
 
 export default function DevicePairing() {
-  const navigate = useNavigate();
   const [scanning, setScanning] = useState(true);
+  const [showManual, setShowManual] = useState(false);
+  const navigate = useNavigate();
+  const pairDevice = useMobileStore(s => s.pairDevice);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setScanning(false);
-    }, 2000);
+    const timer = setTimeout(() => setScanning(false), 2500);
     return () => clearTimeout(timer);
   }, []);
 
+  const handleContinue = () => {
+    pairDevice('Microlife B6 Connect');
+    pairDevice('Bionime iFree');
+    navigate('/worker/screening/vitals');
+  };
+
   return (
-    <div className="flex flex-col h-full w-full">
-      <TopBar title="Pair Devices" subtitle="Step 1 of 3" showBack onBack={() => navigate('/worker/lookup')} />
-      <main className="flex-1 overflow-y-auto px-edge_margin py-md space-y-stack_gap">
-        
-        <div className="text-center mb-xl">
-          <span className="material-symbols-outlined text-[48px] text-primary mb-sm pulse-soft">bluetooth_searching</span>
-          <h2 className="text-primary font-headline-md text-xl mb-xs">
-            {scanning ? "Scanning for devices..." : "Devices Paired"}
-          </h2>
-          <p className="text-on-surface-variant font-body-md text-sm">
-            Make sure the Microlife BP monitor is turned on.
-          </p>
-        </div>
-
-        {!scanning && (
-          <Card className="flex items-center gap-md bg-secondary-container/20 border-secondary">
-            <span className="material-symbols-outlined text-secondary">check_circle</span>
-            <div className="flex-1">
-              <h4 className="text-primary font-headline-sm text-base">Microlife B6 Connect</h4>
-              <p className="text-on-surface-variant font-label-sm">Connected successfully</p>
-            </div>
-          </Card>
-        )}
-
-      </main>
-
-      <div className="w-full p-md bg-surface-container-lowest border-t border-outline-variant z-40">
-        <Button 
-          disabled={scanning}
-          onClick={() => navigate('/worker/screening/vitals')}
-        >
-          Continue to Vitals
-        </Button>
+    <div className="flex flex-col h-full bg-surface">
+      <TopBar title="Pair Devices" subtitle="Step 1 of 3" showBack onBack={() => navigate(-1)} />
+      
+      <div className="flex justify-center gap-2 py-4">
+        <div className="w-2 h-2 rounded-full bg-primary" />
+        <div className="w-2 h-2 rounded-full bg-outline-variant" />
+        <div className="w-2 h-2 rounded-full bg-outline-variant" />
       </div>
+
+      <div className="flex-1 flex flex-col items-center p-6 text-center page-enter">
+        {scanning ? (
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="bt-ripple w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-8">
+              <span className="material-symbols-outlined text-5xl text-primary">bluetooth_searching</span>
+            </div>
+            <h2 className="text-xl font-bold text-on-surface">Scanning for devices...</h2>
+            <p className="text-secondary mt-2">Ensure devices are turned on.</p>
+          </div>
+        ) : (
+          <div className="w-full flex-1">
+            <h2 className="text-xl font-bold text-on-surface mb-6 text-left">Devices Found</h2>
+            <div className="space-y-4 text-left">
+              <div className="bg-green-50 border-2 border-green-500 rounded-xl p-4 flex items-center gap-4">
+                <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
+                <div><div className="font-bold">Microlife B6 Connect</div><div className="text-sm text-green-700">DEV-MLB6-1001</div></div>
+              </div>
+              <div className="bg-green-50 border-2 border-green-500 rounded-xl p-4 flex items-center gap-4">
+                <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
+                <div><div className="font-bold">Bionime iFree</div><div className="text-sm text-green-700">DEV-BION-2001</div></div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="p-4 bg-surface">
+        <button onClick={handleContinue} disabled={scanning} className="w-full bg-primary text-white py-4 rounded-xl font-bold disabled:opacity-50 active:scale-95">Continue to Vitals</button>
+        <div className="text-center mt-4">
+          <button onClick={() => setShowManual(true)} className="text-primary font-bold">Enter Manually</button>
+        </div>
+      </div>
+
+      {showManual && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
+          <div className="bg-surface w-full p-6 rounded-t-3xl bottom-sheet">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold">Manual Entry</h2>
+              <button onClick={() => setShowManual(false)}><span className="material-symbols-outlined">close</span></button>
+            </div>
+            <div className="space-y-4 mb-6">
+              <input type="number" placeholder="Systolic (mmHg)" className="w-full border-2 border-outline-variant p-3 rounded-xl focus:border-primary focus:outline-none" />
+              <input type="number" placeholder="Diastolic (mmHg)" className="w-full border-2 border-outline-variant p-3 rounded-xl focus:border-primary focus:outline-none" />
+            </div>
+            <button onClick={() => { setShowManual(false); handleContinue(); }} className="w-full bg-primary text-white py-4 rounded-xl font-bold">Save</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

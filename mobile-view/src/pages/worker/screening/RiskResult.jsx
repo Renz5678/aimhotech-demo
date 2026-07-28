@@ -1,56 +1,97 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../../components/layout/TopBar';
-import Card from '../../../components/ui/Card';
-import RiskBadge from '../../../components/ui/RiskBadge';
-import Button from '../../../components/ui/Button';
+import { useMobileStore } from '../../../store/useMobileStore';
+import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore.ts';
 
 export default function RiskResult() {
   const navigate = useNavigate();
+  const { submitVitals, selectedPatientId } = useMobileStore();
+  const triggerRef = useLiveDemoStore(s => s.createReferral);
+  const [mounted, setMounted] = useState(false);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const handleCreateReferral = () => {
+    triggerRef(selectedPatientId || 'QC-097-00310', 'FLAG-001', 'FAC-001');
+    alert('Referral created successfully');
+    navigate('/worker/home');
+  };
+
+  const handleDone = () => {
+    submitVitals();
+    navigate('/worker/home');
+  };
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col h-full bg-surface">
       <TopBar title="Risk Assessment" subtitle="Step 3 of 3" />
-      <main className="flex-1 overflow-y-auto px-edge_margin py-md space-y-stack_gap pb-[100px]">
-        
-        <div className="flex flex-col items-center justify-center py-xl text-center relative">
-          <div className="absolute top-0 bg-secondary/10 text-secondary border border-secondary px-3 py-1 rounded-full text-xs font-bold mb-4 flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">offline_bolt</span>
-            Provisional — On-Device
-          </div>
-          
-          <div className="mt-8">
-            <RiskBadge level="high" />
-          </div>
-          <h2 className="text-error font-display-lg text-[28px] mt-md mb-xs">Elevated Risk</h2>
-          <p className="text-on-surface-variant font-body-md px-lg">
-            Likely referral required. Confirm once synced with AI Brain.
-          </p>
+      
+      <div className="flex justify-center gap-2 py-4">
+        <div className="w-2 h-2 rounded-full bg-primary" />
+        <div className="w-2 h-2 rounded-full bg-primary" />
+        <div className="w-2 h-2 rounded-full bg-primary" />
+      </div>
+
+      <div className="bg-[#B0523F]/10 px-4 py-2 flex items-center justify-center gap-2 text-[#B0523F] font-bold text-sm mx-4 rounded-lg mb-4">
+        <span className="material-symbols-outlined">bolt</span> Provisional — On-Device AI
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-24">
+        <div className={`bg-white border-2 border-[#B0523F] rounded-2xl p-6 text-center card-shadow-2 transition-all duration-500 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+          <span className="material-symbols-outlined text-6xl text-[#B0523F] mb-2">error</span>
+          <h2 className="text-3xl font-black text-[#B0523F] mb-1">Elevated Risk</h2>
+          <div className="text-secondary font-bold text-sm bg-surface px-3 py-1 rounded-full inline-block">78% Confidence</div>
         </div>
 
-        <Card>
-          <h3 className="text-primary font-headline-sm mb-xs">Recorded Vitals</h3>
-          <div className="flex justify-between py-sm border-b border-outline-variant">
-            <span className="text-on-surface-variant">BP</span>
-            <span className="font-bold text-error">164/99 mmHg</span>
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex gap-3">
+          <span className="material-symbols-outlined text-amber-600">warning</span>
+          <div>
+            <h3 className="font-bold text-amber-900 mb-1">AI Recommendation</h3>
+            <p className="text-sm text-amber-800">Recommend immediate referral for physician review based on severely elevated blood pressure and detected AFIB.</p>
           </div>
-          <div className="flex justify-between py-sm border-b border-outline-variant">
-            <span className="text-on-surface-variant">HR</span>
-            <span className="font-bold">88 bpm</span>
-          </div>
-          <div className="flex justify-between py-sm text-error">
-            <span className="text-error font-medium">AFIB</span>
-            <span className="font-bold">Detected</span>
-          </div>
-        </Card>
+        </div>
 
-      </main>
+        <div className="bg-surface-container rounded-2xl p-4 card-shadow-1">
+          <h3 className="font-bold mb-3 text-on-surface">Recorded Vitals</h3>
+          <div className="grid grid-cols-2 gap-y-4 gap-x-2">
+            <div><div className="text-xs text-secondary">BP</div><div className="font-bold text-red-600">164/99 mmHg</div></div>
+            <div><div className="text-xs text-secondary">HR</div><div className="font-bold">88 bpm</div></div>
+            <div><div className="text-xs text-secondary">Glucose</div><div className="font-bold">128 mg/dL</div></div>
+            <div><div className="text-xs text-secondary">AFIB</div><div className="font-bold text-red-600">Detected</div></div>
+          </div>
+        </div>
 
-      <div className="w-full p-md bg-surface-container-lowest border-t border-outline-variant z-40 flex flex-col gap-sm">
-        <Button onClick={() => navigate('/worker/home')}>
-          Done (Save to Device)
-        </Button>
+        <div className="bg-amber-100 p-3 rounded-xl flex items-center gap-2 text-amber-800 text-sm font-semibold justify-center">
+          <span className="material-symbols-outlined text-lg">cloud_sync</span> Will sync to AI Brain when online
+        </div>
       </div>
+
+      <div className="p-4 bg-surface border-t border-outline-variant/30 flex gap-3">
+        <button onClick={handleDone} className="flex-1 py-4 border-2 border-primary text-primary rounded-xl font-bold">Done (Save)</button>
+        <button onClick={() => setShowBottomSheet(true)} className="flex-1 py-4 bg-primary text-white rounded-xl font-bold card-shadow-1">Create Referral</button>
+      </div>
+
+      {showBottomSheet && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end">
+          <div className="bg-surface w-full p-6 rounded-t-3xl bottom-sheet">
+            <h2 className="text-xl font-bold mb-4">Select Facility</h2>
+            <div className="space-y-3 mb-6">
+              {['St. Luke\'s Medical Center', 'East Avenue Medical Center', 'QC General Hospital'].map((f, i) => (
+                <div key={i} className={`p-4 rounded-xl border-2 flex items-center gap-3 ${i === 0 ? 'border-primary bg-primary/10' : 'border-outline-variant'}`}>
+                  <input type="radio" name="fac" checked={i===0} readOnly className="w-5 h-5 accent-primary" />
+                  <span className="font-bold">{f}</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setShowBottomSheet(false)} className="flex-1 py-4 border-2 border-outline-variant rounded-xl font-bold">Cancel</button>
+              <button onClick={handleCreateReferral} className="flex-2 w-full bg-primary text-white py-4 rounded-xl font-bold">Confirm Referral</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

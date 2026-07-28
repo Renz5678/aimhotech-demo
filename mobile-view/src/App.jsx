@@ -1,18 +1,16 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MobileContainer from './components/layout/MobileContainer';
-
-// Auth
 import Login from './pages/auth/Login';
 import Onboarding from './pages/auth/Onboarding';
 
-// Patient
+// Patient Pages
 import PatientHome from './pages/patient/PatientHome';
 import HealthHistory from './pages/patient/HealthHistory';
 import Appointments from './pages/patient/Appointments';
 import PatientSettings from './pages/patient/PatientSettings';
 
-// Worker
+// Worker Pages
 import WorkerHome from './pages/worker/WorkerHome';
 import PatientLookup from './pages/worker/PatientLookup';
 import DevicePairing from './pages/worker/screening/DevicePairing';
@@ -22,22 +20,18 @@ import WorkerSettings from './pages/worker/WorkerSettings';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <MobileContainer>
         <Routes>
-          {/* Default redirect to login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
-          
           <Route path="/login" element={<Login />} />
           <Route path="/onboarding" element={<Onboarding />} />
           
-          {/* Patient Routes */}
           <Route path="/patient/home" element={<PatientHome />} />
           <Route path="/patient/history" element={<HealthHistory />} />
           <Route path="/patient/appointments" element={<Appointments />} />
           <Route path="/patient/settings" element={<PatientSettings />} />
-          
-          {/* Worker Routes */}
+
           <Route path="/worker/home" element={<WorkerHome />} />
           <Route path="/worker/lookup" element={<PatientLookup />} />
           <Route path="/worker/screening/device" element={<DevicePairing />} />
@@ -46,6 +40,6 @@ export default function App() {
           <Route path="/worker/settings" element={<WorkerSettings />} />
         </Routes>
       </MobileContainer>
-    </BrowserRouter>
+    </Router>
   );
 }

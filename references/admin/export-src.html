@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#1E3A2F">
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="800" fill="#1E3A2F"/>
+<rect x="440" y="250" width="140" height="140" rx="28" fill="#A3B18B"/>
+<text x="510" y="352" font-family="sans-serif" font-size="96" font-weight="700" fill="#1E3A2F" text-anchor="middle">A</text>
+<text x="620" y="345" font-family="sans-serif" font-size="72" font-weight="700" fill="#F9F8F6">AImhotech</text>
+<text x="620" y="400" font-family="sans-serif" font-size="30" letter-spacing="6" fill="#A3B18B">WEB ADMIN</text>
+</svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F9F8F6;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#24291F}
+a{color:#4C7A5A}a:hover{color:#1E3A2F}
+*{box-sizing:border-box}
+input,select,button,textarea{font-family:inherit}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(76,122,90,.5)}70%{box-shadow:0 0 0 6px rgba(76,122,90,0)}100%{box-shadow:0 0 0 0 rgba(76,122,90,0)}}
+@keyframes toastin{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes rise{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
+::placeholder{color:#9AA394}
+</style>
+</helmet>
+
+<sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#1E3A2F 0%,#2A4A3C 60%,#3B5A47 100%)">
+  <div style="width:400px;background:#F9F8F6;border-radius:14px;padding:36px 36px 30px;box-shadow:0 24px 60px rgba(0,0,0,.35)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="width:34px;height:34px;border-radius:9px;background:#1E3A2F;display:flex;align-items:center;justify-content:center;color:#A3B18B;font-weight:700;font-size:16px">A</div>
+      <div><div style="font-weight:700;font-size:17px;letter-spacing:.2px">AImhotech</div><div style="font-size:11px;color:#6B7566;letter-spacing:.8px;text-transform:uppercase">Web Admin Platform</div></div>
+    </div>
+    <div style="font-size:13px;color:#6B7566;margin:14px 0 22px">Sign in with your facility credentials. Your view is scoped to your role.</div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Email or username</div>
+        <input value="{{ loginEmail }}" onChange="{{ onLoginEmail }}" placeholder="name@rhu.gov.ph" style="width:100%;padding:10px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:14px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)">
+      </div>
+      <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Password</div>
+        <input type="password" value="{{ loginPass }}" onChange="{{ onLoginPass }}" placeholder="••••••••" style="width:100%;padding:10px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:14px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)">
+      </div>
+      <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Sign in as (demo)</div>
+        <select value="{{ role }}" onChange="{{ onRole }}" style="width:100%;padding:10px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:14px;background:#fff">
+          <sc-for list="{{ roles }}" as="r" hint-placeholder-count="4"><option value="{{ r }}">{{ r }}</option></sc-for>
+        </select>
+      </div>
+      <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:12.5px;color:#B0523F;background:#B0523F14;border:1px solid #B0523F33;border-radius:8px;padding:8px 12px">Enter your email or username to continue.</div>
+      </sc-if>
+      <button onClick="{{ doLogin }}" style="margin-top:4px;padding:12px;border:none;border-radius:8px;background:#1E3A2F;color:#F9F8F6;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">Sign in</button>
+      <div style="font-size:11.5px;color:#6B7566;text-align:center">DOH single sign-on coming soon · <a href="#" style="font-weight:500">Need access?</a></div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;height:100vh;overflow:hidden">
+
+  <div style="width:228px;flex:none;background:#1E3A2F;color:#DCE3D3;display:flex;flex-direction:column">
+    <div style="padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(163,177,139,.18)">
+      <div style="width:30px;height:30px;border-radius:8px;background:#A3B18B;color:#1E3A2F;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px">A</div>
+      <div><div style="font-weight:700;font-size:15px;color:#F9F8F6;line-height:1.1">AImhotech</div><div style="font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:#A3B18B">Web Admin</div></div>
+    </div>
+    <div style="flex:1;overflow:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="7">
+        <div onClick="{{ n.go }}" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13.5px;cursor:pointer;background:{{ n.bg }};color:{{ n.color }};font-weight:{{ n.weight }};transition:background .15s" style-hover="background:rgba(163,177,139,.14)">
+          <span style="width:6px;height:6px;border-radius:50%;background:{{ n.dot }};flex:none"></span>{{ n.label }}
+          <sc-if value="{{ n.count }}" hint-placeholder-val="{{ false }}"><span style="margin-left:auto;background:#B0523F;color:#fff;font-size:10.5px;font-weight:600;border-radius:9px;padding:1px 7px">{{ n.count }}</span></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding:14px;border-top:1px solid rgba(163,177,139,.18)">
+      <div style="font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:#A3B18B;margin-bottom:6px">Viewing as</div>
+      <select value="{{ role }}" onChange="{{ onRole }}" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(163,177,139,.35);background:#2A4A3C;color:#F9F8F6;font-size:12.5px">
+        <sc-for list="{{ roles }}" as="r" hint-placeholder-count="4"><option value="{{ r }}">{{ r }}</option></sc-for>
+      </select>
+      <div style="display:flex;align-items:center;gap:9px;margin-top:12px">
+        <div style="width:30px;height:30px;border-radius:50%;background:#A3B18B;color:#1E3A2F;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px">{{ userInitials }}</div>
+        <div style="min-width:0"><div style="font-size:12.5px;font-weight:600;color:#F9F8F6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</div><div style="font-size:10.5px;color:#A3B18B">{{ roleShort }}</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <div style="flex:none;display:flex;align-items:center;gap:14px;padding:14px 28px;background:#F9F8F6;border-bottom:1px solid #E4E1D8">
+      <div><div style="font-size:24px;font-weight:700;line-height:1.15">{{ pageTitle }}</div></div>
+      <div style="display:flex;align-items:center;gap:6px;background:#EFF2EA;border:1px solid #D9DFCE;border-radius:20px;padding:4px 12px;font-size:12px;color:#3F4A3A;font-weight:500"><span style="width:7px;height:7px;border-radius:50%;background:#4C7A5A;animation:pulse 2.4s infinite"></span>{{ scopeLabel }}</div>
+      <div style="margin-left:auto;font-size:12.5px;color:#6B7566">Sat, Jul 26 2026 · <span style="font-family:'IBM Plex Mono',monospace">09:41 PHT</span></div>
+    </div>
+
+    <div style="flex:1;overflow:auto;padding:24px 28px 40px">
+
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:18px 20px">
+              <div style="font-size:12px;font-weight:600;color:#6B7566;text-transform:uppercase;letter-spacing:.5px">{{ k.label }}</div>
+              <div style="font-size:32px;font-weight:700;margin:6px 0 4px;color:{{ k.color }}">{{ k.value }}</div>
+              <div style="font-size:12px;color:{{ k.trendColor }};font-weight:500">{{ k.trend }} <span style="color:#6B7566;font-weight:400">vs last month</span></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-top:16px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-size:18px;font-weight:600">Barangay risk heatmap</div><div style="font-size:12px;color:#6B7566">% elevated-risk of screened, this month</div></div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px">
+                <sc-for list="{{ heat }}" as="h" hint-placeholder-count="8">
+                  <div onClick="{{ h.go }}" style="border-radius:10px;padding:12px;background:{{ h.bg }};border:1px solid {{ h.border }};cursor:pointer;transition:transform .12s" style-hover="transform:translateY(-2px)">
+                    <div style="font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.name }}</div>
+                    <div style="font-size:20px;font-weight:700;margin-top:4px;color:{{ h.pctColor }}">{{ h.pct }}%</div>
+                    <div style="font-size:11px;color:#6B7566">{{ h.screenings }} screened</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:14px;margin-top:12px;font-size:11.5px;color:#6B7566">
+                <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:#4C7A5A22;border:1px solid #4C7A5A55"></span>&lt; 10% low</span>
+                <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:#C79A3C2E;border:1px solid #C79A3C66"></span>10–17% moderate</span>
+                <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:#B0523F2E;border:1px solid #B0523F66"></span>≥ 18% elevated</span>
+              </div>
+            </div>
+            <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-size:18px;font-weight:600">Screening volume</div><div style="font-size:12px;color:#6B7566">last 12 weeks</div></div>
+              <div style="display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:16px">
+                <sc-for list="{{ bars }}" as="b" hint-placeholder-count="12">
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+                    <div title="{{ b.tip }}" style="width:100%;border-radius:5px 5px 2px 2px;background:{{ b.color }};height:{{ b.h }};transform-origin:bottom;animation:rise .5s ease both;transition:background .15s" style-hover="background:#1E3A2F"></div>
+                    <div style="font-size:9.5px;color:#9AA394;font-family:'IBM Plex Mono',monospace">{{ b.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:18px;font-weight:600;margin-bottom:10px">Recent activity</div>
+            <sc-for list="{{ activity }}" as="a" hint-placeholder-count="6">
+              <div style="display:flex;gap:11px;padding:9px 0;border-bottom:1px solid #F1EEE7">
+                <span style="width:8px;height:8px;border-radius:50%;background:{{ a.dot }};flex:none;margin-top:5px"></span>
+                <div><div style="font-size:13px;line-height:1.4">{{ a.text }}</div><div style="font-size:11px;color:#6B7566;margin-top:2px">{{ a.time }}</div></div>
+              </div>
+            </sc-for>
+            <a href="#" onClick="{{ goQueueLink }}" style="font-size:12.5px;font-weight:600;margin-top:10px;text-decoration:none">Open today's risk queue →</a>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPatients }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ noPatientSel }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
+            <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search by name, patient ID, or barangay…" style="flex:1;max-width:420px;padding:10px 14px;border:1px solid #D8D5CC;border-radius:9px;font-size:14px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)">
+            <div style="font-size:12.5px;color:#6B7566">{{ patientCount }} patients in scope</div>
+          </div>
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+            <table style="width:100%;border-collapse:collapse;font-size:14px">
+              <thead><tr style="text-align:left">
+                <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Patient</th>
+                <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">ID</th>
+                <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Barangay</th>
+                <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Risk</th>
+                <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Last screening</th>
+                <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Latest vitals</th>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{ patientRows }}" as="p" hint-placeholder-count="8">
+                  <tr onClick="{{ p.open }}" style="cursor:pointer;background:{{ p.zebra }};transition:background .12s" style-hover="background:#EFF2EA">
+                    <td style="padding:11px 16px;font-weight:600">{{ p.name }} <span style="color:#6B7566;font-weight:400">· {{ p.agesex }}</span></td>
+                    <td style="padding:11px 16px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#6B7566">{{ p.id }}</td>
+                    <td style="padding:11px 16px">{{ p.brgy }}</td>
+                    <td style="padding:11px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:{{ p.riskColor }};background:{{ p.riskBg }};border-radius:12px;padding:3px 10px"><span style="width:6px;height:6px;border-radius:50%;background:{{ p.riskColor }}"></span>{{ p.riskLabel }}</span></td>
+                    <td style="padding:11px 16px;color:#6B7566">{{ p.last }}</td>
+                    <td style="padding:11px 16px;font-family:'IBM Plex Mono',monospace;font-size:12.5px">{{ p.vitals }}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}"><div style="padding:36px;text-align:center;color:#6B7566;font-size:13.5px">No patients match “{{ q }}” within your scope.</div></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasPatientSel }}" hint-placeholder-val="{{ false }}">
+          <a href="#" onClick="{{ closePatient }}" style="font-size:13px;font-weight:600;text-decoration:none">← Back to registry</a>
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:22px;margin-top:12px;display:flex;gap:20px;align-items:center">
+            <div style="width:52px;height:52px;border-radius:50%;background:#1E3A2F;color:#A3B18B;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px">{{ sel.initials }}</div>
+            <div style="flex:1">
+              <div style="font-size:20px;font-weight:700">{{ sel.name }}</div>
+              <div style="font-size:13px;color:#6B7566;margin-top:2px"><span style="font-family:'IBM Plex Mono',monospace">{{ sel.id }}</span> · {{ sel.agesex }} · Brgy. {{ sel.brgy }} · {{ sel.screenCount }} screenings on record</div>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:{{ sel.riskColor }};background:{{ sel.riskBg }};border-radius:14px;padding:5px 14px"><span style="width:7px;height:7px;border-radius:50%;background:{{ sel.riskColor }}"></span>{{ sel.riskLabel }} risk</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px;align-items:start">
+            <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+              <div style="font-size:18px;font-weight:600;margin-bottom:6px">Screening history</div>
+              <sc-for list="{{ selHistory }}" as="h" hint-placeholder-count="3">
+                <div style="display:flex;gap:14px;padding:13px 0;border-bottom:1px solid #F1EEE7">
+                  <div style="flex:none;width:76px;font-size:12px;color:#6B7566;font-family:'IBM Plex Mono',monospace;padding-top:2px">{{ h.date }}</div>
+                  <div style="flex:1">
+                    <div style="font-size:14px;font-weight:600">{{ h.source }}</div>
+                    <div style="font-size:13px;color:#6B7566;margin-top:2px;font-family:'IBM Plex Mono',monospace">{{ h.vitals }}</div>
+                    <div style="font-size:12.5px;color:#6B7566;margin-top:2px">{{ h.note }}</div>
+                  </div>
+                  <span style="flex:none;align-self:flex-start;font-size:11px;font-weight:600;padding:3px 9px;border-radius:11px;color:{{ h.gradeColor }};background:{{ h.gradeBg }}">{{ h.grade }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+                <div style="font-size:18px;font-weight:600;margin-bottom:10px">Linked referral</div>
+                <sc-if value="{{ sel.hasReferral }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:13.5px"><span style="font-family:'IBM Plex Mono',monospace;color:#6B7566">{{ sel.refId }}</span> → {{ sel.refFacility }}</div>
+                  <div style="font-size:12.5px;color:#6B7566;margin-top:4px">Status: <span style="font-weight:600;color:#24291F">{{ sel.refStatus }}</span> · opened {{ sel.refDays }}d ago</div>
+                  <a href="#" onClick="{{ goReferralsLink }}" style="font-size:12.5px;font-weight:600;text-decoration:none;display:inline-block;margin-top:8px">Manage in Referrals →</a>
+                </sc-if>
+                <sc-if value="{{ sel.noReferral }}" hint-placeholder-val="{{ true }}"><div style="font-size:13px;color:#6B7566">No active referral for this patient.</div></sc-if>
+              </div>
+              <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+                <div style="font-size:18px;font-weight:600;margin-bottom:10px">Consent & data basis</div>
+                <div style="font-size:13px;color:#6B7566;line-height:1.55">Consent on record via kiosk enrollment. Access under RA 10173 — role-scoped clinical care basis. This view is being audit-logged.</div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ isQueue }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+          <sc-for list="{{ queueFilters }}" as="f" hint-placeholder-count="4">
+            <button onClick="{{ f.set }}" style="padding:7px 14px;border-radius:18px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.color }};font-size:12.5px;font-weight:600;cursor:pointer">{{ f.label }}</button>
+          </sc-for>
+          <div style="margin-left:auto;font-size:12.5px;color:#6B7566">Sorted by AI priority · refreshed 2 min ago</div>
+        </div>
+        <sc-if value="{{ hasQueueSel }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:14px;background:#1E3A2F;color:#F9F8F6;border-radius:10px;padding:10px 16px;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:600">{{ queueSelCount }} selected</div>
+            <button onClick="{{ bulkRefer }}" style="padding:7px 14px;border-radius:8px;border:none;background:#A3B18B;color:#1E3A2F;font-size:12.5px;font-weight:700;cursor:pointer" style-hover="background:#B7C49E">Create referrals</button>
+            <button onClick="{{ bulkClear }}" style="padding:7px 14px;border-radius:8px;border:1px solid rgba(163,177,139,.4);background:transparent;color:#DCE3D3;font-size:12.5px;font-weight:600;cursor:pointer">Clear</button>
+          </div>
+        </sc-if>
+        <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead><tr style="text-align:left">
+              <th style="padding:11px 12px 11px 16px;border-bottom:1px solid #E4E1D8;width:34px"></th>
+              <th style="padding:11px 12px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Priority</th>
+              <th style="padding:11px 12px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Patient</th>
+              <th style="padding:11px 12px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Station</th>
+              <th style="padding:11px 12px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">AI flag reason</th>
+              <th style="padding:11px 12px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Flagged</th>
+              <th style="padding:11px 12px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Review status</th>
+              <th style="padding:11px 16px 11px 12px;border-bottom:1px solid #E4E1D8"></th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ queueRows }}" as="r" hint-placeholder-count="6">
+                <tr style="background:{{ r.zebra }}" style-hover="background:#EFF2EA">
+                  <td style="padding:11px 12px 11px 16px"><input type="checkbox" checked="{{ r.checked }}" onChange="{{ r.toggle }}" style="width:15px;height:15px;accent-color:#1E3A2F;cursor:pointer"></td>
+                  <td style="padding:11px 12px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:{{ r.riskColor }};background:{{ r.riskBg }};border-radius:12px;padding:3px 10px"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.riskColor }}"></span>{{ r.riskLabel }}</span></td>
+                  <td style="padding:11px 12px;font-weight:600;cursor:pointer" onClick="{{ r.open }}">{{ r.name }} <span style="color:#6B7566;font-weight:400">{{ r.agesex }}</span></td>
+                  <td style="padding:11px 12px">{{ r.brgy }}</td>
+                  <td style="padding:11px 12px;font-size:13px;color:#3F4A3A">{{ r.reason }}</td>
+                  <td style="padding:11px 12px;color:#6B7566;font-size:13px">{{ r.flagged }}</td>
+                  <td style="padding:11px 12px"><span style="font-size:12px;font-weight:500;color:{{ r.statusColor }}">{{ r.status }}</span></td>
+                  <td style="padding:11px 16px 11px 12px;text-align:right"><button onClick="{{ r.claim }}" style="padding:6px 13px;border-radius:8px;border:1px solid {{ r.btnBorder }};background:{{ r.btnBg }};color:{{ r.btnColor }};font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap">{{ r.btnLabel }}</button></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <sc-if value="{{ queueEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:44px;text-align:center;color:#6B7566;font-size:13.5px">No pending cases in this view. The queue refreshes as stations sync.</div></sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isReferrals }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:16px;margin-bottom:16px">
+          <sc-for list="{{ refStats }}" as="s" hint-placeholder-count="4">
+            <div style="flex:1;background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:14px 18px"><div style="font-size:24px;font-weight:700;color:{{ s.color }}">{{ s.value }}</div><div style="font-size:12px;color:#6B7566;font-weight:500">{{ s.label }}</div></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ referralRows }}" as="r" hint-placeholder-count="5">
+            <div style="background:#fff;border:1px solid {{ r.cardBorder }};border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+              <div style="width:170px;flex:none">
+                <div style="font-size:14px;font-weight:600">{{ r.patient }}</div>
+                <div style="font-size:12px;color:#6B7566;margin-top:2px"><span style="font-family:'IBM Plex Mono',monospace">{{ r.id }}</span> · {{ r.brgy }}</div>
+              </div>
+              <div style="flex:1;display:flex;align-items:center;min-width:300px">
+                <sc-for list="{{ r.steps }}" as="st" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;flex:{{ st.flex }}">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:none">
+                      <span style="width:14px;height:14px;border-radius:50%;background:{{ st.fill }};border:2px solid {{ st.ring }}"></span>
+                      <span style="font-size:10.5px;font-weight:{{ st.w }};color:{{ st.color }};white-space:nowrap">{{ st.label }}</span>
+                    </div>
+                    <sc-if value="{{ st.hasLine }}" hint-placeholder-val="{{ true }}"><div style="flex:1;height:2px;background:{{ st.line }};margin:0 6px 18px"></div></sc-if>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="flex:none;text-align:right;max-width:170px">
+                <div style="font-size:12px;color:#6B7566">{{ r.facility }}</div>
+                <sc-if value="{{ r.stalled }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;margin-top:5px;font-size:11px;font-weight:700;color:#B0523F;background:#B0523F14;border:1px solid #B0523F33;border-radius:11px;padding:2px 9px">Stalled · {{ r.days }}d</span></sc-if>
+                <sc-if value="{{ r.fresh }}" hint-placeholder-val="{{ true }}"><div style="font-size:11.5px;color:#6B7566;margin-top:5px">{{ r.days }}d in stage</div></sc-if>
+              </div>
+              <div style="flex:none;text-align:right;min-width:110px">
+                <sc-if value="{{ r.canAdvance }}" hint-placeholder-val="{{ true }}"><button onClick="{{ r.advance }}" style="padding:7px 14px;border-radius:8px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">{{ r.nextLabel }}</button></sc-if>
+                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;font-weight:600;color:#4C7A5A">✓ Resolved</span></sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;color:#6B7566;margin-top:14px">Referrals idle past <b>{{ stalledDaysLabel }} days</b> are flagged as stalled. Video consults launch via Far EasTone Health⁺ at the “Seen” stage.</div>
+      </sc-if>
+
+      <sc-if value="{{ isValidation }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:16px;align-items:start;max-width:1060px">
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:22px">
+            <div style="font-size:18px;font-weight:600">Validate a hospital-submitted record</div>
+            <div style="font-size:12.5px;color:#6B7566;margin:6px 0 18px;line-height:1.5">Records become <b>diagnostic-grade</b> only after the submitting clinician's PRC license and QR verification pass (Business Plan §4.3).</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:5px">Pending record</div>
+            <select value="{{ valRecord }}" onChange="{{ onValRecord }}" style="width:100%;padding:10px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:13.5px;background:#fff;margin-bottom:14px">
+              <sc-for list="{{ valRecords }}" as="v" hint-placeholder-count="2"><option value="{{ v }}">{{ v }}</option></sc-for>
+            </select>
+            <div style="font-size:12px;font-weight:600;margin-bottom:5px">Clinician PRC license number</div>
+            <input value="{{ license }}" onChange="{{ onLicense }}" placeholder="e.g. 0123456" style="width:100%;padding:10px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:14px;font-family:'IBM Plex Mono',monospace;background:#fff;outline:none;margin-bottom:14px" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)">
+            <sc-if value="{{ valIdle }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ doVerify }}" style="width:100%;padding:11px;border-radius:8px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">Verify license & QR</button>
+            </sc-if>
+            <sc-if value="{{ valVerifying }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:10px;padding:11px;border-radius:8px;background:#EFF2EA;font-size:13px;font-weight:500;color:#3F4A3A;justify-content:center"><span style="width:14px;height:14px;border:2px solid #A3B18B;border-top-color:#1E3A2F;border-radius:50%;animation:spin .7s linear infinite"></span>Checking PRC registry & QR signature…</div>
+            </sc-if>
+            <sc-if value="{{ valFailed }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:12.5px;color:#B0523F;background:#B0523F14;border:1px solid #B0523F33;border-radius:8px;padding:9px 12px;margin-bottom:10px">Verification failed — license number must be at least 6 digits. Check the entry and retry.</div>
+              <button onClick="{{ doVerify }}" style="width:100%;padding:11px;border-radius:8px;border:1px solid #B0523F;background:#fff;color:#B0523F;font-size:13.5px;font-weight:600;cursor:pointer">Retry verification</button>
+            </sc-if>
+            <sc-if value="{{ valVerified }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:12.5px;color:#2F5B40;background:#4C7A5A14;border:1px solid #4C7A5A44;border-radius:8px;padding:9px 12px;margin-bottom:10px"><b>Verified.</b> PRC license {{ license }} — Dr. A. Reyes, Internal Medicine · QR signature valid.</div>
+              <button onClick="{{ doSubmitVal }}" style="width:100%;padding:11px;border-radius:8px;border:none;background:#4C7A5A;color:#fff;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#3F6A4E">Submit as diagnostic-grade</button>
+            </sc-if>
+          </div>
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:22px">
+            <div style="font-size:18px;font-weight:600;margin-bottom:12px">Recently validated</div>
+            <sc-for list="{{ validated }}" as="v" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #F1EEE7">
+                <span style="width:8px;height:8px;border-radius:50%;background:#4C7A5A;flex:none"></span>
+                <div style="flex:1"><div style="font-size:13.5px;font-weight:600">{{ v.record }}</div><div style="font-size:12px;color:#6B7566">by {{ v.by }} · {{ v.when }}</div></div>
+                <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:11px;color:#2F5B40;background:#4C7A5A14">Diagnostic-grade</span>
+              </div>
+            </sc-for>
+            <div style="font-size:12px;color:#6B7566;margin-top:12px;line-height:1.5">Screening-grade kiosk data is never upgraded automatically — every diagnostic-grade record traces to a verified clinician.</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isDevices }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:16px;margin-bottom:16px">
+          <sc-for list="{{ devStats }}" as="s" hint-placeholder-count="3">
+            <div style="flex:1;background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:14px 18px"><div style="font-size:24px;font-weight:700;color:{{ s.color }}">{{ s.value }}</div><div style="font-size:12px;color:#6B7566;font-weight:500">{{ s.label }}</div></div>
+          </sc-for>
+        </div>
+        <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead><tr style="text-align:left">
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Device</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Type</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Facility</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Status</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Firmware</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Last sync</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ deviceRows }}" as="d" hint-placeholder-count="8">
+                <tr style="background:{{ d.zebra }}" style-hover="background:#EFF2EA">
+                  <td style="padding:11px 16px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500">{{ d.id }}</td>
+                  <td style="padding:11px 16px">{{ d.type }}</td>
+                  <td style="padding:11px 16px">{{ d.facility }}</td>
+                  <td style="padding:11px 16px"><span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:{{ d.stColor }}"><span style="width:8px;height:8px;border-radius:50%;background:{{ d.stColor }};animation:{{ d.anim }}"></span>{{ d.status }}</span></td>
+                  <td style="padding:11px 16px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:{{ d.fwColor }}">{{ d.fw }}</td>
+                  <td style="padding:11px 16px;color:#6B7566;font-size:13px">{{ d.sync }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isReports }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start">
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+            <div style="font-size:18px;font-weight:600;margin-bottom:14px">Configure report</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ reportTypes }}" as="t" hint-placeholder-count="4">
+                <div onClick="{{ t.pick }}" style="padding:11px 14px;border-radius:9px;border:1.5px solid {{ t.border }};background:{{ t.bg }};cursor:pointer">
+                  <div style="font-size:13.5px;font-weight:600;color:{{ t.color }}">{{ t.label }}</div>
+                  <div style="font-size:11.5px;color:#6B7566;margin-top:2px">{{ t.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0">
+              <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Period</div>
+                <select style="width:100%;padding:9px 10px;border:1px solid #D8D5CC;border-radius:8px;font-size:13px;background:#fff"><option>July 2026</option><option>Q2 2026</option><option>H1 2026</option></select></div>
+              <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Scope</div>
+                <select style="width:100%;padding:9px 10px;border:1px solid #D8D5CC;border-radius:8px;font-size:13px;background:#fff"><option>All stations</option><option>RHU Malanday</option><option>Brgy. San Isidro</option></select></div>
+            </div>
+            <sc-if value="{{ repIdle }}" hint-placeholder-val="{{ true }}"><button onClick="{{ genReport }}" style="width:100%;padding:11px;border-radius:8px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">Generate report</button></sc-if>
+            <sc-if value="{{ repGenerating }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:10px;padding:11px;border-radius:8px;background:#EFF2EA;font-size:13px;font-weight:500;color:#3F4A3A;justify-content:center"><span style="width:14px;height:14px;border:2px solid #A3B18B;border-top-color:#1E3A2F;border-radius:50%;animation:spin .7s linear infinite"></span>Aggregating {{ repScopeNote }}…</div></sc-if>
+            <sc-if value="{{ repReady }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:8px">
+                <button onClick="{{ dlPdf }}" style="flex:1;padding:11px;border-radius:8px;border:none;background:#4C7A5A;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Download PDF</button>
+                <button onClick="{{ dlCsv }}" style="flex:1;padding:11px;border-radius:8px;border:1px solid #4C7A5A;background:#fff;color:#4C7A5A;font-size:13px;font-weight:600;cursor:pointer">Export CSV</button>
+              </div>
+            </sc-if>
+          </div>
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px;min-height:420px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px"><div style="font-size:18px;font-weight:600">Preview — {{ repTitle }}</div><div style="font-size:12px;color:#6B7566">July 2026 · All stations</div></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+              <sc-for list="{{ repKpis }}" as="k" hint-placeholder-count="3">
+                <div style="border:1px solid #F1EEE7;border-radius:10px;padding:13px 15px;background:#FDFCFA"><div style="font-size:22px;font-weight:700;color:{{ k.color }}">{{ k.value }}</div><div style="font-size:11.5px;color:#6B7566">{{ k.label }}</div></div>
+              </sc-for>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+              <thead><tr style="text-align:left">
+                <th style="padding:9px 12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Barangay</th>
+                <th style="padding:9px 12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8;text-align:right">Screenings</th>
+                <th style="padding:9px 12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8;text-align:right">Elevated %</th>
+                <th style="padding:9px 12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8;text-align:right">Referrals done</th>
+                <th style="padding:9px 12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8;text-align:right">Cost / screening</th>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{ repRows }}" as="r" hint-placeholder-count="8">
+                  <tr style="background:{{ r.zebra }}"><td style="padding:9px 12px;font-weight:500">{{ r.name }}</td><td style="padding:9px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12.5px">{{ r.screenings }}</td><td style="padding:9px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:{{ r.pctColor }}">{{ r.pct }}%</td><td style="padding:9px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12.5px">{{ r.refs }}</td><td style="padding:9px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12.5px">₱{{ r.cost }}</td></tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isUsers }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
+          <input value="{{ uq }}" onChange="{{ onUq }}" placeholder="Search users by name, role, or facility…" style="flex:1;max-width:420px;padding:10px 14px;border:1px solid #D8D5CC;border-radius:9px;font-size:14px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)">
+          <button onClick="{{ openInvite }}" style="margin-left:auto;padding:10px 18px;border-radius:9px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:13px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">+ Invite user</button>
+        </div>
+        <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead><tr style="text-align:left">
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Name</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Email</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Role</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Facility</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Status</th>
+              <th style="padding:11px 16px;border-bottom:1px solid #E4E1D8"></th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ userRows }}" as="u" hint-placeholder-count="7">
+                <tr style="background:{{ u.zebra }}" style-hover="background:#EFF2EA">
+                  <td style="padding:11px 16px;font-weight:600">{{ u.name }}</td>
+                  <td style="padding:11px 16px;color:#6B7566;font-size:13px">{{ u.email }}</td>
+                  <td style="padding:11px 16px"><span style="font-size:12px;font-weight:600;color:#3F4A3A;background:#EFF2EA;border-radius:11px;padding:3px 10px">{{ u.role }}</span></td>
+                  <td style="padding:11px 16px;font-size:13px">{{ u.facility }}</td>
+                  <td style="padding:11px 16px"><span style="font-size:12.5px;font-weight:600;color:{{ u.stColor }}">{{ u.status }}</span></td>
+                  <td style="padding:11px 16px;text-align:right"><button onClick="{{ u.toggleActive }}" style="padding:6px 12px;border-radius:8px;border:1px solid #D8D5CC;background:#fff;color:#6B7566;font-size:12px;font-weight:600;cursor:pointer" style-hover="border:1px solid #B0523F;color:#B0523F">{{ u.actionLabel }}</button></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAudit }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
+          <input value="{{ aq }}" onChange="{{ onAq }}" placeholder="Filter by actor, action, or entity…" style="flex:1;max-width:420px;padding:10px 14px;border:1px solid #D8D5CC;border-radius:9px;font-size:14px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)">
+          <div style="font-size:12px;color:#6B7566;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#4C7A5A"></span>Immutable log · RA 10173 compliant</div>
+          <button onClick="{{ exportAudit }}" style="margin-left:auto;padding:9px 16px;border-radius:8px;border:1px solid #1E3A2F;background:#fff;color:#1E3A2F;font-size:12.5px;font-weight:600;cursor:pointer">Export CSV</button>
+        </div>
+        <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;overflow:hidden">
+          <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+            <thead><tr style="text-align:left">
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Timestamp</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Actor</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Action</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Entity</th>
+              <th style="padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#6B7566;border-bottom:1px solid #E4E1D8">Context</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ auditRows }}" as="a" hint-placeholder-count="10">
+                <tr style="background:{{ a.zebra }}">
+                  <td style="padding:10px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B7566;white-space:nowrap">{{ a.time }}</td>
+                  <td style="padding:10px 16px;font-weight:500">{{ a.actor }}</td>
+                  <td style="padding:10px 16px"><span style="font-size:11.5px;font-weight:600;color:{{ a.actColor }};background:{{ a.actBg }};border-radius:10px;padding:2px 9px">{{ a.action }}</span></td>
+                  <td style="padding:10px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px">{{ a.entity }}</td>
+                  <td style="padding:10px 16px;color:#6B7566;font-size:12.5px">{{ a.ctx }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <sc-if value="{{ auditEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:36px;text-align:center;color:#6B7566;font-size:13.5px">No audit entries match “{{ aq }}”.</div></sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAIBrain }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:16px;margin-bottom:16px">
+          <sc-for list="{{ aiStats }}" as="s" hint-placeholder-count="4">
+            <div style="flex:1;background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:14px 18px"><div style="font-size:24px;font-weight:700;color:{{ s.color }}">{{ s.value }}</div><div style="font-size:12px;color:#6B7566;font-weight:500">{{ s.label }}</div></div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start">
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
+              <div style="font-size:18px;font-weight:600">IFA — Intelligent Flagging Agent</div>
+              <div style="font-size:12px;color:#6B7566">Scans every synced record for anomalies</div>
+            </div>
+            <div style="font-size:12.5px;color:#6B7566;margin-bottom:12px">Open flags are ordered by severity. Acknowledging routes a flag to the ops/clinical worklist; dismissing records a false-positive for retraining.</div>
+            <sc-for list="{{ anomalyRows }}" as="a" hint-placeholder-count="5">
+              <div style="border:1px solid {{ a.border }};background:{{ a.bg }};border-radius:10px;padding:13px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;opacity:{{ a.opacity }}">
+                <span style="flex:none;margin-top:3px;width:9px;height:9px;border-radius:50%;background:{{ a.dot }};animation:{{ a.anim }}"></span>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                    <span style="font-size:11px;font-weight:700;letter-spacing:.5px;color:{{ a.sevColor }};background:{{ a.sevBg }};border-radius:10px;padding:2px 9px">{{ a.sev }}</span>
+                    <span style="font-size:11px;font-weight:600;color:#6B7566;background:#F1EEE7;border-radius:10px;padding:2px 9px">{{ a.type }}</span>
+                    <span style="font-size:11.5px;color:#9AA394;margin-left:auto;font-family:'IBM Plex Mono',monospace">{{ a.time }}</span>
+                  </div>
+                  <div style="font-size:13.5px;font-weight:600;margin-top:6px">{{ a.title }}</div>
+                  <div style="font-size:12.5px;color:#6B7566;margin-top:3px;line-height:1.5">{{ a.detail }}</div>
+                  <sc-if value="{{ a.open }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;gap:8px;margin-top:10px">
+                      <button onClick="{{ a.ack }}" style="padding:6px 13px;border-radius:8px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:12px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">Acknowledge & route</button>
+                      <button onClick="{{ a.dismiss }}" style="padding:6px 13px;border-radius:8px;border:1px solid #D8D5CC;background:#fff;color:#6B7566;font-size:12px;font-weight:600;cursor:pointer" style-hover="border:1px solid #B0523F;color:#B0523F">Dismiss as false positive</button>
+                      <button onClick="{{ a.ask }}" style="padding:6px 13px;border-radius:8px;border:1px solid #4C7A5A;background:#fff;color:#4C7A5A;font-size:12px;font-weight:600;cursor:pointer" style-hover="background:#EFF2EA">Ask assistant ✦</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ a.resolved }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;font-weight:600;color:{{ a.resColor }};margin-top:8px">{{ a.resolution }}</div></sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:20px">
+              <div style="font-size:18px;font-weight:600;margin-bottom:12px">AI Brain — model status</div>
+              <sc-for list="{{ aiModels }}" as="m" hint-placeholder-count="3">
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #F1EEE7">
+                  <span style="width:8px;height:8px;border-radius:50%;background:#4C7A5A;flex:none;margin-top:5px;animation:pulse 2.4s infinite"></span>
+                  <div style="flex:1"><div style="font-size:13.5px;font-weight:600">{{ m.name }}</div><div style="font-size:12px;color:#6B7566;margin-top:2px">{{ m.desc }}</div></div>
+                  <span style="font-size:11px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:#3F4A3A;background:#EFF2EA;border-radius:10px;padding:2px 8px;flex:none">{{ m.ver }}</span>
+                </div>
+              </sc-for>
+              <div style="font-size:12px;color:#6B7566;margin-top:12px;line-height:1.5">Models run on-device at kiosks (screening-grade) and re-score centrally on sync. Dismissed IFA flags feed the retraining set.</div>
+            </div>
+            <div style="background:#1E3A2F;border-radius:12px;padding:20px;color:#DCE3D3">
+              <div style="font-size:15px;font-weight:600;color:#F9F8F6;margin-bottom:6px">✦ Ask the assistant</div>
+              <div style="font-size:12.5px;line-height:1.55;color:#BEC9B2">The assistant can explain any flag, summarize today's queue, or draft a referral note — grounded in your role's data scope.</div>
+              <button onClick="{{ openChat }}" style="margin-top:12px;padding:9px 16px;border-radius:8px;border:none;background:#A3B18B;color:#1E3A2F;font-size:12.5px;font-weight:700;cursor:pointer" style-hover="background:#B7C49E">Open assistant</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:560px;display:flex;flex-direction:column;gap:16px">
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:22px">
+            <div style="font-size:18px;font-weight:600;margin-bottom:14px">Profile</div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="width:44px;height:44px;border-radius:50%;background:#1E3A2F;color:#A3B18B;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">{{ userInitials }}</div>
+              <div><div style="font-size:15px;font-weight:600">{{ userName }}</div><div style="font-size:12.5px;color:#6B7566">{{ role }} · {{ scopeLabel }}</div></div>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid #E4E1D8;border-radius:12px;padding:22px">
+            <div style="font-size:18px;font-weight:600;margin-bottom:6px">Session security</div>
+            <div style="font-size:13px;color:#6B7566;line-height:1.55;margin-bottom:14px">Shared-workstation timeout signs you out after inactivity. All access is audit-logged.</div>
+            <div style="display:flex;align-items:center;gap:12px"><div style="font-size:13px;font-weight:600">Auto sign-out after</div>
+              <select style="padding:8px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:13px;background:#fff"><option>10 minutes</option><option>20 minutes</option><option>30 minutes</option></select>
+            </div>
+          </div>
+          <button onClick="{{ signOut }}" style="align-self:flex-start;padding:10px 20px;border-radius:9px;border:1px solid #B0523F;background:#fff;color:#B0523F;font-size:13px;font-weight:600;cursor:pointer" style-hover="background:#B0523F0D">Sign out</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+
+<sc-if value="{{ showInvite }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeInvite }}" style="position:fixed;inset:0;background:rgba(30,58,47,.45);display:flex;align-items:center;justify-content:center;z-index:60">
+    <div onClick="{{ stop }}" style="width:420px;background:#F9F8F6;border-radius:14px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.3)">
+      <div style="font-size:18px;font-weight:700">Invite a new user</div>
+      <div style="font-size:12.5px;color:#6B7566;margin:4px 0 18px">They'll receive an activation email scoped to the assigned role and facility.</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Full name</div><input value="{{ invName }}" onChange="{{ onInvName }}" placeholder="e.g. Maria Dela Cruz" style="width:100%;padding:10px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:14px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)"></div>
+        <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Email</div><input value="{{ invEmail }}" onChange="{{ onInvEmail }}" placeholder="name@rhu.gov.ph" style="width:100%;padding:10px 12px;border:1px solid #D8D5CC;border-radius:8px;font-size:14px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Role</div>
+            <select value="{{ invRole }}" onChange="{{ onInvRole }}" style="width:100%;padding:10px;border:1px solid #D8D5CC;border-radius:8px;font-size:13px;background:#fff"><sc-for list="{{ roles }}" as="r" hint-placeholder-count="4"><option value="{{ r }}">{{ r }}</option></sc-for></select></div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:5px">Facility</div>
+            <select value="{{ invFacility }}" onChange="{{ onInvFacility }}" style="width:100%;padding:10px;border:1px solid #D8D5CC;border-radius:8px;font-size:13px;background:#fff"><option>RHU Malanday</option><option>Brgy. San Isidro</option><option>Brgy. Poblacion</option><option>Region IV-A Office</option><option>Hardy &amp; Co. HQ</option></select></div>
+        </div>
+        <sc-if value="{{ invError }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#B0523F;background:#B0523F14;border:1px solid #B0523F33;border-radius:8px;padding:8px 12px">Name and email are required.</div></sc-if>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button onClick="{{ sendInvite }}" style="flex:1;padding:11px;border-radius:8px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">Send invite</button>
+          <button onClick="{{ closeInvite }}" style="padding:11px 18px;border-radius:8px;border:1px solid #D8D5CC;background:#fff;color:#6B7566;font-size:13.5px;font-weight:600;cursor:pointer">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ chatClosed }}" hint-placeholder-val="{{ false }}">
+  <button onClick="{{ openChat }}" style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:9px;padding:13px 20px;border-radius:26px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 10px 28px rgba(30,58,47,.4);animation:pulse 3s infinite" style-hover="background:#2A4A3C">✦ Assistant</button>
+</sc-if>
+<sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;right:24px;bottom:24px;z-index:70;width:390px;height:540px;max-height:calc(100vh - 48px);background:#F9F8F6;border:1px solid #E4E1D8;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.28);display:flex;flex-direction:column;overflow:hidden;animation:toastin .25s ease">
+    <div style="flex:none;display:flex;align-items:center;gap:10px;padding:14px 16px;background:#1E3A2F;color:#F9F8F6">
+      <div style="width:30px;height:30px;border-radius:9px;background:#A3B18B;color:#1E3A2F;display:flex;align-items:center;justify-content:center;font-size:15px">✦</div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700">AImhotech Assistant</div><div style="font-size:11px;color:#A3B18B">Grounded in {{ scopeLabel }}</div></div>
+      <button onClick="{{ clearChat }}" title="New conversation" style="border:none;background:transparent;color:#A3B18B;font-size:12px;font-weight:600;cursor:pointer;padding:4px 6px" style-hover="color:#F9F8F6">Clear</button>
+      <button onClick="{{ closeChat }}" style="border:none;background:transparent;color:#A3B18B;font-size:18px;cursor:pointer;line-height:1;padding:2px 6px" style-hover="color:#F9F8F6">×</button>
+    </div>
+    <div x-ref="{{ chatScrollRef }}" style="flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ chatMsgs }}" as="m" hint-placeholder-count="1">
+        <div style="display:flex;justify-content:{{ m.justify }}">
+          <div style="max-width:85%;padding:10px 14px;border-radius:{{ m.radius }};background:{{ m.bg }};color:{{ m.color }};font-size:13px;line-height:1.55;white-space:pre-wrap">{{ m.text }}</div>
+        </div>
+      </sc-for>
+      <sc-if value="{{ chatBusy }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:#6B7566"><span style="width:13px;height:13px;border:2px solid #A3B18B;border-top-color:#1E3A2F;border-radius:50%;animation:spin .7s linear infinite"></span>Thinking…</div>
+      </sc-if>
+      <sc-if value="{{ chatShowChips }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:2px">
+          <sc-for list="{{ chatChips }}" as="c" hint-placeholder-count="3">
+            <button onClick="{{ c.send }}" style="padding:7px 13px;border-radius:16px;border:1px solid #D9DFCE;background:#EFF2EA;color:#3F4A3A;font-size:12px;font-weight:500;cursor:pointer;text-align:left" style-hover="border:1px solid #4C7A5A">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+    <div style="flex:none;padding:12px;border-top:1px solid #E4E1D8;background:#fff;display:flex;gap:8px">
+      <input value="{{ chatInput }}" onChange="{{ onChatInput }}" onKeyDown="{{ onChatKey }}" placeholder="Ask about your queue, flags, referrals…" style="flex:1;padding:10px 13px;border:1px solid #D8D5CC;border-radius:10px;font-size:13.5px;background:#fff;outline:none" style-focus="border:1px solid #4C7A5A;box-shadow:0 0 0 3px rgba(76,122,90,.15)">
+      <button onClick="{{ sendChat }}" style="flex:none;padding:10px 16px;border-radius:10px;border:none;background:#1E3A2F;color:#F9F8F6;font-size:13px;font-weight:600;cursor:pointer" style-hover="background:#2A4A3C">Send</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;right:24px;bottom:24px;z-index:80;background:#1E3A2F;color:#F9F8F6;border-radius:10px;padding:13px 18px;font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 12px 32px rgba(0,0,0,.25);animation:toastin .25s ease"><span style="width:8px;height:8px;border-radius:50%;background:#A3B18B"></span>{{ toast }}</div>
+</sc-if>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;stalledDays&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:7,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:1,&quot;max&quot;:30,&quot;section&quot;:&quot;Referrals&quot;,&quot;description&quot;:&quot;Days before an unresolved referral is flagged as stalled&quot;},&quot;startRole&quot;:{&quot;editor&quot;:null,&quot;default&quot;:null,&quot;tsType&quot;:&quot;string | null&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const RISK={low:'#4C7A5A',moderate:'#C79A3C',elevated:'#B0523F'};
+    this.RISK=RISK;
+    this.PATIENTS=[
+      {id:'PT-042-0117',name:'Rosario Dimagiba',age:67,sex:'F',brgy:'San Isidro',risk:'elevated',vitals:'BP 165/102 · GLU 182',last:'Jul 24',screens:6,reason:'Repeat elevated BP + fasting glucose above threshold'},
+      {id:'PT-042-0093',name:'Ernesto Salvador',age:58,sex:'M',brgy:'Poblacion',risk:'elevated',vitals:'BP 158/98 · GLU 210',last:'Jul 24',screens:4,reason:'Glucose trend rising across 3 screenings'},
+      {id:'PT-042-0210',name:'Marites Ocampo',age:49,sex:'F',brgy:'Malanday',risk:'elevated',vitals:'BP 150/95 · GLU 168',last:'Jul 23',screens:5,reason:'Stage-2 hypertension range, untreated'},
+      {id:'PT-042-0076',name:'Luzviminda Santos',age:63,sex:'F',brgy:'Poblacion',risk:'elevated',vitals:'BP 170/105 · GLU 195',last:'Jul 20',screens:8,reason:'Highest composite risk score in RHU scope'},
+      {id:'PT-042-0058',name:'Antonio Mercado',age:70,sex:'M',brgy:'Malanday',risk:'elevated',vitals:'BP 162/100',last:'Jul 17',screens:5,reason:'Elevated BP, missed follow-up window'},
+      {id:'PT-042-0064',name:'Lito Bautista',age:61,sex:'M',brgy:'Bagong Silang',risk:'moderate',vitals:'BP 142/90',last:'Jul 23',screens:3,reason:'Borderline BP two screenings in a row'},
+      {id:'PT-042-0155',name:'Corazon Villanueva',age:72,sex:'F',brgy:'San Isidro',risk:'moderate',vitals:'BP 145/88 · GLU 131',last:'Jul 22',screens:7,reason:'Age-weighted BP risk'},
+      {id:'PT-042-0031',name:'Danilo Reyes',age:44,sex:'M',brgy:'Sta. Cruz',risk:'moderate',vitals:'BP 138/86',last:'Jul 22',screens:2,reason:'First-time borderline reading'},
+      {id:'PT-042-0121',name:'Teresita Ramos',age:59,sex:'F',brgy:'San Isidro',risk:'moderate',vitals:'BP 140/89 · GLU 127',last:'Jul 18',screens:4,reason:'Pre-diabetic glucose range'},
+      {id:'PT-042-0188',name:'Imelda Navarro',age:55,sex:'F',brgy:'Mabini',risk:'low',vitals:'BP 122/78 · GLU 98',last:'Jul 21',screens:3},
+      {id:'PT-042-0142',name:'Roberto Cruz',age:39,sex:'M',brgy:'Del Pilar',risk:'low',vitals:'BP 118/76 · GLU 92',last:'Jul 21',screens:2},
+      {id:'PT-042-0199',name:'Fernando Aquino',age:52,sex:'M',brgy:'Maligaya',risk:'low',vitals:'BP 125/80 · GLU 101',last:'Jul 19',screens:3}
+    ];
+    this.BRGYS=[
+      {name:'San Isidro',screenings:214,pct:18},{name:'Poblacion',screenings:189,pct:22},
+      {name:'Malanday',screenings:176,pct:15},{name:'Bagong Silang',screenings:142,pct:9},
+      {name:'Sta. Cruz',screenings:138,pct:11},{name:'Mabini',screenings:121,pct:6},
+      {name:'Del Pilar',screenings:97,pct:5},{name:'Maligaya',screenings:88,pct:7}
+    ];
+    this.WEEKS=[62,71,68,84,79,92,88,103,97,110,118,124];
+    this.state={
+      loggedIn:true, role:'RHU Physician', route:'dashboard',
+      loginEmail:'', loginPass:'', loginError:false,
+      q:'', selId:null,
+      qf:'all', qsel:{},
+      queue:[
+        {pid:'PT-042-0076',status:'unclaimed',flagged:'Jul 20, 07:12'},
+        {pid:'PT-042-0117',status:'unclaimed',flagged:'Jul 24, 08:03'},
+        {pid:'PT-042-0093',status:'other',reviewer:'Dr. Reyes',flagged:'Jul 24, 08:41'},
+        {pid:'PT-042-0210',status:'unclaimed',flagged:'Jul 23, 14:22'},
+        {pid:'PT-042-0058',status:'unclaimed',flagged:'Jul 17, 09:55'},
+        {pid:'PT-042-0064',status:'other',reviewer:'Dr. Uy',flagged:'Jul 23, 10:18'},
+        {pid:'PT-042-0155',status:'unclaimed',flagged:'Jul 22, 11:30'},
+        {pid:'PT-042-0121',status:'unclaimed',flagged:'Jul 18, 16:44'}
+      ],
+      referrals:[
+        {id:'REF-2107',pid:'PT-042-0076',facility:'Prov. Hospital — Cardio',stage:1,days:9},
+        {id:'REF-2111',pid:'PT-042-0117',facility:'Far EasTone Health⁺ consult',stage:0,days:2},
+        {id:'REF-2098',pid:'PT-042-0210',facility:'Prov. Hospital — IM',stage:2,days:3},
+        {id:'REF-2091',pid:'PT-042-0058',facility:'District Hospital — IM',stage:1,days:11},
+        {id:'REF-2086',pid:'PT-042-0155',facility:'Far EasTone Health⁺ consult',stage:3,days:0},
+        {id:'REF-2079',pid:'PT-042-0031',facility:'RHU Malanday follow-up',stage:3,days:0}
+      ],
+      valStep:'idle', license:'', valRecord:'',
+      validated:[
+        {record:'Screening #S-8841 — Luzviminda Santos',by:'Dr. A. Reyes (PRC 0384712)',when:'Jul 24, 15:02'},
+        {record:'Screening #S-8790 — Corazon Villanueva',by:'Dr. J. Uy (PRC 0291045)',when:'Jul 22, 10:47'},
+        {record:'Screening #S-8712 — Danilo Reyes',by:'Dr. A. Reyes (PRC 0384712)',when:'Jul 19, 09:15'}
+      ],
+      repType:0, repStep:'idle',
+      uq:'', showInvite:false, invName:'', invEmail:'', invRole:'Barangay Health Worker', invFacility:'RHU Malanday', invError:false,
+      users:[
+        {name:'Dr. Amelia Reyes',email:'a.reyes@rhu.gov.ph',role:'RHU Physician',facility:'RHU Malanday',active:true},
+        {name:'Dr. Jonathan Uy',email:'j.uy@rhu.gov.ph',role:'RHU Physician',facility:'RHU Malanday',active:true},
+        {name:'Maria Dela Cruz',email:'m.delacruz@brgy.gov.ph',role:'Barangay Health Worker',facility:'Brgy. San Isidro',active:true},
+        {name:'Josefina Lim',email:'j.lim@brgy.gov.ph',role:'Barangay Health Worker',facility:'Brgy. Poblacion',active:true},
+        {name:'Ramon Villareal',email:'r.villareal@doh.gov.ph',role:'DOH Regional Officer',facility:'Region IV-A Office',active:true},
+        {name:'Carlo Mendoza',email:'c.mendoza@hardyco.ph',role:'Super Admin',facility:'Hardy & Co. HQ',active:true},
+        {name:'Elena Pascual',email:'e.pascual@brgy.gov.ph',role:'Barangay Health Worker',facility:'Brgy. Mabini',active:false}
+      ],
+      aq:'', toast:null,
+      chatOpen:false, chatInput:'', chatBusy:false, chatMsgs:[],
+      anomalies:[
+        {id:'IFA-1042',sev:'critical',type:'Data integrity',title:'Physiologically implausible reading at KSK-042-02',detail:'Glucose 812 mg/dL captured for PT-042-0142 (Poblacion). Value exceeds device ceiling — probable strip error or manual entry fault. Record quarantined from risk scoring.',time:'Today 08:52',status:'open'},
+        {id:'IFA-1041',sev:'critical',type:'Device drift',title:'BP cuff MLF-BP-0152 drifting +12 mmHg vs baseline',detail:'Rolling 50-reading mean is 12 mmHg above facility baseline since Jul 22. 3 elevated-risk flags in Poblacion may be device-induced. Recalibration recommended before next session.',time:'Today 07:15',status:'open'},
+        {id:'IFA-1039',sev:'warning',type:'Duplicate identity',title:'Possible duplicate enrollment in San Isidro',detail:'PT-042-0117 and kiosk enrollment K-5518 share name, birth year, and address fingerprint (match score 0.94). Merging preserves both screening histories.',time:'Yesterday 16:40',status:'open'},
+        {id:'IFA-1036',sev:'warning',type:'Volume anomaly',title:'Screening volume spike in Poblacion (+3.1σ)',detail:'184 screenings in 48h vs seasonal mean of 61. Consistent with the announced barangay health drive — confirm to suppress alerts for this window.',time:'Yesterday 11:02',status:'open'},
+        {id:'IFA-1031',sev:'info',type:'Coverage gap',title:'No senior (65+) screenings in Del Pilar for 21 days',detail:'Historical cadence is every 9 days. May indicate outreach lapse rather than data fault.',time:'Jul 23',status:'ack',resolution:'Acknowledged — routed to BHW outreach worklist'},
+        {id:'IFA-1028',sev:'warning',type:'Device drift',title:'Glucometer BNM-GL-0072 cold-storage variance',detail:'Morning readings 8% below afternoon distribution. Pattern matched strip storage temperature issue.',time:'Jul 21',status:'dismissed',resolution:'Dismissed as false positive — fed to retraining set'}
+      ]
+    };
+    this.devices=[
+      {id:'KSK-042-01',type:'Kiosk terminal',facility:'Brgy. San Isidro',status:'online',fw:'v2.4.1',sync:'2 min ago'},
+      {id:'MLF-BP-0148',type:'Microlife BP A7',facility:'Brgy. San Isidro',status:'online',fw:'v1.9.0',sync:'2 min ago'},
+      {id:'BNM-GL-0072',type:'Bionime GM700',facility:'Brgy. San Isidro',status:'online',fw:'v3.1.2',sync:'2 min ago'},
+      {id:'KSK-042-02',type:'Kiosk terminal',facility:'Brgy. Poblacion',status:'online',fw:'v2.4.1',sync:'11 min ago'},
+      {id:'MLF-BP-0152',type:'Microlife BP A7',facility:'Brgy. Poblacion',status:'maintenance',fw:'v1.8.4',sync:'6 h ago'},
+      {id:'KSK-042-03',type:'Kiosk terminal',facility:'Brgy. Malanday',status:'online',fw:'v2.4.1',sync:'4 min ago'},
+      {id:'BNM-GL-0075',type:'Bionime GM700',facility:'Brgy. Malanday',status:'online',fw:'v3.1.2',sync:'4 min ago'},
+      {id:'KSK-042-04',type:'Kiosk terminal',facility:'Brgy. Bagong Silang',status:'offline',fw:'v2.3.9',sync:'2 d ago'},
+      {id:'MLF-BP-0160',type:'Microlife BP A7',facility:'Brgy. Sta. Cruz',status:'online',fw:'v1.9.0',sync:'18 min ago'}
+    ];
+    this.audit=[
+      {time:'07-26 09:38:12',actor:'Dr. Amelia Reyes',action:'VIEW',entity:'Patient PT-042-0117',ctx:'Risk queue drill-down · 203.87.14.2'},
+      {time:'07-26 09:31:47',actor:'Dr. Amelia Reyes',action:'UPDATE',entity:'Referral REF-2098',ctx:'Status: referred → seen'},
+      {time:'07-26 09:02:05',actor:'Maria Dela Cruz',action:'VIEW',entity:'Station sync report',ctx:'Brgy. San Isidro'},
+      {time:'07-25 17:44:31',actor:'Carlo Mendoza',action:'CREATE',entity:'User e.pascual@brgy.gov.ph',ctx:'Role: BHW · Brgy. Mabini'},
+      {time:'07-25 16:20:09',actor:'Dr. Jonathan Uy',action:'VALIDATE',entity:'Screening S-8841',ctx:'PRC 0291045 · QR verified'},
+      {time:'07-25 14:11:58',actor:'system',action:'FLAG',entity:'Patient PT-042-0117',ctx:'AI Brain risk model v3.2'},
+      {time:'07-25 11:03:26',actor:'Ramon Villareal',action:'EXPORT',entity:'Report RPT-0663',ctx:'Q2 population summary · PDF'},
+      {time:'07-25 09:47:40',actor:'Dr. Amelia Reyes',action:'VIEW',entity:'Patient PT-042-0076',ctx:'Patient registry search'},
+      {time:'07-24 18:29:03',actor:'system',action:'SYNC',entity:'Device KSK-042-04',ctx:'Sync failed — offline 48h alert'},
+      {time:'07-24 15:02:11',actor:'Dr. Amelia Reyes',action:'VALIDATE',entity:'Screening S-8841',ctx:'PRC 0384712 · QR verified'}
+    ];
+    this.activity=[
+      {text:'AI Brain flagged Rosario Dimagiba (San Isidro) — repeat elevated BP',time:'36 min ago',dot:'#B0523F'},
+      {text:'Referral REF-2098 marked “Seen” — Marites Ocampo at Prov. Hospital',time:'1 h ago',dot:'#4C7A5A'},
+      {text:'Kiosk KSK-042-04 (Bagong Silang) offline for 48h — ops notified',time:'3 h ago',dot:'#C79A3C'},
+      {text:'Dr. Uy validated screening S-8841 as diagnostic-grade',time:'Yesterday',dot:'#4C7A5A'},
+      {text:'214 screenings synced from San Isidro station this week',time:'Yesterday',dot:'#A3B18B'},
+      {text:'Monthly DOH report RPT-0663 exported by Region IV-A office',time:'Yesterday',dot:'#A3B18B'}
+    ];
+    this.REPORT_TYPES=[
+      {label:'Monthly screening summary',desc:'Volume, risk mix, and station coverage'},
+      {label:'Referral outcomes',desc:'Funnel from flagged to resolved, aging analysis'},
+      {label:'Cost per screening',desc:'Unit economics per station and LGU'},
+      {label:'DOH quarterly export',desc:'Formatted for DOH regional submission'}
+    ];
+  }
+  navFor(role){
+    const all=[['dashboard','Dashboard'],['patients','Patient Registry'],['queue','Risk Queue'],['referrals','Referrals'],['aibrain','AI Brain & IFA'],['validation','Clinical Validation'],['devices','Device Fleet'],['reports','Reports & Analytics'],['users','Users & Roles'],['audit','Audit Log'],['settings','Settings']];
+    const allow={
+      'Barangay Health Worker':['dashboard','patients','settings'],
+      'RHU Physician':['dashboard','patients','queue','referrals','aibrain','validation','reports','settings'],
+      'DOH Regional Officer':['dashboard','aibrain','reports','settings'],
+      'Super Admin':['dashboard','patients','queue','referrals','aibrain','validation','devices','reports','users','audit','settings']
+    }[role];
+    return all.filter(a=>allow.includes(a[0]));
+  }
+  showToast(msg){ clearTimeout(this._tt); this.setState({toast:msg}); this._tt=setTimeout(()=>this.setState({toast:null}),2600); }
+  scrollChat(){ const el=this._chatEl; if(el) requestAnimationFrame(()=>{ el.scrollTop=el.scrollHeight; }); }
+  buildContext(){
+    const s=this.state;
+    const open=s.anomalies.filter(a=>a.status==='open').map(a=>`- [${a.sev.toUpperCase()}] ${a.id} (${a.type}): ${a.title}. ${a.detail}`).join('\n');
+    const unclaimed=s.queue.filter(q=>q.status==='unclaimed').map(q=>{const p=this.patientById(q.pid);return `- ${p.name}, ${p.age}${p.sex}, Brgy. ${p.brgy}, ${p.risk} risk: ${p.reason||'routine'} (vitals ${p.vitals}, flagged ${q.flagged})`;}).join('\n');
+    const stalled=s.referrals.filter(r=>r.stage<3&&r.days>=(this.props.stalledDays??7)).map(r=>{const p=this.patientById(r.pid);return `- ${r.id} ${p.name} → ${r.facility}, stage "${['Flagged','Referred','Seen','Resolved'][r.stage]}", ${r.days}d idle`;}).join('\n');
+    return `You are the AImhotech Assistant embedded in a Philippine community-health web admin platform (kiosk-based NCD screening: BP + glucose). Current user: ${s.role}. Today is Jul 27, 2026.
+
+Data in the user's scope right now:
+KPIs this month: 1,165 screenings (+12%), 13.4% elevated-risk share, 78% referral completion, 7/8 stations online (KSK-042-04 Bagong Silang offline 48h).
+Barangays by elevated-risk %: Poblacion 22%, San Isidro 18%, Malanday 15%, Sta. Cruz 11%, Bagong Silang 9%, Maligaya 7%, Mabini 6%, Del Pilar 5%.
+
+OPEN IFA ANOMALY FLAGS (Intelligent Flagging Agent):
+${open||'(none)'}
+
+UNCLAIMED RISK QUEUE:
+${unclaimed||'(none)'}
+
+STALLED REFERRALS:
+${stalled||'(none)'}
+
+Rules: answer only from this data; be concise (under 120 words unless asked for a draft); PLAIN TEXT ONLY — never use markdown of any kind: no ** bold, no * or - bullets, no # headers, no backticks; use "–" dashes for lists. You cannot take actions — point the user to the module (Risk Queue, Referrals, AI Brain & IFA, Device Fleet) instead. Kiosk data is screening-grade, never diagnostic; clinical decisions rest with the physician.`;
+  }
+  async sendChatMsg(text){
+    const msg=text.trim(); if(!msg||this.state.chatBusy) return;
+    const history=[...this.state.chatMsgs,{role:'user',text:msg}];
+    this.setState({chatMsgs:history,chatInput:'',chatBusy:true}); this.scrollChat();
+    let reply;
+    try{
+      if(window.claude&&window.claude.complete){
+        reply=await window.claude.complete({system:this.buildContext(),messages:history.map(m=>({role:m.role==='user'?'user':'assistant',content:m.text}))});
+      }else{
+        reply='(Demo mode — live AI is unavailable here.) Based on your scope: 2 critical IFA flags are open — an implausible glucose reading at KSK-042-02 and BP-cuff drift at MLF-BP-0152 that may explain recent Poblacion flags. Your top unclaimed case is Rosario Dimagiba (San Isidro, repeat elevated BP). REF-2091 has been idle 11 days. Start in AI Brain & IFA, then the Risk Queue.';
+      }
+    }catch(e){ reply='Sorry — I could not reach the AI service just now. Please try again in a moment.'; }
+    reply=String(reply).replace(/\*\*/g,'').replace(/^#+\s*/gm,'').replace(/^\s*[*-]\s+/gm,'– ').replace(/`/g,'');
+    this.setState(st=>({chatMsgs:[...st.chatMsgs,{role:'assistant',text:reply}],chatBusy:false})); this.scrollChat();
+  }
+  patientById(id){ return this.PATIENTS.find(p=>p.id===id); }
+  renderVals(){
+    const s=this.state, RISK=this.RISK;
+    const stalledDays=this.props.stalledDays??7;
+    const role=s.role;
+    const scopeMap={'Barangay Health Worker':'Brgy. San Isidro Station','RHU Physician':'RHU Malanday · 8 stations','DOH Regional Officer':'Region IV-A · 3 RHUs','Super Admin':'All facilities · platform-wide'};
+    const nameMap={'Barangay Health Worker':'Maria Dela Cruz','RHU Physician':'Dr. Amelia Reyes','DOH Regional Officer':'Ramon Villareal','Super Admin':'Carlo Mendoza'};
+    const roleShortMap={'Barangay Health Worker':'BHW · Admin view','RHU Physician':'RHU Physician','DOH Regional Officer':'DOH Regional Officer','Super Admin':'Super Admin'};
+    const userName=nameMap[role];
+    const titles={dashboard:'Population Health Dashboard',patients:'Patient Registry',queue:'Risk Queue',referrals:'Referral Management',aibrain:'AI Brain & IFA',validation:'Clinical Validation',devices:'Device & Kiosk Fleet',reports:'Reports & Analytics',users:'User & Role Management',audit:'Audit Log',settings:'Settings'};
+    const unclaimed=this.state.queue.filter(x=>x.status==='unclaimed').length;
+    const nav=this.navFor(role).map(([key,label])=>({
+      label, key,
+      bg: s.route===key?'rgba(163,177,139,.2)':'transparent',
+      color: s.route===key?'#F9F8F6':'#BEC9B2',
+      weight: s.route===key?600:400,
+      dot: s.route===key?'#A3B18B':'transparent',
+      count: key==='queue'&&unclaimed>0?String(unclaimed):(key==='aibrain'&&this.state.anomalies.filter(a=>a.status==='open'&&a.sev==='critical').length>0?String(this.state.anomalies.filter(a=>a.status==='open'&&a.sev==='critical').length):null),
+      go:()=>this.setState({route:key,selId:null})
+    }));
+    const riskLabel=r=>r==='low'?'Low':r==='moderate'?'Moderate':'Elevated';
+    const badge=p=>({riskColor:RISK[p.risk],riskBg:RISK[p.risk]+'1C',riskLabel:riskLabel(p.risk)});
+    // patients scoped
+    let scoped=this.PATIENTS;
+    if(role==='Barangay Health Worker') scoped=scoped.filter(p=>p.brgy==='San Isidro');
+    const ql=s.q.toLowerCase();
+    const filtered=scoped.filter(p=>!ql||p.name.toLowerCase().includes(ql)||p.id.toLowerCase().includes(ql)||p.brgy.toLowerCase().includes(ql));
+    const patientRows=filtered.map((p,i)=>({...p,...badge(p),agesex:p.age+' · '+p.sex,zebra:i%2?'#F1EEE7':'#fff',open:()=>this.setState({selId:p.id})}));
+    // selected patient
+    const selP=s.selId?this.patientById(s.selId):null;
+    let sel={},selHistory=[];
+    if(selP){
+      const ref=s.referrals.find(r=>r.pid===selP.id);
+      const stages=['Flagged','Referred','Seen','Resolved'];
+      sel={...selP,...badge(selP),agesex:selP.age+' yrs · '+(selP.sex==='F'?'Female':'Male'),
+        initials:selP.name.split(' ').map(w=>w[0]).slice(0,2).join(''),screenCount:selP.screens,
+        hasReferral:!!ref,noReferral:!ref,
+        refId:ref?ref.id:'',refFacility:ref?ref.facility:'',refStatus:ref?stages[ref.stage]:'',refDays:ref?ref.days:0};
+      selHistory=[
+        {date:selP.last,source:'Kiosk screening · Brgy. '+selP.brgy,vitals:selP.vitals,note:'Auto-synced from station kiosk. '+(selP.reason||'Within normal range.'),grade:'Screening',gradeColor:'#6B7566',gradeBg:'#F1EEE7'},
+        {date:'Jun 30',source:'Kiosk screening · Brgy. '+selP.brgy,vitals:'BP 148/92 · GLU 156',note:'BHW-assisted session, Microlife + Bionime paired.',grade:'Screening',gradeColor:'#6B7566',gradeBg:'#F1EEE7'},
+        {date:'May 12',source:'Hospital record · Prov. Hospital',vitals:'BP 150/94 · HbA1c 6.9%',note:'Submitted by Dr. A. Reyes, license + QR verified.',grade:'Diagnostic',gradeColor:'#2F5B40',gradeBg:'#4C7A5A14'}
+      ];
+    }
+    // dashboard
+    const kpis=[
+      {label:'Screenings this month',value:'1,165',trend:'▲ 12%',trendColor:'#4C7A5A',color:'#24291F'},
+      {label:'Elevated-risk share',value:'13.4%',trend:'▲ 1.8 pts',trendColor:'#B0523F',color:'#B0523F'},
+      {label:'Referral completion',value:'78%',trend:'▲ 6 pts',trendColor:'#4C7A5A',color:'#24291F'},
+      {label:'Stations online',value:'7 / 8',trend:'▼ 1 kiosk',trendColor:'#C79A3C',color:'#24291F'}
+    ];
+    const heat=this.BRGYS.map(b=>{
+      const tier=b.pct>=18?2:b.pct>=10?1:0;
+      const bgs=['#4C7A5A14','#C79A3C1F','#B0523F1F'],bds=['#4C7A5A44','#C79A3C55','#B0523F55'],cols=['#3F6A4E','#8F6E23','#B0523F'];
+      return {...b,bg:bgs[tier],border:bds[tier],pctColor:cols[tier],go:()=>{this.setState({route:'patients',q:b.name,selId:null});}};
+    });
+    const max=Math.max(...this.WEEKS);
+    const bars=this.WEEKS.map((v,i)=>({h:Math.round(v/max*100)+'%',label:'W'+(i+1),tip:v+' screenings',color:i===this.WEEKS.length-1?'#4C7A5A':'#A3B18B'}));
+    // queue
+    const qrowsBase=s.queue.map(q=>({q,p:this.patientById(q.pid)}));
+    const qFiltered=qrowsBase.filter(({q,p})=>{
+      if(s.qf==='elevated')return p.risk==='elevated';
+      if(s.qf==='moderate')return p.risk==='moderate';
+      if(s.qf==='unclaimed')return q.status==='unclaimed';
+      return true;
+    });
+    const order={elevated:0,moderate:1,low:2};
+    qFiltered.sort((a,b)=>order[a.p.risk]-order[b.p.risk]);
+    const queueRows=qFiltered.map(({q,p},i)=>{
+      const mine=q.status==='mine',other=q.status==='other';
+      return {...badge(p),name:p.name,agesex:'· '+p.age+p.sex,brgy:p.brgy,reason:p.reason||'Routine review',flagged:q.flagged,
+        status:mine?'In review · you':other?'In review · '+q.reviewer:'Unclaimed',
+        statusColor:mine?'#2F5B40':other?'#8F6E23':'#6B7566',
+        checked:!!s.qsel[q.pid],zebra:i%2?'#F1EEE7':'#fff',
+        toggle:()=>this.setState(st=>({qsel:{...st.qsel,[q.pid]:!st.qsel[q.pid]}})),
+        open:()=>this.setState({route:'patients',selId:p.id}),
+        btnLabel:mine?'Open case':other?'View':'Claim',
+        btnBg:mine?'#1E3A2F':'#fff',btnColor:mine?'#F9F8F6':other?'#6B7566':'#1E3A2F',btnBorder:mine?'#1E3A2F':other?'#D8D5CC':'#1E3A2F',
+        claim:()=>{ if(q.status==='unclaimed'){ this.setState(st=>({queue:st.queue.map(x=>x.pid===q.pid?{...x,status:'mine'}:x)})); this.showToast('Case claimed — '+p.name+' is now in your review list.'); } else { this.setState({route:'patients',selId:p.id}); } }
+      };
+    });
+    const qfs=[['all','All'],['elevated','Elevated'],['moderate','Moderate'],['unclaimed','Unclaimed']];
+    const queueFilters=qfs.map(([k,label])=>({label,set:()=>this.setState({qf:k}),
+      bg:s.qf===k?'#1E3A2F':'#fff',color:s.qf===k?'#F9F8F6':'#3F4A3A',border:s.qf===k?'#1E3A2F':'#D8D5CC'}));
+    const queueSelCount=Object.values(s.qsel).filter(Boolean).length;
+    // referrals
+    const stages=['Flagged','Referred','Seen','Resolved'];
+    const referralRows=s.referrals.map(r=>{
+      const p=this.patientById(r.pid);
+      const stalled=r.stage<3&&r.days>=stalledDays;
+      const steps=stages.map((label,i)=>{
+        const done=i<=r.stage;
+        return {label,fill:done?(stalled&&i===r.stage?'#C79A3C':'#4C7A5A'):'#fff',ring:done?(stalled&&i===r.stage?'#C79A3C':'#4C7A5A'):'#D8D5CC',
+          line:i<r.stage?'#4C7A5A':'#E4E1D8',hasLine:i<3,color:done?'#24291F':'#9AA394',w:i===r.stage?700:500,flex:i<3?'1':'none'};
+      });
+      return {id:r.id,patient:p.name,brgy:'Brgy. '+p.brgy,facility:r.facility,steps,days:r.days,stalled,fresh:!stalled&&r.stage<3,
+        cardBorder:stalled?'#B0523F55':'#E4E1D8',canAdvance:r.stage<3,done:r.stage===3,nextLabel:'Mark '+stages[Math.min(r.stage+1,3)].toLowerCase(),
+        advance:()=>{ this.setState(st=>({referrals:st.referrals.map(x=>x.id===r.id?{...x,stage:x.stage+1,days:0}:x)})); this.showToast(r.id+' advanced to “'+stages[r.stage+1]+'”.'); }};
+    });
+    const active=s.referrals.filter(r=>r.stage<3);
+    const refStats=[
+      {label:'Active referrals',value:String(active.length),color:'#24291F'},
+      {label:'Stalled (≥ '+stalledDays+'d)',value:String(active.filter(r=>r.days>=stalledDays).length),color:'#B0523F'},
+      {label:'Resolved this month',value:String(s.referrals.filter(r=>r.stage===3).length),color:'#4C7A5A'},
+      {label:'Median days to seen',value:'4.5',color:'#24291F'}
+    ];
+    // validation
+    const valRecords=['Screening #S-8902 — Ernesto Salvador (Prov. Hospital)','Screening #S-8877 — Antonio Mercado (District Hospital)'];
+    // reports
+    const reportTypes=this.REPORT_TYPES.map((t,i)=>({...t,pick:()=>this.setState({repType:i,repStep:'idle'}),
+      border:s.repType===i?'#1E3A2F':'#E4E1D8',bg:s.repType===i?'#EFF2EA':'#fff',color:'#24291F'}));
+    const repRows=this.BRGYS.map((b,i)=>({name:b.name,screenings:b.screenings,pct:b.pct,refs:Math.round(b.screenings*b.pct/100*0.78),cost:(118+i*7).toFixed(0),zebra:i%2?'#F1EEE7':'#fff',pctColor:b.pct>=18?'#B0523F':b.pct>=10?'#8F6E23':'#3F6A4E'}));
+    const repKpis=[
+      {label:'Total screenings',value:'1,165',color:'#24291F'},
+      {label:'Avg cost per screening',value:'₱136',color:'#24291F'},
+      {label:'Referral completion',value:'78%',color:'#4C7A5A'}
+    ];
+    // users
+    const uql=s.uq.toLowerCase();
+    const userRows=s.users.filter(u=>!uql||u.name.toLowerCase().includes(uql)||u.role.toLowerCase().includes(uql)||u.facility.toLowerCase().includes(uql))
+      .map((u,i)=>({...u,zebra:i%2?'#F1EEE7':'#fff',status:u.active?'Active':'Deactivated',stColor:u.active?'#4C7A5A':'#B0523F',
+        actionLabel:u.active?'Deactivate':'Reactivate',
+        toggleActive:()=>{ this.setState(st=>({users:st.users.map(x=>x.email===u.email?{...x,active:!x.active}:x)})); this.showToast(u.name+(u.active?' deactivated.':' reactivated.')); }}));
+    // devices
+    const stMap={online:['Online','#4C7A5A','pulse 2.4s infinite'],offline:['Offline','#B0523F','none'],maintenance:['Maintenance due','#C79A3C','none']};
+    const deviceRows=this.devices.map((d,i)=>({...d,zebra:i%2?'#F1EEE7':'#fff',status:stMap[d.status][0],stColor:stMap[d.status][1],anim:stMap[d.status][2],fwColor:d.fw<'v2'&&d.type!=='Kiosk terminal'?'#24291F':d.fw==='v2.3.9'?'#C79A3C':'#24291F'}));
+    const devStats=[
+      {label:'Devices online',value:this.devices.filter(d=>d.status==='online').length+' / '+this.devices.length,color:'#4C7A5A'},
+      {label:'Needs attention',value:String(this.devices.filter(d=>d.status!=='online').length),color:'#B0523F'},
+      {label:'Stations covered',value:'8',color:'#24291F'}
+    ];
+    // audit
+    const aql=s.aq.toLowerCase();
+    const actColors={VIEW:['#3F4A3A','#EFF2EA'],UPDATE:['#8F6E23','#C79A3C1F'],CREATE:['#2F5B40','#4C7A5A14'],VALIDATE:['#2F5B40','#4C7A5A14'],FLAG:['#B0523F','#B0523F14'],EXPORT:['#3F4A3A','#EFF2EA'],SYNC:['#8F6E23','#C79A3C1F']};
+    const auditFiltered=this.audit.filter(a=>!aql||a.actor.toLowerCase().includes(aql)||a.action.toLowerCase().includes(aql)||a.entity.toLowerCase().includes(aql));
+    const auditRows=auditFiltered.map((a,i)=>({...a,zebra:i%2?'#F1EEE7':'#fff',actColor:actColors[a.action][0],actBg:actColors[a.action][1]}));
+    return {
+      loggedIn:s.loggedIn, loggedOut:!s.loggedIn,
+      roles:['RHU Physician','Barangay Health Worker','DOH Regional Officer','Super Admin'],
+      role, onRole:e=>{ const r=e.target.value; const allowed=this.navFor(r).map(a=>a[0]); this.setState({role:r,route:allowed.includes(s.route)?s.route:'dashboard',selId:null}); },
+      loginEmail:s.loginEmail,loginPass:s.loginPass,loginError:s.loginError,
+      onLoginEmail:e=>this.setState({loginEmail:e.target.value,loginError:false}),
+      onLoginPass:e=>this.setState({loginPass:e.target.value}),
+      doLogin:()=>{ if(!s.loginEmail.trim()){this.setState({loginError:true});return;} this.setState({loggedIn:true,route:'dashboard'}); this.showToast('Welcome back, '+nameMap[this.state.role]+'.'); },
+      nav, pageTitle:titles[s.route], scopeLabel:scopeMap[role], userName, userInitials:userName.split(' ').map(w=>w[0]).slice(0,2).join('').replace('.',''), roleShort:roleShortMap[role],
+      isDashboard:s.route==='dashboard',isPatients:s.route==='patients',isQueue:s.route==='queue',isReferrals:s.route==='referrals',isValidation:s.route==='validation',isDevices:s.route==='devices',isReports:s.route==='reports',isUsers:s.route==='users',isAudit:s.route==='audit',isSettings:s.route==='settings',
+      kpis,heat,bars,activity:this.activity,
+      goQueueLink:e=>{e.preventDefault();this.setState({route:role==='DOH Regional Officer'?'dashboard':'queue'});},
+      goReferralsLink:e=>{e.preventDefault();this.setState({route:'referrals'});},
+      q:s.q,onQ:e=>this.setState({q:e.target.value}),patientCount:filtered.length,patientRows,noResults:filtered.length===0,
+      noPatientSel:!selP,hasPatientSel:!!selP,sel,selHistory,
+      closePatient:e=>{e.preventDefault();this.setState({selId:null});},
+      queueFilters,queueRows,queueEmpty:queueRows.length===0,hasQueueSel:queueSelCount>0,queueSelCount,
+      bulkRefer:()=>{ this.showToast(queueSelCount+' referral'+(queueSelCount>1?'s':'')+' created and routed to Referral Management.'); this.setState({qsel:{}}); },
+      bulkClear:()=>this.setState({qsel:{}}),
+      refStats,referralRows,stalledDaysLabel:String(stalledDays),
+      valRecords,valRecord:s.valRecord||valRecords[0],onValRecord:e=>this.setState({valRecord:e.target.value,valStep:'idle'}),
+      license:s.license,onLicense:e=>this.setState({license:e.target.value,valStep:'idle'}),
+      valIdle:s.valStep==='idle',valVerifying:s.valStep==='verifying',valFailed:s.valStep==='failed',valVerified:s.valStep==='verified',
+      doVerify:()=>{ this.setState({valStep:'verifying'}); setTimeout(()=>{ const ok=this.state.license.replace(/\D/g,'').length>=6; this.setState({valStep:ok?'verified':'failed'}); },1100); },
+      doSubmitVal:()=>{ const rec=(this.state.valRecord||valRecords[0]).split(' (')[0]; this.setState(st=>({validated:[{record:rec.replace('Screening #','Screening #'),by:'Dr. A. Reyes (PRC '+st.license+')',when:'Just now'},...st.validated],valStep:'idle',license:''})); this.showToast('Record submitted as diagnostic-grade.'); },
+      validated:s.validated,
+      devStats,deviceRows,
+      reportTypes,repTitle:this.REPORT_TYPES[s.repType].label,repKpis,repRows,
+      repIdle:s.repStep==='idle',repGenerating:s.repStep==='generating',repReady:s.repStep==='ready',
+      repScopeNote:'8 stations, 1,165 records',
+      genReport:()=>{ this.setState({repStep:'generating'}); setTimeout(()=>this.setState({repStep:'ready'}),1400); },
+      dlPdf:()=>this.showToast('Report PDF downloaded (demo).'),dlCsv:()=>this.showToast('CSV export downloaded (demo).'),
+      uq:s.uq,onUq:e=>this.setState({uq:e.target.value}),userRows,
+      showInvite:s.showInvite,openInvite:()=>this.setState({showInvite:true,invError:false}),closeInvite:()=>this.setState({showInvite:false}),stop:e=>e.stopPropagation(),
+      invName:s.invName,invEmail:s.invEmail,invRole:s.invRole,invFacility:s.invFacility,invError:s.invError,
+      onInvName:e=>this.setState({invName:e.target.value,invError:false}),onInvEmail:e=>this.setState({invEmail:e.target.value,invError:false}),
+      onInvRole:e=>this.setState({invRole:e.target.value}),onInvFacility:e=>this.setState({invFacility:e.target.value}),
+      sendInvite:()=>{ const st=this.state; if(!st.invName.trim()||!st.invEmail.trim()){this.setState({invError:true});return;} this.setState(x=>({users:[{name:st.invName,email:st.invEmail,role:st.invRole,facility:st.invFacility,active:true},...x.users],showInvite:false,invName:'',invEmail:''})); this.showToast('Invite sent to '+st.invEmail+'.'); },
+      aq:s.aq,onAq:e=>this.setState({aq:e.target.value}),auditRows,auditEmpty:auditRows.length===0,
+      exportAudit:()=>this.showToast('Audit log CSV exported (demo).'),
+      signOut:()=>this.setState({loggedIn:false,loginEmail:'',loginPass:'',route:'dashboard',chatOpen:false}),
+      toast:s.toast,
+      isAIBrain:s.route==='aibrain',
+      aiStats:[
+        {label:'Open IFA flags',value:String(s.anomalies.filter(a=>a.status==='open').length),color:'#B0523F'},
+        {label:'Critical severity',value:String(s.anomalies.filter(a=>a.status==='open'&&a.sev==='critical').length),color:'#B0523F'},
+        {label:'Flag precision (30d)',value:'91%',color:'#4C7A5A'},
+        {label:'Records scanned today',value:'1,412',color:'#24291F'}
+      ],
+      anomalyRows:(()=>{const sevMap={critical:['CRITICAL','#B0523F','#B0523F14','#B0523F55','#B0523F1A','pulse 2s infinite'],warning:['WARNING','#8F6E23','#C79A3C1F','#C79A3C66','#C79A3C14','none'],info:['INFO','#3F4A3A','#EFF2EA','#D9DFCE','#fff','none']};
+        const ordered=[...s.anomalies].sort((a,b)=>{const so={open:0,ack:1,dismissed:2},vo={critical:0,warning:1,info:2};return (so[a.status]-so[b.status])||(vo[a.sev]-vo[b.sev]);});
+        return ordered.map(a=>{const m=sevMap[a.sev];const open=a.status==='open';
+          return {...a,sev:m[0],sevColor:m[1],sevBg:m[2],dot:open?m[1]:'#9AA394',border:open?m[3]:'#E4E1D8',bg:open?m[4]:'#fff',anim:open?m[5]:'none',opacity:open?'1':'.62',
+            open,resolved:!open,resColor:a.status==='ack'?'#2F5B40':'#6B7566',
+            ack:()=>{this.setState(st=>({anomalies:st.anomalies.map(x=>x.id===a.id?{...x,status:'ack',resolution:'Acknowledged — routed to ops/clinical worklist'}:x)}));this.showToast(a.id+' acknowledged and routed.');},
+            dismiss:()=>{this.setState(st=>({anomalies:st.anomalies.map(x=>x.id===a.id?{...x,status:'dismissed',resolution:'Dismissed as false positive — fed to retraining set'}:x)}));this.showToast(a.id+' dismissed — added to retraining set.');},
+            ask:()=>{this.setState({chatOpen:true});this.scrollChat();this.sendChatMsg('Explain IFA flag '+a.id+' ("'+a.title+'") and what I should do about it.');}};
+        });})(),
+      aiModels:[
+        {name:'NCD risk scorer',desc:'Composite BP + glucose + demographic risk model powering the Risk Queue',ver:'v3.2'},
+        {name:'IFA anomaly detector',desc:'Device drift, implausible values, duplicates, volume & coverage anomalies',ver:'v1.8'},
+        {name:'Referral-stall predictor',desc:'Flags referrals likely to lapse before the stalled threshold',ver:'v0.9β'}
+      ],
+      chatOpen:s.chatOpen,chatClosed:!s.chatOpen,
+      openChat:()=>{this.setState({chatOpen:true});this.scrollChat();},
+      closeChat:()=>this.setState({chatOpen:false}),
+      clearChat:()=>this.setState({chatMsgs:[]}),
+      chatScrollRef:el=>{this._chatEl=el;},
+      chatMsgs:s.chatMsgs.map(m=>m.role==='user'
+        ?{...m,justify:'flex-end',bg:'#1E3A2F',color:'#F9F8F6',radius:'14px 14px 4px 14px'}
+        :{...m,justify:'flex-start',bg:'#fff',color:'#24291F',radius:'14px 14px 14px 4px'}),
+      chatBusy:s.chatBusy,
+      chatShowChips:s.chatMsgs.length===0&&!s.chatBusy,
+      chatChips:['What should I prioritize this morning?','Summarize the open IFA flags','Which referrals are at risk of stalling?','Why is Poblacion\u2019s risk share so high?'].map(label=>({label,send:()=>this.sendChatMsg(label)})),
+      chatInput:s.chatInput,
+      onChatInput:e=>this.setState({chatInput:e.target.value}),
+      onChatKey:e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();this.sendChatMsg(this.state.chatInput);}},
+      sendChat:()=>this.sendChatMsg(this.state.chatInput)
+    };
+  }
+}
+</script>
+</body>
+</html>
