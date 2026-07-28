@@ -1,80 +1,63 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useMobileStore } from '../../store/useMobileStore';
 
 export default function Onboarding() {
-  const [step, setStep] = useState(1);
-  const [consent, setConsent] = useState(false);
   const navigate = useNavigate();
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const setLanguage = useMobileStore(s => s.setLanguage);
 
   return (
-    <div className="flex flex-col min-h-screen bg-surface p-6 page-enter relative overflow-hidden">
-      <div className="flex justify-end gap-2 mb-4">
-        <button onClick={() => setLanguage('en')} className={`px-3 py-1 rounded-full text-sm font-bold ${language === 'en' ? 'bg-primary text-white' : 'bg-surface-container text-secondary'}`}>EN</button>
-        <button onClick={() => setLanguage('fil')} className={`px-3 py-1 rounded-full text-sm font-bold ${language === 'fil' ? 'bg-primary text-white' : 'bg-surface-container text-secondary'}`}>FIL</button>
-      </div>
-      
-      <div className="flex justify-center gap-2 mb-8">
-        {[1,2,3].map(i => (
-          <div key={i} className={`h-2 w-12 rounded-full transition-colors ${step === i ? 'bg-primary' : 'bg-outline-variant'}`} />
-        ))}
-      </div>
-
-      <div className="relative flex-1">
-        <div className={`absolute inset-0 transition-transform duration-300 ${step === 1 ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 pointer-events-none'}`}>
-          <div className="text-center mb-8">
-            <span className="material-symbols-outlined text-6xl text-primary mb-4">health_and_safety</span>
-            <h1 className="text-2xl font-bold mb-4">What is AImhotech?</h1>
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-start gap-3"><span className="material-symbols-outlined text-primary">check_circle</span><p>AI-powered early detection</p></div>
-            <div className="flex items-start gap-3"><span className="material-symbols-outlined text-primary">check_circle</span><p>Seamless clinic referrals</p></div>
-            <div className="flex items-start gap-3"><span className="material-symbols-outlined text-primary">check_circle</span><p>Community health insights</p></div>
-          </div>
+    <div className="flex flex-col min-h-screen bg-surface page-enter relative overflow-hidden items-center justify-center p-6 text-center">
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-sm mx-auto">
+        
+        {/* Animated App Icon Wrapper */}
+        <div className="w-24 h-24 bg-primary rounded-[32px] flex items-center justify-center mb-10 card-shadow-2 relative group">
+          <div className="absolute inset-0 bg-primary/20 rounded-[32px] animate-ping opacity-75 duration-1000" />
+          <span className="material-symbols-outlined text-white text-5xl relative z-10">temp_preferences_custom</span>
         </div>
 
-        <div className={`absolute inset-0 transition-transform duration-300 ${step === 2 ? 'translate-x-0 opacity-100' : step < 2 ? 'translate-x-full opacity-0 pointer-events-none' : '-translate-x-full opacity-0 pointer-events-none'}`}>
-          <h2 className="text-2xl font-bold mb-6">What data do we collect?</h2>
-          <div className="space-y-4 mb-8">
-            <div className="flex items-center gap-3 bg-surface-container p-4 rounded-xl"><span className="material-symbols-outlined text-primary">blood_pressure</span><p className="font-semibold">Blood Pressure</p></div>
-            <div className="flex items-center gap-3 bg-surface-container p-4 rounded-xl"><span className="material-symbols-outlined text-primary">monitor_heart</span><p className="font-semibold">Heart Rate</p></div>
-            <div className="flex items-center gap-3 bg-surface-container p-4 rounded-xl"><span className="material-symbols-outlined text-primary">location_on</span><p className="font-semibold">Location Data (Barangay)</p></div>
-          </div>
-          <details className="bg-surface-container p-4 rounded-xl">
-            <summary className="font-bold text-primary cursor-pointer">What happens to my data?</summary>
-            <p className="mt-2 text-sm text-secondary">Your data is stored securely and only shared with authorized health workers for your care.</p>
-          </details>
-        </div>
+        {/* Hero Copy */}
+        <h1 className="text-[28px] font-bold text-primary mb-4 leading-tight tracking-tight">
+          Your health record,<br />in one place
+        </h1>
+        
+        <p className="text-secondary mb-10 text-[15px] leading-relaxed">
+          Kaya mo 'to! AImhotech keeps your check-ups from the barangay kiosk, RHU, and hospitals together — so you never start from zero.
+        </p>
 
-        <div className={`absolute inset-0 transition-transform duration-300 ${step === 3 ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
-          <div className="text-center mb-6">
-            <span className="material-symbols-outlined text-5xl text-primary mb-2">shield</span>
-            <h2 className="text-2xl font-bold">Your Rights</h2>
-          </div>
-          <ul className="list-disc pl-6 space-y-2 mb-8 text-secondary">
-            <li>You can withdraw consent at any time.</li>
-            <li>You can request deletion of your data.</li>
-            <li>Your data will never be sold.</li>
-          </ul>
-          <div className="bg-surface-container p-4 rounded-xl flex items-center gap-3">
-            <input type="checkbox" className="w-6 h-6 rounded border-2 border-primary" checked={consent} onChange={e => setConsent(e.target.checked)} />
-            <label className="font-bold text-sm" onClick={() => setConsent(!consent)}>{t('consentBody')}</label>
-          </div>
+        {/* Language Toggle */}
+        <div className="flex w-full bg-surface-container rounded-2xl p-1 mb-8 shadow-inner border border-outline-variant/30">
+          <button 
+            onClick={() => setLanguage('en')} 
+            className={`flex-1 py-3 rounded-xl font-bold transition-all duration-200 ${language === 'en' ? 'bg-primary text-white card-shadow-1 scale-100' : 'text-secondary hover:bg-surface-container-high scale-95'}`}
+          >
+            English
+          </button>
+          <button 
+            onClick={() => setLanguage('fil')} 
+            className={`flex-1 py-3 rounded-xl font-bold transition-all duration-200 ${language === 'fil' ? 'bg-primary text-white card-shadow-1 scale-100' : 'text-secondary hover:bg-surface-container-high scale-95'}`}
+          >
+            Filipino
+          </button>
         </div>
       </div>
 
-      <div className="flex gap-4 mt-auto pt-6">
-        {step > 1 && (
-          <button className="flex-1 py-4 border-2 border-outline-variant rounded-xl font-bold text-secondary" onClick={() => setStep(step - 1)}>Back</button>
-        )}
-        {step < 3 ? (
-          <button className="flex-2 w-full bg-primary text-white py-4 rounded-xl font-bold" onClick={() => setStep(step + 1)}>Next</button>
-        ) : (
-          <button className="flex-2 w-full bg-primary text-white py-4 rounded-xl font-bold disabled:opacity-50" disabled={!consent} onClick={() => navigate('/login')}>Submit</button>
-        )}
+      {/* Footer Actions */}
+      <div className="w-full max-w-sm mx-auto mt-auto pt-6 space-y-4">
+        <button 
+          onClick={() => navigate('/login')}
+          className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg card-shadow-1 hover:scale-[1.02] active:scale-[0.98] transition-transform"
+        >
+          Next
+        </button>
+        <button 
+          onClick={() => navigate('/login')}
+          className="w-full py-3 text-secondary font-semibold hover:text-primary transition-colors text-sm"
+        >
+          I already have an account
+        </button>
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import PatientHome from './pages/patient/PatientHome';
 import HealthHistory from './pages/patient/HealthHistory';
 import Appointments from './pages/patient/Appointments';
 import PatientSettings from './pages/patient/PatientSettings';
+import GabayChat from './pages/patient/GabayChat';
 
 // Worker Pages
 import WorkerHome from './pages/worker/WorkerHome';
@@ -23,13 +24,17 @@ import WorkerSettings from './pages/worker/WorkerSettings';
 
 const AppContent = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const mode = useMobileStore(s => s.mode);
   
   // Don't show bottom nav on auth screens
-  const showNav = !['/login', '/onboarding', '/'].includes(location.pathname);
+  const isAuthRoute = ['/login', '/onboarding', '/'].includes(location.pathname);
+  const isGabayRoute = location.pathname === '/patient/gabay';
+  const showNav = !isAuthRoute && !isGabayRoute;
+  const showFab = mode === 'patient' && !isAuthRoute && !isGabayRoute;
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col h-full w-full relative">
       <div className="flex-1 overflow-hidden relative">
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
@@ -40,6 +45,7 @@ const AppContent = () => {
           <Route path="/patient/history" element={<HealthHistory />} />
           <Route path="/patient/appointments" element={<Appointments />} />
           <Route path="/patient/settings" element={<PatientSettings />} />
+          <Route path="/patient/gabay" element={<GabayChat />} />
 
           <Route path="/worker/home" element={<WorkerHome />} />
           <Route path="/worker/lookup" element={<PatientLookup />} />
@@ -50,6 +56,15 @@ const AppContent = () => {
         </Routes>
       </div>
       {showNav && <BottomNavigation mode={mode} />}
+      
+      {showFab && (
+        <button 
+          onClick={() => navigate('/patient/gabay')}
+          className="absolute bottom-24 right-4 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center card-shadow-2 hover:scale-105 active:scale-95 transition-transform z-40"
+        >
+          <span className="material-symbols-outlined text-3xl">add</span>
+        </button>
+      )}
     </div>
   );
 };
