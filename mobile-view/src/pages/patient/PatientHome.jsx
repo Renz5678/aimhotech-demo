@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
 import TopBar from '../../components/layout/TopBar';
+import NotificationBell from '../../components/ui/NotificationBell';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useMobileStore } from '../../store/useMobileStore';
 
 export default function PatientHome() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
-  const healthTips = useLiveDemoStore(s => s.healthTips);
+  const { selectedPatientId, currentUserName } = useMobileStore();
+  const { riskFlags, referrals, patients, healthTips, facilities } = useLiveDemoStore();
   const tip = healthTips[0];
+
+  const patient = patients.find(p => p.id === selectedPatientId);
+  const patientName = currentUserName || patient?.name?.split(' ')[0] || 'Maria';
+  const patientFlags = riskFlags.filter(f => f.patientId === selectedPatientId);
+  const latestFlag = patientFlags[0];
+  const riskLevel = latestFlag?.category ?? 'low';
+  const riskLabel = riskLevel === 'elevated' ? 'Elevated Risk' : riskLevel === 'moderate' ? 'Moderate Risk' : 'Low Risk';
+  const riskColor = riskLevel === 'elevated' ? 'bg-red-100 text-red-700' : riskLevel === 'moderate' ? 'bg-amber-100 text-amber-700' : 'bg-secondary-container text-on-secondary-container';
+  const activeReferral = referrals.find(r => r.patientId === selectedPatientId && ['referred', 'flagged'].includes(r.status));
+
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   useEffect(() => {
     const onScroll = (e) => setScrolled(e.target.scrollTop > 10);
@@ -32,13 +49,10 @@ export default function PatientHome() {
               </div>
               <div className="flex flex-col">
                 <span className="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">Barangay San Isidro</span>
-                <h1 className="text-primary font-headline-md text-headline-md -mt-1">Good morning, Maria!</h1>
+                <h1 className="text-primary font-headline-md text-headline-md -mt-1">{`${greeting}, ${patientName}!`}</h1>
               </div>
             </div>
-            <button className="relative w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high transition-transform active:scale-95">
-              <span className="material-symbols-outlined text-primary">notifications</span>
-              <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-            </button>
+            <NotificationBell />
           </div>
         </header>
 
@@ -66,18 +80,19 @@ export default function PatientHome() {
             <div className="flex-grow">
               <div className="flex items-center justify-between mb-xs">
                 <h3 className="text-primary font-headline-sm text-headline-sm">Risk Status</h3>
-                <span className="px-sm py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-sm flex items-center gap-xs">
-                  <span className="w-2 h-2 bg-secondary rounded-full"></span>
-                  Low Risk
+                <span className={`px-sm py-1 rounded-full text-label-sm font-label-sm flex items-center gap-xs ${riskColor}`}>
+                  <span className={`w-2 h-2 rounded-full ${riskLevel === 'elevated' ? 'bg-red-500' : riskLevel === 'moderate' ? 'bg-amber-500' : 'bg-secondary'}`}></span>
+                  {riskLabel}
                 </span>
               </div>
               <p className="text-on-surface-variant font-body-md text-body-md leading-relaxed">
-                Your last check-up looked healthy. Keep doing what you're doing!
+                {riskLevel === 'elevated' ? 'Your health data shows elevated risk. Please see a healthcare provider.' : riskLevel === 'moderate' ? 'Your health data shows moderate risk. Keep monitoring your health.' : 'Your last check-up looked healthy. Keep doing what you\'re doing!'}
               </p>
             </div>
           </section>
 
           {/* Appointment Card */}
+          {activeReferral ? (
           <section className="bg-primary text-on-primary p-md rounded-xl shadow-[0_4px_12px_rgba(30,58,47,0.04)] relative overflow-hidden group">
             {/* Abstract Texture Decor */}
             <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-white/5 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
@@ -87,27 +102,26 @@ export default function PatientHome() {
                   <span className="text-primary-fixed-dim font-label-sm text-label-sm uppercase tracking-widest">Upcoming Visit</span>
                   <h3 className="font-headline-sm text-headline-sm mt-xs text-white">Follow-up check</h3>
                 </div>
-                <div className="bg-primary-container border border-on-primary-container/20 px-md py-xs rounded-lg flex flex-col items-center">
-                  <span className="text-white font-headline-md text-headline-md">04</span>
-                  <span className="text-primary-fixed-dim font-label-sm text-label-sm uppercase">Aug</span>
-                </div>
               </div>
               <div className="flex flex-col gap-sm">
                 <div className="flex items-center gap-sm">
                   <span className="material-symbols-outlined text-primary-fixed-dim text-[20px]">location_on</span>
-                  <span className="font-body-md text-body-md">San Isidro Rural Health Unit</span>
-                </div>
-                <div className="flex items-center gap-sm">
-                  <span className="material-symbols-outlined text-primary-fixed-dim text-[20px]">schedule</span>
-                  <span className="font-body-md text-body-md">09:00 AM - 10:30 AM</span>
+                  <span className="font-body-md text-body-md">{facilities.find(f => f.id === activeReferral.destinationFacilityId)?.name || activeReferral.destinationLabel || 'Health Facility'}</span>
                 </div>
               </div>
-              <button className="w-full mt-lg bg-surface-bright text-primary font-label-sm text-label-sm py-md rounded-lg flex items-center justify-center gap-sm transition-all active:scale-95">
+              <button 
+                onClick={() => navigate('/patient/appointments')}
+                className="w-full mt-lg bg-surface-bright text-primary font-label-sm text-label-sm py-md rounded-lg flex items-center justify-center gap-sm transition-all active:scale-95">
                 VIEW INSTRUCTIONS
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>
             </div>
           </section>
+          ) : (
+          <section className="bg-surface-container border border-outline-variant p-md rounded-xl shadow-[0_4px_12px_rgba(30,58,47,0.04)] flex items-center justify-center py-8">
+             <p className="text-on-surface-variant font-body-md text-body-md">No upcoming visits scheduled</p>
+          </section>
+          )}
 
           {/* Health Tip Card (Unique Style) */}
           <section className="bg-secondary-container/30 border-l-4 border-secondary p-md rounded-r-xl rounded-l-sm relative overflow-hidden">
@@ -119,10 +133,10 @@ export default function PatientHome() {
               <span className="text-on-secondary-fixed-variant font-label-sm text-label-sm uppercase tracking-tighter">Health Tip</span>
             </div>
             <p className="text-on-secondary-fixed-variant font-headline-sm text-headline-sm leading-snug mb-xs">
-              Stay hydrated today!
+              {tip?.title}
             </p>
             <p className="text-on-secondary-fixed-variant font-body-md text-body-md">
-              Drinking at least 8 glasses of water helps your digestion and keeps your focus sharp during field work.
+              {tip?.body}
             </p>
           </section>
 

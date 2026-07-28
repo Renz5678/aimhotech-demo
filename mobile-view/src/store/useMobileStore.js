@@ -3,6 +3,9 @@ import { useLiveDemoStore } from '../../../packages/shared/src/store/useLiveDemo
 
 export const useMobileStore = create((set, get) => ({
   currentMode: 'patient',
+  currentUserId: null,
+  currentUserRole: null,
+  currentUserName: 'User',
   selectedPatientId: 'QC-097-00310',
   language: 'en',
   screeningStep: 0,
@@ -27,11 +30,21 @@ export const useMobileStore = create((set, get) => ({
   setVitalsSession: (vitals) => set({ vitalsSession: vitals }),
   clearVitalsSession: () => set({ vitalsSession: null }),
   submitVitals: () => {
-    useLiveDemoStore.getState().triggerLiveSync();
+    const vitals = get().vitalsSession;
+    const pid = get().selectedPatientId || 'BGY-041-00217';
+    useLiveDemoStore.getState().triggerLiveSync(vitals || undefined, pid);
     set({ hasCapturedVitals: true, screeningStep: 3 });
   },
   syncToBrain: () => set({ isSynced: true, syncQueueCount: 0 }),
   toggleOnline: () => set((s) => ({ isOnline: !s.isOnline })),
   markAllNotificationsRead: () => set((s) => ({ notifications: s.notifications.map((n) => ({ ...n, read: true })) })),
   setScreeningStep: (step) => set({ screeningStep: step }),
+
+  setCurrentUser: (userId, role, name) => set({ currentUserId: userId, currentUserRole: role, currentUserName: name }),
+  signOut: async () => { 
+    const { supabase } = await import('../../../packages/shared/src/lib/supabase'); 
+    await supabase.auth.signOut(); 
+    set({ currentUserId: null, currentUserRole: null, currentUserName: 'User', currentMode: 'patient' }); 
+  },
+  addNotification: (notif) => set((s) => ({ notifications: [notif, ...s.notifications] }))
 }));

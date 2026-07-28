@@ -4,6 +4,7 @@ import TopBar from '../../../components/layout/TopBar';
 import { useMobileStore } from '../../../store/useMobileStore';
 import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore';
 import { useLanguage } from '../../../hooks/useLanguage';
+import { useToast } from '../../../components/ui/ToastContext';
 
 export default function RiskResult() {
   const { t } = useLanguage();
@@ -12,12 +13,20 @@ export default function RiskResult() {
   const triggerRef = useLiveDemoStore(s => s.createReferral);
   const [mounted, setMounted] = useState(false);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  
+  const { addToast } = useToast();
+  const facilities = useLiveDemoStore(s => s.facilities);
+  const [selectedFacilityId, setSelectedFacilityId] = useState(null);
+  const vitalsSession = useMobileStore(s => s.vitalsSession);
+  const liveConfirmedFlag = useLiveDemoStore(s => s.liveConfirmedFlag);
 
   useEffect(() => { setMounted(true); }, []);
 
   const handleCreateReferral = () => {
-    triggerRef(selectedPatientId || 'QC-097-00310', 'FLAG-001', 'FAC-001');
-    alert('Referral created successfully');
+    const facilityId = selectedFacilityId || (facilities[0]?.id ?? 'HOSP-PROV');
+    const flagId = liveConfirmedFlag?.id || `FLAG-${Date.now()}`;
+    triggerRef(selectedPatientId || 'BGY-041-00217', flagId, facilityId);
+    addToast('Referral sent successfully!', 'success');
     navigate('/worker/home');
   };
 
@@ -62,10 +71,10 @@ export default function RiskResult() {
         <div className="bg-surface-container rounded-2xl p-4 card-shadow-1">
           <h3 className="font-bold mb-3 text-on-surface">{t('recordedVitals')}</h3>
           <div className="grid grid-cols-2 gap-y-4 gap-x-2">
-            <div><div className="text-xs text-secondary">BP</div><div className="font-bold text-red-600">164/99 mmHg</div></div>
-            <div><div className="text-xs text-secondary">HR</div><div className="font-bold">88 bpm</div></div>
-            <div><div className="text-xs text-secondary">{t('glucose')}</div><div className="font-bold">128 mg/dL</div></div>
-            <div><div className="text-xs text-secondary">AFIB</div><div className="font-bold text-red-600">Detected</div></div>
+            <div><div className="text-xs text-secondary">BP</div><div className="font-bold text-red-600">{vitalsSession?.bpSystolic ?? 164}/{vitalsSession?.bpDiastolic ?? 99} mmHg</div></div>
+            <div><div className="text-xs text-secondary">HR</div><div className="font-bold">{vitalsSession?.heartRate ?? 88} bpm</div></div>
+            <div><div className="text-xs text-secondary">{t('glucose')}</div><div className="font-bold">{vitalsSession?.glucose ?? 128} mg/dL</div></div>
+            <div><div className="text-xs text-secondary">AFIB</div><div className="font-bold text-red-600">{vitalsSession?.afibFlag ? 'Detected' : 'Negative'}</div></div>
           </div>
         </div>
 
@@ -80,16 +89,19 @@ export default function RiskResult() {
       </div>
 
       {showBottomSheet && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-end">
+        <div className="absolute inset-0 bg-black/60 z-50 flex items-end">
           <div className="bg-surface w-full p-6 rounded-t-3xl shadow-2xl">
             <h2 className="text-xl font-bold mb-4">{t('selectFacility')}</h2>
             <div className="space-y-3 mb-6">
-              {['St. Luke\'s Medical Center', 'East Avenue Medical Center', 'QC General Hospital'].map((f, i) => (
-                <div key={i} className={`p-4 rounded-xl border-2 flex items-center gap-3 ${i === 0 ? 'border-primary bg-primary/10' : 'border-outline-variant'}`}>
-                  <input type="radio" name="fac" checked={i===0} readOnly className="w-5 h-5 accent-primary" />
-                  <span className="font-bold">{f}</span>
-                </div>
-              ))}
+              {facilities.map((f, i) => {
+                const isSelected = selectedFacilityId ? f.id === selectedFacilityId : i === 0;
+                return (
+                  <div key={f.id} onClick={() => setSelectedFacilityId(f.id)} className={`p-4 rounded-xl border-2 flex items-center gap-3 cursor-pointer ${isSelected ? 'border-primary bg-primary/10' : 'border-outline-variant'}`}>
+                    <input type="radio" name="fac" value={f.id} checked={isSelected} readOnly className="w-5 h-5 accent-primary" />
+                    <span className="font-bold">{f.name}</span>
+                  </div>
+                );
+              })}
             </div>
             <div className="flex gap-3">
               <button onClick={() => setShowBottomSheet(false)} className="flex-1 py-4 border-2 border-outline-variant rounded-xl font-bold">{t('cancel')}</button>

@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, AlertTriangle, FileText, CheckSquare, BarChart3, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, AlertTriangle, FileText, CheckSquare, BarChart3, Settings, Brain } from 'lucide-react';
 import { useAdminStore } from '@/store/useAdminStore';
 import { useDemoStore } from '@/store/useDemoStore';
 
@@ -16,6 +16,7 @@ export const Sidebar: React.FC = () => {
     { name: 'Referrals', path: '/referrals', icon: FileText },
     { name: 'Clinical Validation', path: '/clinical-validation', icon: CheckSquare },
     { name: 'Reports & Analytics', path: '/reports', icon: BarChart3 },
+    { name: 'AI Brain & IFA', path: '/ai-brain', icon: Brain },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
@@ -43,10 +44,10 @@ export const Sidebar: React.FC = () => {
             <Link 
               key={item.path}
               href={item.path}
-              className={`flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 border-l-[3px] ${
                 isActive 
-                  ? 'bg-white/10 text-white' 
-                  : 'text-white/60 hover:bg-white/5 hover:text-white'
+                  ? 'bg-white/10 text-white border-[#A3B18B]' 
+                  : 'text-white/60 border-transparent hover:bg-white/5 hover:text-white'
               }`}
             >
               <div className="flex items-center gap-3">

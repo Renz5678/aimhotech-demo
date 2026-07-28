@@ -1,10 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMobileStore } from '../../store/useMobileStore';
+import { supabase } from '../../../../packages/shared/src/lib/supabase';
 
 export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const { notifications, markAllNotificationsRead } = useMobileStore();
   const unread = notifications.filter(n => !n.read).length;
+
+  useEffect(() => {
+    const selectedPatientId = useMobileStore.getState().selectedPatientId;
+    const channel = supabase
+      .channel('notifications-bell')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications' }, (payload) => {
+        const n = payload.new;
+        // Only show if for this patient or no patientId filter
+        if (!n.patientId || n.patientId === selectedPatientId) {
+          useMobileStore.getState().addNotification({
+            id: n.id,
+            title: n.title,
+            body: n.body,
+            read: false,
+            timestamp: n.created_at,
+          });
+        }
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   return (
     <>
@@ -14,7 +36,7 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-end bg-black/50">
+        <div className="fixed inset-0 z-[200] flex flex-col justify-end bg-black/50">
           <div className="bg-surface w-full h-[80vh] rounded-t-3xl bottom-sheet flex flex-col">
             <div className="p-4 flex justify-between items-center border-b border-outline-variant">
               <h2 className="text-xl font-bold">Notifications</h2>

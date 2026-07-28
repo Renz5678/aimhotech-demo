@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "AImhotech Web Admin Platform",
 };
 
+import StoreInitializer from "@/components/layout/StoreInitializer";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} antialiased font-sans`}
       >
-        {children}
+        <StoreInitializer>{children}</StoreInitializer>
       </body>
     </html>
   );

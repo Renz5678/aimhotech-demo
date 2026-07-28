@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { Settings as SettingsIcon, LogOut, User, Shield, Moon, Sun } from 'lucide-react';
 import { useAdminStore } from '@/store/useAdminStore';
+import { useRouter } from 'next/navigation';
 
 export default function SettingsPage() {
-  const { currentRole, isDarkMode, toggleDarkMode } = useAdminStore();
+  const router = useRouter();
+  const { currentRole, isDarkMode, toggleDarkMode, currentUserName, currentUserEmail } = useAdminStore();
   const [timeout, setTimeoutVal] = useState('15m');
   
   const roleLabels: Record<string, string> = {
@@ -17,9 +19,9 @@ export default function SettingsPage() {
 
   const roleLabel = roleLabels[currentRole] || 'Admin';
 
-  const handleLogout = () => {
-    alert("Logging out...");
-    // window.location.href = '/login';
+  const handleLogout = async () => {
+    await useAdminStore.getState().signOut();
+    router.push('/login');
   };
 
   return (
@@ -40,11 +42,11 @@ export default function SettingsPage() {
             </h2>
             
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-14 h-14 rounded-full bg-[#1E3A2F] text-white flex items-center justify-center text-xl font-bold">
-                M
+              <div className="w-14 h-14 rounded-full bg-[#1E3A2F] text-white flex items-center justify-center text-xl font-bold uppercase">
+                {currentUserName ? currentUserName.split(' ').map(w => w[0]).slice(0,2).join('') : 'A'}
               </div>
               <div>
-                <div className="text-lg font-bold text-foreground">Maria Cruz</div>
+                <div className="text-lg font-bold text-foreground">{currentUserName || 'Admin User'}</div>
                 <div className="text-[13px] text-[#6B7566]">{roleLabel} · DOH Region IV-A</div>
               </div>
             </div>

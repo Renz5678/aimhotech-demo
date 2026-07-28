@@ -7,10 +7,17 @@ import { useLanguage } from '../../hooks/useLanguage';
 export default function WorkerHome() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { syncQueueCount } = useMobileStore();
-  const patients = useLiveDemoStore(s => s.patients).slice(0, 4);
+  const { syncQueueCount, currentUserId } = useMobileStore();
+  const patients = useLiveDemoStore(s => s.patients);
   const workerStats = useLiveDemoStore(s => s.workerStats);
-  const activityFeed = useLiveDemoStore(s => s.activityFeed).slice(0, 4);
+  const activityFeed = useLiveDemoStore(s => s.activityFeed);
+  const screenings = useLiveDemoStore(s => s.screenings);
+  const referrals = useLiveDemoStore(s => s.referrals);
+  
+  const todayFilter = s => new Date(s.timestamp).toDateString() === new Date().toDateString();
+  const screeningsTodayCount = screenings.filter(s => currentUserId ? (s.healthWorkerId === currentUserId && todayFilter(s)) : todayFilter(s)).length;
+  const referralsTodayCount = referrals.filter(s => currentUserId ? (s.healthWorkerId === currentUserId && todayFilter(s)) : todayFilter(s)).length;
+  const recentScreenings = screenings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 5);
 
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
@@ -57,7 +64,7 @@ export default function WorkerHome() {
               <span className="material-symbols-outlined text-[80px]">fact_check</span>
             </div>
             <div>
-              <h2 className="text-display-lg font-display-lg text-primary">{workerStats?.todayScreenings ?? 12}</h2>
+              <h2 className="text-display-lg font-display-lg text-primary">{screeningsTodayCount}</h2>
               <p className="text-body-md font-body-md text-on-surface-variant">Screenings today</p>
             </div>
             <div className="w-8 h-1 bg-secondary-fixed rounded-full"></div>
@@ -67,7 +74,7 @@ export default function WorkerHome() {
               <span className="material-symbols-outlined text-[80px]">assignment_turned_in</span>
             </div>
             <div>
-              <h2 className="text-display-lg font-display-lg text-primary">2</h2>
+              <h2 className="text-display-lg font-display-lg text-primary">{referralsTodayCount}</h2>
               <p className="text-body-md font-body-md text-on-surface-variant">Referrals created</p>
             </div>
             <div className="w-8 h-1 bg-secondary-fixed rounded-full"></div>
@@ -128,21 +135,28 @@ export default function WorkerHome() {
             <h3 className="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Recent Activity</h3>
           </div>
           <div className="divide-y divide-outline-variant/20">
-            {patients.map((p, i) => {
+            {recentScreenings.map((screening, i) => {
+              const p = patients.find(p => p.id === screening.patientId) || { name: 'Unknown Patient' };
               const colors = ['bg-[#4C7A5A]', 'bg-[#C79A3C]', 'bg-[#B0523F]'];
               const statuses = ['low risk', 'moderate', 'elevated'];
-              const color = colors[i % colors.length];
-              const status = statuses[i % statuses.length];
+              
+              const isElevated = screening.riskLevel === 'high' || screening.riskLevel === 'elevated';
+              const isModerate = screening.riskLevel === 'medium' || screening.riskLevel === 'moderate';
+              const riskIndex = isElevated ? 2 : isModerate ? 1 : 0;
+              
+              const color = colors[riskIndex];
+              const status = statuses[riskIndex];
               const textColors = ['text-[#4C7A5A]', 'text-[#C79A3C]', 'text-[#B0523F]'];
-              const textColor = textColors[i % textColors.length];
+              const textColor = textColors[riskIndex];
+              const timeFormatted = new Date(screening.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
               
               return (
-                <div key={p.id} className="px-md py-md flex items-center gap-md active-press transition-all hover:bg-surface-container-low/30 cursor-pointer">
+                <div key={screening.id || i} className="px-md py-md flex items-center gap-md active-press transition-all hover:bg-surface-container-low/30 cursor-pointer">
                   <div className={`w-1 h-10 ${color} rounded-full`}></div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
                       <h4 className="text-body-lg font-bold text-on-surface truncate">{p.name}</h4>
-                      <span className="text-label-sm font-label-sm text-on-surface-variant">10:24 AM</span>
+                      <span className="text-label-sm font-label-sm text-on-surface-variant">{timeFormatted}</span>
                     </div>
                     <p className="text-body-md font-body-md text-on-surface-variant">
                       Screening • <span className={`${textColor} font-medium`}>{status}</span>
@@ -152,30 +166,12 @@ export default function WorkerHome() {
               );
             })}
           </div>
-          <button className="w-full py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-widest bg-surface-container-low/20 border-t border-outline-variant/10 active-press">
+          <button onClick={() => navigate('/worker/lookup')} className="w-full py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-widest bg-surface-container-low/20 border-t border-outline-variant/10 active-press">
             View All History
           </button>
         </section>
       </main>
 
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-[72px] px-4 pb-safe bg-surface-container-lowest border-t border-outline-variant shadow-sm">
-        <div className="flex flex-col items-center justify-center text-primary font-bold scale-95 transition-all duration-150 cursor-pointer">
-          <span className="material-symbols-outlined mb-1" style={{fontVariationSettings: "'FILL' 1"}}>home</span>
-          <span className="text-label-sm font-label-sm">Home</span>
-        </div>
-        <div onClick={() => navigate('/worker/lookup')} className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer">
-          <span className="material-symbols-outlined mb-1">medical_services</span>
-          <span className="text-label-sm font-label-sm">Screening</span>
-        </div>
-        <div className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer">
-          <span className="material-symbols-outlined mb-1">search</span>
-          <span className="text-label-sm font-label-sm">Lookup</span>
-        </div>
-        <div className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer">
-          <span className="material-symbols-outlined mb-1">settings</span>
-          <span className="text-label-sm font-label-sm">Settings</span>
-        </div>
-      </nav>
     </div>
   );
 }

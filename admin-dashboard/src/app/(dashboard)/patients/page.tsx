@@ -60,7 +60,7 @@ export default function PatientsPage() {
 
   return (
     <div className="flex h-full bg-[#F5F4F0] min-h-screen">
-      <div className={`p-8 transition-all duration-300 ${selectedPatient ? 'w-[calc(100%-340px)]' : 'w-full'}`}>
+      <div className="p-8 w-full">
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-2xl font-bold text-[#1E3A2F]">Patient Registry</h1>
@@ -156,7 +156,12 @@ export default function PatientsPage() {
 
       {/* Right drawer */}
       {selectedPatient && (
-        <div className="w-[340px] border-l border-gray-200 bg-white h-screen fixed right-0 top-0 pt-16 flex flex-col shadow-2xl z-40 overflow-y-auto">
+        <>
+          <div 
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 transition-opacity" 
+            onClick={() => setSelectedId(null)}
+          />
+          <div className="w-full max-w-[400px] border-l border-gray-200 bg-white h-screen fixed right-0 top-0 pt-16 flex flex-col shadow-2xl z-40 overflow-y-auto animate-slide-in-right">
           <div className="p-6 border-b border-gray-100 flex justify-between items-start">
             <div>
               <h2 className="text-lg font-bold text-[#1E3A2F]">{selectedPatient.name}</h2>
@@ -228,11 +233,19 @@ export default function PatientsPage() {
           </div>
 
           <div className="p-5 border-t border-gray-100">
-            <button className="w-full py-3 bg-[#1E3A2F] text-white rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-[#152a22] transition-colors">
+            <button 
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  alert('Opening clinical entry form for ' + selectedPatient.name + '...');
+                }
+              }}
+              className="w-full py-3 bg-[#1E3A2F] text-white rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-[#152a22] transition-colors"
+            >
               <FilePlus className="w-4 h-4" /> New Clinical Entry
             </button>
           </div>
         </div>
+        </>
       )}
     </div>
   );

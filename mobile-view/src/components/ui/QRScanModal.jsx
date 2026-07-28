@@ -11,7 +11,7 @@ export default function QRScanModal({ isOpen, onClose, onScan }) {
   if(!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center">
+    <div className="absolute inset-0 bg-black/90 z-50 flex flex-col items-center justify-center">
       <button onClick={onClose} className="absolute top-6 left-6 text-white"><span className="material-symbols-outlined text-3xl">close</span></button>
       
       <div className="relative w-64 h-64 mb-8">

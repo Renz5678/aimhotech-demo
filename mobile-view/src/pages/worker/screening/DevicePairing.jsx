@@ -73,7 +73,7 @@ export default function DevicePairing() {
       </div>
 
       {showManual && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
+        <div className="absolute inset-0 bg-black/50 z-50 flex items-end">
           <div className="bg-surface w-full p-6 rounded-t-3xl bottom-sheet">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Manual Entry</h2>

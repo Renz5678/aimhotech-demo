@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
+import { useMobileStore } from '../../store/useMobileStore';
 
 export default function Appointments() {
+  const referrals = useLiveDemoStore(s => s.referrals);
+  const facilities = useLiveDemoStore(s => s.facilities);
+  const selectedPatientId = useMobileStore(s => s.selectedPatientId);
   const liveReferral = useLiveDemoStore(s => s.liveReferral);
-  const triggerRef = useLiveDemoStore(s => s.simulateDashboardReferral);
+  const triggerRef = useLiveDemoStore(s => s.hydrateFromSupabase);
   const [connecting, setConnecting] = useState(false);
   const [connected, setConnected] = useState(false);
 
@@ -15,7 +19,8 @@ export default function Appointments() {
     }, 2000);
   };
 
-  const displayReferral = liveReferral || {
+  const activeReferral = referrals.find(r => r.patientId === selectedPatientId) || liveReferral;
+  const displayReferral = activeReferral || {
     id: 'REF-2231',
     status: 'referred',
     destinationFacilityId: 'San Isidro Rural Health Unit',
@@ -24,6 +29,11 @@ export default function Appointments() {
       { timestamp: new Date().toISOString() }
     ]
   };
+  
+  const facilityName = facilities.find(f => f.id === displayReferral?.destinationFacilityId)?.name || displayReferral?.destinationLabel || 'Health Facility';
+  
+  const statusToStage = { 'flagged': 0, 'referred': 1, 'seen': 2, 'resolved': 3 };
+  const currentStage = statusToStage[displayReferral.status] ?? 0;
 
   return (
     <div className="bg-background text-on-background min-h-screen">
@@ -35,9 +45,9 @@ export default function Appointments() {
             </div>
             <h1 className="text-headline-md font-headline-md text-primary">Appointments</h1>
           </div>
-          <div className="flex items-center px-3 py-1 bg-secondary-container rounded-full gap-1.5 transition-all active:scale-95 duration-200 cursor-pointer" onClick={() => { triggerRef(); alert('Refreshed referrals'); }}>
+          <div className="flex items-center px-3 py-1 bg-secondary-container rounded-full gap-1.5 transition-all active:scale-95 duration-200 cursor-pointer" onClick={() => { triggerRef(); }}>
             <span className="w-2 h-2 rounded-full bg-secondary"></span>
-            <span className="text-label-sm font-label-sm text-on-secondary-container">3 pending</span>
+            <span className="text-label-sm font-label-sm text-on-secondary-container">{referrals.filter(r => r.patientId === selectedPatientId && r.status !== 'resolved').length} pending</span>
           </div>
         </div>
       </header>
@@ -55,34 +65,34 @@ export default function Appointments() {
           
           <div className="relative flex justify-between items-start mb-8 px-2">
             <div className="absolute left-0 right-0 top-5 h-[2px] bg-surface-container-highest z-0 mx-8"></div>
-            <div className="absolute left-0 top-5 h-[2px] bg-primary-container z-0 mx-8" style={{width: '33%'}}></div>
+            <div className="absolute left-0 top-5 h-[2px] bg-primary-container z-0 mx-8" style={{width: `${currentStage * 33}%`}}></div>
             
             <div className="relative z-10 flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white">
-                <span className="material-symbols-outlined !text-[20px]" style={{fontVariationSettings: "'FILL' 1"}}>check</span>
+              <div className={`w-10 h-10 rounded-full ${currentStage >= 0 ? 'bg-primary-container text-white' : 'bg-surface-container-highest text-outline'} flex items-center justify-center`}>
+                {currentStage > 0 ? <span className="material-symbols-outlined !text-[20px]" style={{fontVariationSettings: "'FILL' 1"}}>check</span> : <span className="text-body-lg font-headline-sm">1</span>}
               </div>
-              <span className="text-label-sm font-label-sm text-primary">Flagged</span>
+              <span className={`text-label-sm font-label-sm ${currentStage >= 0 ? 'text-primary font-bold' : 'text-outline'}`}>Flagged</span>
             </div>
             
             <div className="relative z-10 flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-white border-2 border-primary-container flex items-center justify-center text-primary-container ring-4 ring-primary-container/10">
-                <span className="text-body-lg font-headline-sm">2</span>
+              <div className={`w-10 h-10 rounded-full ${currentStage >= 1 ? 'bg-primary-container text-white' : 'bg-surface-container-highest text-outline'} flex items-center justify-center`}>
+                {currentStage > 1 ? <span className="material-symbols-outlined !text-[20px]" style={{fontVariationSettings: "'FILL' 1"}}>check</span> : <span className="text-body-lg font-headline-sm">2</span>}
               </div>
-              <span className="text-label-sm font-label-sm text-primary font-bold">Referred</span>
+              <span className={`text-label-sm font-label-sm ${currentStage >= 1 ? 'text-primary font-bold' : 'text-outline'}`}>Referred</span>
             </div>
             
             <div className="relative z-10 flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline">
-                <span className="text-body-lg font-headline-sm">3</span>
+              <div className={`w-10 h-10 rounded-full ${currentStage >= 2 ? 'bg-primary-container text-white' : 'bg-surface-container-highest text-outline'} flex items-center justify-center`}>
+                {currentStage > 2 ? <span className="material-symbols-outlined !text-[20px]" style={{fontVariationSettings: "'FILL' 1"}}>check</span> : <span className="text-body-lg font-headline-sm">3</span>}
               </div>
-              <span className="text-label-sm font-label-sm text-outline">Seen</span>
+              <span className={`text-label-sm font-label-sm ${currentStage >= 2 ? 'text-primary font-bold' : 'text-outline'}`}>Seen</span>
             </div>
             
             <div className="relative z-10 flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline">
-                <span className="text-body-lg font-headline-sm">4</span>
+              <div className={`w-10 h-10 rounded-full ${currentStage >= 3 ? 'bg-primary-container text-white' : 'bg-surface-container-highest text-outline'} flex items-center justify-center`}>
+                {currentStage > 3 ? <span className="material-symbols-outlined !text-[20px]" style={{fontVariationSettings: "'FILL' 1"}}>check</span> : <span className="text-body-lg font-headline-sm">4</span>}
               </div>
-              <span className="text-label-sm font-label-sm text-outline">Resolved</span>
+              <span className={`text-label-sm font-label-sm ${currentStage >= 3 ? 'text-primary font-bold' : 'text-outline'}`}>Resolved</span>
             </div>
           </div>
 
@@ -92,7 +102,7 @@ export default function Appointments() {
                 <span className="material-symbols-outlined">health_and_safety</span>
               </div>
               <div>
-                <h3 className="text-body-lg font-headline-sm text-primary leading-tight">{displayReferral.destinationFacilityId || 'San Isidro Rural Health Unit'}</h3>
+                <h3 className="text-body-lg font-headline-sm text-primary leading-tight">{facilityName}</h3>
                 <p className="text-body-md font-body-md text-on-surface-variant">Primary Clinical Care Center</p>
               </div>
             </div>
@@ -124,35 +134,25 @@ export default function Appointments() {
             <button className="text-primary font-label-sm text-label-sm">View All</button>
           </div>
           
-          <div className="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/20 flex gap-4 items-center transition-all active:scale-[0.99] cursor-pointer">
-            <div className="w-12 h-12 rounded-xl bg-secondary-container/30 flex flex-col items-center justify-center text-on-secondary-container">
-              <span className="text-label-sm font-bold">12</span>
-              <span className="text-[10px] uppercase font-bold">Aug</span>
+          {referrals.filter(r => r.patientId === selectedPatientId && r.id !== displayReferral.id).map(r => (
+            <div key={r.id} className="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/20 flex gap-4 items-center transition-all active:scale-[0.99] cursor-pointer">
+              <div className="w-12 h-12 rounded-xl bg-secondary-container/30 flex flex-col items-center justify-center text-on-secondary-container">
+                <span className="text-label-sm font-bold"></span>
+                <span className="text-[10px] uppercase font-bold">TBA</span>
+              </div>
+              <div className="flex-grow">
+                <h4 className="text-body-lg font-bold text-primary">{r.id}</h4>
+                <p className="text-body-md text-on-surface-variant">{facilities.find(f => f.id === r.destinationFacilityId)?.name || r.destinationLabel || 'Health Facility'}</p>
+              </div>
+              <span className="material-symbols-outlined text-outline">chevron_right</span>
             </div>
-            <div className="flex-grow">
-              <h4 className="text-body-lg font-bold text-primary">Routine Checkup</h4>
-              <p className="text-body-md text-on-surface-variant">General Hospital • 10:30 AM</p>
-            </div>
-            <span className="material-symbols-outlined text-outline">chevron_right</span>
-          </div>
-          
-          <div className="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/20 flex gap-4 items-center transition-all active:scale-[0.99] cursor-pointer">
-            <div className="w-12 h-12 rounded-xl bg-secondary-container/30 flex flex-col items-center justify-center text-on-secondary-container">
-              <span className="text-label-sm font-bold">18</span>
-              <span className="text-[10px] uppercase font-bold">Aug</span>
-            </div>
-            <div className="flex-grow">
-              <h4 className="text-body-lg font-bold text-primary">Vaccination Drive</h4>
-              <p className="text-body-md text-on-surface-variant">Barangay Hall • 08:00 AM</p>
-            </div>
-            <span className="material-symbols-outlined text-outline">chevron_right</span>
-          </div>
+          ))}
         </section>
       </main>
 
       {/* Video Call Overlays */}
       {connecting && (
-        <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4">
+        <div className="absolute inset-0 bg-black/60 z-[60] flex items-center justify-center p-4">
           <div className="bg-surface-container-lowest p-6 rounded-3xl flex flex-col items-center shadow-[0_4px_12px_rgba(30,58,47,0.04)]">
             <span className="material-symbols-outlined animate-spin text-4xl text-primary mb-3">refresh</span>
             <div className="font-bold text-lg text-primary">Connecting to Video...</div>
@@ -161,7 +161,7 @@ export default function Appointments() {
         </div>
       )}
       {connected && (
-        <div className="fixed inset-0 bg-black/90 z-[60] flex flex-col items-center justify-center p-4 page-enter">
+        <div className="absolute inset-0 bg-black/90 z-[60] flex flex-col items-center justify-center p-4 page-enter">
           <div className="flex-1 flex flex-col items-center justify-center text-white text-xl">
             <div className="w-24 h-24 bg-surface-container/20 rounded-full flex items-center justify-center mb-6">
               <span className="material-symbols-outlined text-5xl">videocam</span>

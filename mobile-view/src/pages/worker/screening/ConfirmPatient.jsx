@@ -10,6 +10,9 @@ export default function ConfirmPatient() {
   const { selectedPatientId } = useMobileStore();
   const allPatients = useLiveDemoStore(s => s.patients);
   const patient = allPatients.find(p => p.id === selectedPatientId) || allPatients[0];
+  const screenings = useLiveDemoStore(s => s.screenings);
+  const lastScreening = screenings.filter(s => s.patientId === patient?.id).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+  const lastSeenLabel = lastScreening ? new Date(lastScreening.timestamp).toLocaleDateString('en-PH', { month: 'short', day: 'numeric' }) : 'No prior visits';
 
   if (!patient) {
     return (
@@ -87,7 +90,7 @@ export default function ConfirmPatient() {
                 <span className="opacity-30">•</span>
                 <span>{patient.gender || 'F'}</span>
                 <span className="opacity-30">•</span>
-                <span>last seen Jul 12</span>
+                <span>{lastSeenLabel}</span>
               </div>
             </div>
           </div>
@@ -115,7 +118,7 @@ export default function ConfirmPatient() {
         <div className="absolute -right-20 -bottom-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background via-background to-transparent pt-10 pointer-events-none">
+      <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background via-background to-transparent pt-10 pointer-events-none">
         <button 
           onClick={() => navigate('/worker/screening/device')}
           className="w-full bg-primary text-white py-5 px-8 rounded-[20px] font-title-sm text-title-sm font-semibold flex items-center justify-center shadow-lg hover:bg-primary-container transition-all active:scale-[0.97] pointer-events-auto"

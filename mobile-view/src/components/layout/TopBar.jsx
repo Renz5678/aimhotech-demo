@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import NotificationBell from '../ui/NotificationBell';
 
 export default function TopBar({ 
   title, 
@@ -49,12 +50,7 @@ export default function TopBar({
         </div>
         
         {showNotification && (
-          <button className="relative w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high transition-transform active:scale-95">
-            <span className="material-symbols-outlined text-primary">notifications</span>
-            {hasUnread && (
-              <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-            )}
-          </button>
+          <NotificationBell />
         )}
       </div>
     </header>

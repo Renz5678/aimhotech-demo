@@ -68,7 +68,7 @@ export const Header: React.FC = () => {
           </button>
           
           {showNotifications && (
-            <div className="absolute right-0 mt-3 w-80 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
+            <div className="absolute right-[-1rem] sm:right-0 mt-3 w-[calc(100vw-2rem)] sm:w-80 max-w-sm bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
               <div className="px-5 py-3 border-b border-gray-50 flex justify-between items-center">
                 <h3 className="font-bold text-[#1E3A2F]">Notifications</h3>
                 <span className="text-xs bg-[#A3B18B]/20 text-[#1E3A2F] font-bold px-2 py-0.5 rounded-full">{notifications.length}</span>

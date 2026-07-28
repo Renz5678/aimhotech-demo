@@ -45,6 +45,13 @@ export interface Patient {
   consentStatus: ConsentStatus;
   consentDate: string;
   phone?: string;
+  age?: number;
+  barangay?: string;
+  risk?: string;
+  vitals?: string;
+  lastScreening?: string;
+  screenCount?: number;
+  reason?: string | null;
 }
 
 export interface Facility {
@@ -129,6 +136,8 @@ export interface RiskFlag {
   recommendedAction: string;
   timestamp: string;
   provisional?: boolean;  // true = on-device AI, false = AI Brain confirmed
+  status?: string;
+  reviewer?: string | null;
 }
 
 // ── Referrals & Clinical Validation ──────────────────────────────
@@ -145,7 +154,9 @@ export interface Referral {
   patientId: string;
   riskFlagId: string;
   destinationFacilityId: string;
+  destinationLabel?: string;
   status: ReferralStatus;
+  stage: number;
   statusHistory: ReferralStatusStep[];
   createdAt: string;
   updatedAt: string;

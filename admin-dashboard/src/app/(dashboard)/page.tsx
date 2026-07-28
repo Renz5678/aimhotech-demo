@@ -1,17 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDemoStore } from "@/store/useDemoStore";
+import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 
 export default function DashboardPage() {
   const {
-    kpis,
     barangayMetrics,
     weeklyScreeningData,
-    activityFeed,
-    referrals,
   } = useDemoStore() as any;
+
+  const {
+    patients,
+    screenings,
+    riskFlags,
+    referrals,
+    activityFeed
+  } = useLiveDemoStore();
+
+  const prevActivityLength = useRef(activityFeed.length);
+  const [newActivity, setNewActivity] = useState(false);
+
+  useEffect(() => {
+    if (activityFeed.length > prevActivityLength.current) {
+      setNewActivity(true);
+      const timer = setTimeout(() => setNewActivity(false), 3000);
+      return () => clearTimeout(timer);
+    }
+    prevActivityLength.current = activityFeed.length;
+  }, [activityFeed.length]);
+
+  const kpis = [
+    { label: "Total Patients", value: patients.length.toLocaleString(), trend: "+3%", trendNote: "this month", trendColor: "#4C7A5A" },
+    { label: "Total Screenings", value: screenings.length.toLocaleString(), trend: "+5%", trendNote: "this month", trendColor: "#4C7A5A" },
+    { label: "Active Risk Flags", value: riskFlags.filter((f: any) => f.status === 'unclaimed' || f.status === 'in-review').length, trend: "Requires attention", trendNote: "now", trendColor: "#B0523F" },
+    { label: "Pending Referrals", value: referrals.filter((r: any) => r.status !== 'resolved').length, trend: "-2", trendNote: "vs last week", trendColor: "#4C7A5A" }
+  ];
 
   const [dateFilter, setDateFilter] = useState<'week' | 'month' | 'quarter'>('month');
 
@@ -34,7 +59,13 @@ export default function DashboardPage() {
     <div className="p-8 max-w-[1400px] mx-auto space-y-8 bg-[#F5F4F0] min-h-screen">
       {/* Date filter */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-[#1E3A2F]">Population Health Dashboard</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-[#1E3A2F]">Population Health Dashboard</h1>
+          <div className="flex items-center gap-1.5 bg-[#4C7A5A]/10 text-[#4C7A5A] px-2.5 py-1 rounded-full text-xs font-bold border border-[#4C7A5A]/20">
+            <span className="w-2 h-2 rounded-full bg-[#4C7A5A] animate-pulse" />
+            Live
+          </div>
+        </div>
         <div className="flex gap-1 bg-white border border-gray-100 rounded-xl p-1">
           {(['week', 'month', 'quarter'] as const).map((f) => (
             <button
@@ -49,9 +80,9 @@ export default function DashboardPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {(kpis || []).map((k: any, i: number) => (
-          <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:scale-[1.02] transition-all cursor-default">
             <h3 className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-4">{k.label}</h3>
             <div className="flex items-end gap-3">
               <span className="text-4xl font-black" style={{ color: k.trendColor === '#B0523F' ? '#B0523F' : '#1E3A2F' }}>{k.value}</span>
@@ -64,9 +95,9 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="flex gap-8">
-        {/* Left Col (65%) */}
-        <div className="w-[65%] flex flex-col gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Col (span 2) */}
+        <div className="lg:col-span-2 flex flex-col gap-8">
 
           {/* Barangay heatmap */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
@@ -139,13 +170,13 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Right Col (35%) — Activity feed */}
-        <div className="w-[35%] bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        {/* Right Col (span 1) — Activity feed */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <h3 className="text-lg font-bold text-[#1E3A2F] mb-6">Recent activity</h3>
           <div className="flex flex-col gap-5 relative">
             <div className="absolute left-2.5 top-2 bottom-2 w-px bg-gray-100" />
             {(activityFeed || []).map((item: any, i: number) => (
-              <div key={i} className="flex gap-4 relative z-10">
+              <div key={i} className={`flex gap-4 relative z-10 p-2 rounded-lg transition-colors ${i === 0 && newActivity ? 'animate-pulse bg-green-50' : ''}`}>
                 <div className="w-5 h-5 rounded-full border-4 border-white shadow-sm mt-0.5 shrink-0" style={{ background: dotColor[item.type] || item.dot }} />
                 <div>
                   <p className="text-sm text-gray-800 leading-snug">{item.text}</p>

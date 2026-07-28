@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useMobileStore } from '../../store/useMobileStore';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
+import { supabase } from '../../../../packages/shared/src/lib/supabase';
+import { useToast } from '../../components/ui/ToastContext';
 
 export default function Login() {
   const [step, setStep] = useState(1);
@@ -14,6 +16,8 @@ export default function Login() {
   const navigate = useNavigate();
   const setStoreMode = useMobileStore(s => s.setMode);
   const { t } = useLanguage();
+  const { addToast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState(45);
   const [timerRunning, setTimerRunning] = useState(false);
@@ -49,17 +53,104 @@ export default function Login() {
     setTimerRunning(true);
   };
 
-  const handleSendCode = () => {
-    setStep(2);
-    startTimer();
-    setTimeout(() => {
-        if (otpRefs.current[0]) otpRefs.current[0].focus();
-    }, 100);
+  const applySession = (user) => {
+    const meta = user.user_metadata ?? {};
+    const userId = meta.userId ?? user.id;
+    const role = meta.role ?? 'patient';
+    const name = meta.name ?? user.email?.split('@')[0] ?? 'User';
+    useMobileStore.getState().setCurrentUser(userId, role, name);
+    useLiveDemoStore.getState().setCurrentUser(userId, role);
+    if (role === 'barangay_health_worker') {
+      setStoreMode('worker');
+      navigate('/worker/home');
+    } else {
+      setStoreMode('patient');
+      if (userId) useMobileStore.getState().selectPatient(userId);
+      navigate('/patient/home');
+    }
   };
 
-  const handleVerify = () => {
-    setStoreMode(mode);
-    navigate(mode === 'patient' ? '/patient/home' : '/worker/home');
+  const handleSendCode = async () => {
+    if (!id) return;
+    setIsSubmitting(true);
+    if (navigator.vibrate) navigator.vibrate(50);
+
+    if (mode === 'worker') {
+      // Workers use email + password
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: id,
+        password: phone,
+      });
+      setIsSubmitting(false);
+      if (error || !data.user) {
+        addToast(error?.message ?? 'Invalid credentials. Try again.', 'error');
+        return;
+      }
+      addToast('Welcome back!', 'success');
+      applySession(data.user);
+      return;
+    }
+
+    // Patient mode — demo shortcut: BGY-041-00217 uses password auth
+    if (id === 'BGY-041-00217') {
+      // Skip OTP, go straight to step 2 which will do password login on verify
+      addToast('Code sent! (Demo: any 6 digits work)', 'success');
+      setStep(2);
+      startTimer();
+      setTimeout(() => { if (otpRefs.current[0]) otpRefs.current[0].focus(); }, 100);
+      setIsSubmitting(false);
+      return;
+    }
+
+    // General patient: send OTP via email
+    const { error } = await supabase.auth.signInWithOtp({
+      email: id + '@patient.aimhotech.io',
+      options: { shouldCreateUser: false },
+    });
+    setIsSubmitting(false);
+    if (error) {
+      addToast('Patient ID not found. Try BGY-041-00217', 'error');
+      return;
+    }
+    addToast('Verification code sent!', 'success');
+    setStep(2);
+    startTimer();
+    setTimeout(() => { if (otpRefs.current[0]) otpRefs.current[0].focus(); }, 100);
+  };
+
+  const handleVerify = async () => {
+    setIsSubmitting(true);
+    if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+
+    // Demo patient: use password auth
+    if (id === 'BGY-041-00217') {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: 'maria.santos@patient.aimhotech.io',
+        password: 'PatientDemo2026!',
+      });
+      setIsSubmitting(false);
+      if (error || !data.user) {
+        addToast('Login failed. Check credentials.', 'error');
+        return;
+      }
+      addToast('Welcome, Maria!', 'success');
+      applySession(data.user);
+      return;
+    }
+
+    // OTP verification for general patients
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: id + '@patient.aimhotech.io',
+      token: otp.join(''),
+      type: 'email',
+    });
+    setIsSubmitting(false);
+    if (error || !data.user) {
+      addToast('Incorrect code. Try again.', 'error');
+      return;
+    }
+    addToast('Login successful!', 'success');
+    applySession(data.user);
   };
 
   const minutes = Math.floor(timeLeft / 60);
@@ -93,7 +184,9 @@ export default function Login() {
           <div className={`flex flex-col h-full absolute inset-0 pt-[104px] px-edge_margin transition-all duration-300 ${step === 1 ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}`}>
             <header className="mb-xl">
               <h1 className="font-display-lg text-[32px] font-extrabold text-primary mb-xs">Welcome back</h1>
-              <p className="font-body-lg text-[16px] text-on-surface-variant">Sign in with your {mode === 'patient' ? 'Patient' : 'Worker'} ID and mobile number.</p>
+              <p className="font-body-lg text-[16px] text-on-surface-variant">
+                {mode === 'patient' ? 'Enter your Patient ID and phone number.' : 'Enter your work email and password.'}
+              </p>
             </header>
 
             <div className="flex gap-xs mb-xl bg-surface-container-low p-1 rounded-xl">
@@ -112,48 +205,83 @@ export default function Login() {
             </div>
 
             <div className="space-y-4">
-              {/* ID Input */}
+              {/* ID / Email Input */}
               <div className="space-y-1">
-                <label className="font-label-sm text-[12px] font-semibold text-on-surface-variant ml-1" htmlFor="user-id">{mode === 'patient' ? 'Patient' : 'Worker'} ID</label>
-                <div className="relative">
-                  <input 
-                    id="user-id"
-                    className="w-full h-14 px-4 bg-white border border-outline-variant rounded-xl font-['IBM_Plex_Mono'] text-[13px] text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 outline-none" 
-                    placeholder="XXX-XXX-XXXXX" 
-                    type="text" 
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
-                  />
-                </div>
+                <label className="font-label-sm text-[12px] font-semibold text-on-surface-variant ml-1" htmlFor="user-id">
+                  {mode === 'patient' ? 'Patient ID' : 'Work Email'}
+                </label>
+                <input 
+                  id="user-id"
+                  className="w-full h-14 px-4 bg-white border border-outline-variant rounded-xl font-['IBM_Plex_Mono'] text-[13px] text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 outline-none" 
+                  placeholder={mode === 'patient' ? 'BGY-041-00217' : 'a.reyes@rhu.gov.ph'}
+                  type={mode === 'worker' ? 'email' : 'text'}
+                  value={id}
+                  onChange={(e) => setId(e.target.value)}
+                />
               </div>
 
-              {/* Mobile Number Input */}
+              {/* Password / Phone Input */}
               <div className="space-y-1">
-                <label className="font-label-sm text-[12px] font-semibold text-on-surface-variant ml-1" htmlFor="mobile-number">Mobile Number</label>
-                <div className="flex gap-2">
-                  <div className="w-20 h-14 px-4 flex items-center justify-center bg-surface-container-low border border-outline-variant rounded-xl font-body-lg text-[16px] text-on-surface-variant">
-                    +63
+                <label className="font-label-sm text-[12px] font-semibold text-on-surface-variant ml-1" htmlFor="second-field">
+                  {mode === 'patient' ? 'Mobile Number' : 'Password'}
+                </label>
+                {mode === 'patient' ? (
+                  <div className="flex gap-2">
+                    <div className="w-20 h-14 px-4 flex items-center justify-center bg-surface-container-low border border-outline-variant rounded-xl font-body-lg text-[16px] text-on-surface-variant">
+                      +63
+                    </div>
+                    <input 
+                      id="second-field"
+                      className="flex-1 h-14 px-4 bg-white border border-outline-variant rounded-xl font-body-lg text-[16px] text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 outline-none" 
+                      placeholder="Phone number" 
+                      type="tel" 
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
                   </div>
+                ) : (
                   <input 
-                    id="mobile-number"
-                    className="flex-1 h-14 px-4 bg-white border border-outline-variant rounded-xl font-body-lg text-[16px] text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 outline-none" 
-                    placeholder="Phone number" 
-                    type="tel" 
+                    id="second-field"
+                    className="w-full h-14 px-4 bg-white border border-outline-variant rounded-xl font-body-lg text-[16px] text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200 outline-none" 
+                    placeholder="••••••••" 
+                    type="password"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
-                </div>
+                )}
               </div>
+
+              {mode === 'worker' && (
+                <div className="text-xs text-on-surface-variant bg-surface-container-low rounded-xl p-3 border border-outline-variant/30">
+                  Demo: <code className="font-mono">m.delacruz@brgy.gov.ph</code> · <code className="font-mono">AimhoDemo2026!</code>
+                </div>
+              )}
+              {mode === 'patient' && (
+                <div className="text-xs text-on-surface-variant bg-surface-container-low rounded-xl p-3 border border-outline-variant/30">
+                  Demo Patient ID: <code className="font-mono">BGY-041-00217</code>
+                </div>
+              )}
             </div>
 
             <div className="mt-8">
               <button 
                 onClick={handleSendCode}
-                disabled={!phone}
-                className="w-full h-[56px] bg-primary text-white font-headline-sm text-[20px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all duration-200 disabled:opacity-50"
+                disabled={!id || isSubmitting || (mode === 'patient' && !phone && id !== 'BGY-041-00217')}
+                className="w-full h-[56px] bg-primary text-white font-headline-sm text-[20px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] active:scale-95 transition-all duration-200 disabled:opacity-50 relative overflow-hidden"
               >
-                <span className="material-symbols-outlined">message</span>
-                Text me a code
+                {isSubmitting ? (
+                  <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                ) : mode === 'patient' ? (
+                  <>
+                    <span className="material-symbols-outlined">message</span>
+                    Text me a code
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined">login</span>
+                    Sign in
+                  </>
+                )}
               </button>
             </div>
             
@@ -164,7 +292,7 @@ export default function Login() {
             </div>
           </div>
 
-          {/* OTP SCREEN */}
+          {/* OTP SCREEN (Patient mode only) */}
           <div className={`flex flex-col h-full absolute inset-0 pt-[104px] px-edge_margin transition-all duration-300 ${step === 2 ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}`}>
             <header className="mb-8">
               <div className="mb-4">
@@ -176,7 +304,7 @@ export default function Login() {
                 </button>
               </div>
               <h1 className="font-display-lg text-[32px] font-extrabold text-primary mb-2">Verify your identity</h1>
-              <p className="font-body-lg text-[16px] text-on-surface-variant">We've sent a 6-digit code to <span className="font-bold">+63 {phone || '••• ••• 4127'}</span></p>
+              <p className="font-body-lg text-[16px] text-on-surface-variant">We've sent a 6-digit code to <span className="font-bold">Patient ID {id}</span></p>
             </header>
 
             <div className="space-y-8">
@@ -214,15 +342,21 @@ export default function Login() {
             <div className="mt-8">
               <button 
                 onClick={handleVerify}
-                disabled={otp.some(d => !d)}
-                className="w-full h-[56px] bg-primary text-white font-headline-sm text-[20px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all duration-200 disabled:opacity-50"
+                disabled={otp.some(d => !d) || isSubmitting}
+                className="w-full h-[56px] bg-primary text-white font-headline-sm text-[20px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] active:scale-95 transition-all duration-200 disabled:opacity-50"
               >
-                <span className="material-symbols-outlined">verified_user</span>
-                Verify & login
+                {isSubmitting ? (
+                  <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined">verified_user</span>
+                    Verify &amp; login
+                  </>
+                )}
               </button>
             </div>
 
-            {/* Bento-style information card for security reassurance */}
+            {/* Security info card */}
             <div className="mt-8 bg-surface-container-low p-4 rounded-xl border border-outline-variant/30">
               <div className="flex items-start gap-4">
                 <div className="p-2 bg-secondary-container rounded-lg">
@@ -237,7 +371,7 @@ export default function Login() {
           </div>
         </main>
 
-        {/* Bottom Navigation Shell (Filter Applied: Transactional Hidden) */}
+        {/* Bottom Navigation Shell */}
         <footer className="mt-auto px-edge_margin pb-8 pt-4 flex items-center justify-between border-t border-outline-variant/20 bg-surface z-20 relative">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">

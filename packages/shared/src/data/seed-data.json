@@ -306,6 +306,19 @@
     { "id": "IFA-1028", "sev": "warning", "type": "Device drift", "title": "Glucometer BNM-GL-0072 cold-storage variance", "detail": "Morning readings 8% below afternoon distribution. Pattern matched strip storage temperature issue.", "time": "Jul 21", "status": "dismissed", "resolution": "Dismissed as false positive — fed to retraining set" }
   ],
 
+  "aiStats": [
+    { "label": "Anomalies Detected", "value": "14", "color": "#B0523F" },
+    { "label": "False Positives", "value": "2", "color": "#C79A3C" },
+    { "label": "Models Active", "value": "3", "color": "#4C7A5A" },
+    { "label": "Syncs Processed", "value": "842", "color": "#1E3A2F" }
+  ],
+
+  "aiModels": [
+    { "name": "Cardio Risk Predictor", "desc": "Analyzes BP and HR trends for cardiovascular risk.", "ver": "v2.1.4" },
+    { "name": "Anomaly Detection", "desc": "Flags irregular vitals patterns and missing data.", "ver": "v1.4.0" },
+    { "name": "NLP Summarizer", "desc": "Extracts clinical insights from worker notes.", "ver": "v3.0.1" }
+  ],
+
   "mobileHealthHistory": [
     { "title": "BP 124/82 · glucose 108", "detail": "Jul 12, 2026 · routine screening", "src": "Kiosk", "srcType": "kiosk" },
     { "title": "BP 131/85 · glucose 112", "detail": "May 28, 2026 · follow-up", "src": "RHU", "srcType": "rhu" },

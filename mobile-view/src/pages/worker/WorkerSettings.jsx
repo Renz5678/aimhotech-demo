@@ -3,7 +3,7 @@ import TopBar from '../../components/layout/TopBar';
 import { useMobileStore } from '../../store/useMobileStore';
 
 export default function WorkerSettings() {
-  const { pairedDevices, unpairDevice, isSynced, syncToBrain } = useMobileStore();
+  const { pairedDevices, unpairDevice, isSynced, syncToBrain, currentUserName, currentUserId, currentUserRole } = useMobileStore();
 
   return (
     <div className="flex flex-col h-full bg-surface">
@@ -13,10 +13,10 @@ export default function WorkerSettings() {
         <section>
           <h3 className="font-bold text-primary mb-3 text-sm tracking-widest uppercase">Health Worker Info</h3>
           <div className="bg-surface-container rounded-xl p-4 space-y-3">
-            <div className="flex justify-between"><span className="text-secondary">Name</span><span className="font-bold">Liza Marasigan</span></div>
-            <div className="flex justify-between"><span className="text-secondary">Role</span><span className="font-bold">BHW</span></div>
+            <div className="flex justify-between"><span className="text-secondary">Name</span><span className="font-bold">{currentUserName || 'Liza Marasigan'}</span></div>
+            <div className="flex justify-between"><span className="text-secondary">Role</span><span className="font-bold">{currentUserRole === 'barangay_health_worker' ? 'BHW' : (currentUserRole || 'BHW')}</span></div>
             <div className="flex justify-between"><span className="text-secondary">Station</span><span className="font-bold">San Isidro BHS</span></div>
-            <div className="flex justify-between"><span className="text-secondary">ID</span><span className="font-mono bg-surface px-2 py-1 rounded">HW-097-001</span></div>
+            <div className="flex justify-between"><span className="text-secondary">ID</span><span className="font-mono bg-surface px-2 py-1 rounded">{currentUserId || 'HW-097-001'}</span></div>
           </div>
         </section>
 
@@ -60,6 +60,13 @@ export default function WorkerSettings() {
             </div>
           </div>
         </section>
+
+        <button onClick={() => {
+          useMobileStore.getState().signOut().then(() => window.location.href = '/login');
+        }} className="w-full mt-6 bg-error/10 text-error font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
+          <span className="material-symbols-outlined">logout</span>
+          Sign Out
+        </button>
       </div>
     </div>
   );

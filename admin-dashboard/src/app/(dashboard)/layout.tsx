@@ -1,5 +1,7 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import StoreInitializer from "@/components/layout/StoreInitializer";
+import { ToastProvider } from "@/components/ui/ToastProvider";
 
 export default function DashboardLayout({
   children,

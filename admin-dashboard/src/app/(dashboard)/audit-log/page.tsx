@@ -1,12 +1,23 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { useDemoStore, formatDateTime } from "@/store/useDemoStore";
+import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore';
+import { formatDateTime } from "@/store/useDemoStore";
 import { History, Search, Download } from 'lucide-react';
 
 export default function AuditLogPage() {
-  const { auditLog } = useDemoStore();
+  const { auditLog } = useLiveDemoStore();
   const [search, setSearch] = useState('');
+  const [flashId, setFlashId] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (auditLog && auditLog.length > 0) {
+      const latest = auditLog[0];
+      setFlashId(latest.id);
+      const t = setTimeout(() => setFlashId(null), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [auditLog]);
 
   const actColors: Record<string, string[]> = {
     VIEW: ['#3F4A3A', '#EFF2EA'],
@@ -20,7 +31,7 @@ export default function AuditLogPage() {
 
   const filteredLog = useMemo(() => {
     const q = search.toLowerCase();
-    return auditLog.filter(a => {
+    return auditLog.filter((a: any) => {
       return !q || 
         a.actor.toLowerCase().includes(q) || 
         a.action.toLowerCase().includes(q) || 
@@ -29,7 +40,7 @@ export default function AuditLogPage() {
     });
   }, [auditLog, search]);
 
-  const auditRows = filteredLog.map(a => {
+  const auditRows = filteredLog.map((a: any) => {
     const actColor = actColors[a.action] || ['#3F4A3A', '#EFF2EA'];
     return {
       ...a,
@@ -40,7 +51,16 @@ export default function AuditLogPage() {
   });
 
   const handleExport = () => {
-    alert("Exporting audit log as CSV...");
+    const csv = ['Timestamp,Actor,Action,Details,IP']
+      .concat((auditLog || []).map((e: any) => `${e.timestamp},${e.actor},${e.action},"${e.details || ''}",${e.ipAddress || ''}`))
+      .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `aimhotech-audit-${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -85,8 +105,8 @@ export default function AuditLogPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#F1EEE7]">
-              {auditRows.map((a, i) => (
-                <tr key={a.id} className="even:bg-[#F1EEE7]/40 hover:bg-[#EFF2EA]/50 transition-colors">
+              {auditRows.map((a: any, i: number) => (
+                <tr key={a.id} className={`even:bg-[#F1EEE7]/40 hover:bg-[#EFF2EA]/50 transition-colors ${flashId === a.id ? 'animate-pulse bg-green-50' : ''}`}>
                   <td className="px-5 py-3.5 font-mono text-[12.5px] text-[#6B7566]">{a.timeFormatted}</td>
                   <td className="px-5 py-3.5">
                     <div className="font-semibold text-foreground">{a.actor}</div>

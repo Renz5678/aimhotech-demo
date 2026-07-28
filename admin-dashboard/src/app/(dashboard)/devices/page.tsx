@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useMemo } from 'react';
-import { useDemoStore, formatDateTime } from "@/store/useDemoStore";
+import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore';
+import { formatDateTime } from "@/store/useDemoStore";
 import { Monitor } from 'lucide-react';
 // Removed duplicate getRelativeTime import
 
@@ -17,7 +18,7 @@ function timeAgo(dateStr: string) {
 }
 
 export default function DevicesPage() {
-  const { devices, facilities } = useDemoStore();
+  const { devices, facilities, updateDeviceStatus } = useLiveDemoStore();
 
   const devStats = useMemo(() => {
     const online = devices.filter(d => d.status === 'online').length;
@@ -40,8 +41,8 @@ export default function DevicesPage() {
     
     const stMap: Record<string, any> = {
       online: ['Online', '#4C7A5A', 'animate-ping-dot'],
-      offline: ['Offline', '#B0523F', ''],
-      maintenance_needed: ['Maintenance due', '#C79A3C', '']
+      offline: ['Offline', '#B0523F', 'animate-ping-dot'],
+      maintenance_needed: ['Maintenance due', '#C79A3C', 'animate-ping-dot']
     };
 
     return devices.map(d => {
@@ -96,6 +97,7 @@ export default function DevicesPage() {
                 <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Status</th>
                 <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Firmware</th>
                 <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Last sync</th>
+                <th className="px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.4px] text-[#6B7566]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#F1EEE7]">
@@ -131,11 +133,28 @@ export default function DevicesPage() {
                     {d.fw}
                   </td>
                   <td className="px-5 py-3.5 text-[13px] text-[#6B7566]">{d.sync}</td>
+                  <td className="px-5 py-3.5 text-right">
+                    {d.status === 'online' ? (
+                      <button 
+                        onClick={() => updateDeviceStatus(d.id, 'offline')}
+                        className="px-3 py-1 bg-[#C79A3C]/10 text-[#C79A3C] font-bold rounded"
+                      >
+                        Take Offline
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => updateDeviceStatus(d.id, 'online')}
+                        className="px-3 py-1 bg-[#4C7A5A]/10 text-[#4C7A5A] font-bold rounded"
+                      >
+                        Bring Online
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
               {deviceRows.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground text-sm">
+                  <td colSpan={7} className="px-5 py-10 text-center text-muted-foreground text-sm">
                     No devices provisioned.
                   </td>
                 </tr>

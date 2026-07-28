@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useDemoStore, formatDateTime } from "@/store/useDemoStore";
+import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore';
 
 function getRelativeTime(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -15,10 +16,27 @@ function getRelativeTime(dateStr: string) {
 import { Brain, Sparkles, MessageSquareHeart } from 'lucide-react';
 
 export default function AIBrainPage() {
-  const { riskFlags, patients } = useDemoStore();
+  const { patients } = useDemoStore();
+  const { anomalies, acknowledgeAnomaly, dismissAnomaly } = useLiveDemoStore();
   
-  // Local state to simulate acknowledging/dismissing flags
-  const [localFlags, setLocalFlags] = useState(riskFlags);
+  const [newFlagIds, setNewFlagIds] = useState<Set<string>>(new Set());
+  const prevAnomaliesLength = useRef(anomalies.length);
+
+  useEffect(() => {
+    if (anomalies.length > prevAnomaliesLength.current) {
+      const newestAnomaly = anomalies[0];
+      if (newestAnomaly) {
+        setNewFlagIds(new Set([newestAnomaly.id]));
+        const timer = setTimeout(() => {
+          setNewFlagIds(new Set());
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    }
+    prevAnomaliesLength.current = anomalies.length;
+  }, [anomalies]);
+
+  const openCount = anomalies.filter((a: any) => a.status === 'open').length;
 
   const aiStats = [
     { label: 'Anomalies flagged (30d)', value: '142', color: '#B0523F' },
@@ -28,10 +46,10 @@ export default function AIBrainPage() {
   ];
 
   const anomalyRows = useMemo(() => {
-    return localFlags
+    return (anomalies as any[])
       .filter(f => f.category !== 'low')
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-      .map(f => {
+      .sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .map((f: any) => {
         const patient = patients.find(p => p.id === f.patientId);
         
         let sev = 'WARNING';
@@ -63,14 +81,15 @@ export default function AIBrainPage() {
           resolution: '✓ Routed to Dr. Reyes for review'
         };
       });
-  }, [localFlags, patients]);
+  }, [anomalies, patients]);
+
 
   const handleAck = (id: string) => {
-    setLocalFlags(prev => prev.map(f => f.id === id ? { ...f, provisional: true } : f));
+    acknowledgeAnomaly(id);
   };
 
   const handleDismiss = (id: string) => {
-    setLocalFlags(prev => prev.filter(f => f.id !== id));
+    dismissAnomaly(id);
   };
 
   const aiModels = [
@@ -86,7 +105,10 @@ export default function AIBrainPage() {
           <Brain className="w-6 h-6 text-[#A3B18B]" />
           AI Brain & IFA
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">Intelligent Flagging Agent (IFA) anomaly detection and model status.</p>
+        <div className="flex items-center gap-4 mt-1">
+          <p className="text-sm text-muted-foreground">Intelligent Flagging Agent (IFA) anomaly detection and model status.</p>
+          <div className="bg-[#4C7A5A] text-white px-2 py-0.5 rounded-full text-xs font-bold">{openCount} open</div>
+        </div>
       </div>
 
       <div className="flex flex-wrap md:flex-nowrap gap-4 mb-4">
@@ -112,8 +134,8 @@ export default function AIBrainPage() {
             {anomalyRows.map((a) => (
               <div 
                 key={a.id} 
-                className="border rounded-[10px] p-4 flex gap-3.5 items-start transition-opacity"
-                style={{ borderColor: a.open ? '#E4E1D8' : '#F1EEE7', backgroundColor: a.open ? '#fff' : '#FDFCFA', opacity: a.open ? 1 : 0.65 }}
+                className={`border rounded-[10px] p-4 flex gap-3.5 items-start transition-opacity ${newFlagIds.has(a.id) ? 'animate-pulse bg-red-50' : ''}`}
+                style={{ borderColor: a.open ? '#E4E1D8' : '#F1EEE7', backgroundColor: newFlagIds.has(a.id) ? undefined : (a.open ? '#fff' : '#FDFCFA'), opacity: a.open ? 1 : 0.65 }}
               >
                 <span className="shrink-0 mt-1.5 w-2 h-2 rounded-full relative flex">
                   {a.anim !== 'none' && (

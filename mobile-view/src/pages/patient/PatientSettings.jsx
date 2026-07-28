@@ -5,26 +5,25 @@ import { useLanguage } from '../../hooks/useLanguage';
 
 export default function PatientSettings() {
   const { t, language } = useLanguage();
-  const setLanguage = useMobileStore(s => s.setLanguage);
+  const { setLanguage, currentUserName } = useMobileStore();
   const navigate = useNavigate();
   const [showConsent, setShowConsent] = useState(false);
 
   return (
     <div className="bg-background text-on-surface min-h-screen pb-24">
-      <header className="fixed top-0 left-0 w-full z-50 bg-background flex flex-col px-edge_margin pt-xl pb-md">
+      <header className="absolute top-0 left-0 w-full z-50 bg-background flex flex-col px-edge_margin pt-xl pb-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-sm">
-            <div className="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center overflow-hidden">
-              <img className="w-full h-full object-cover" alt="Logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsLzpl7NwQELatlWhheuogSLcAOQPUDj6-hKFI2MBz3p3o5vHl7Bvic5K8s81nhWBeMifuWAslNfadqhPGMI88rzrOBvneNnjj4qJ5_Pn9ilLhWvxDsjBcfEQBsCFfZe7MCImC8ODZAcorNp17StDJzGvV2nWEfgiUGHjPQ8Z21SInj-yofkJX1baZDo50OX9grf77dVBSWi3ZAFqccMOgSZ8lf1TH17vB-5haFAzoxmqjVGv-nHwgUNg_x7JAihy0nTxDZfN4iK4"/>
+            <div className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden shrink-0">
+              <img className="w-full h-full object-cover" alt="Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzHG_xKgYuvHPrajWtThD6dDk9l96CDEP_g_s0wr2zAnYp4nydj9zWjOsaC57aMf5wjiUp4TnVMyz5pXoTzJMCF2Yqfy2erQzVXgOd1gZQDTdFClNXlrZatFurykwdoFhHYXsyXHoTowlv5l20XxlHp9sUpacLt0t0UaBPBzUePFJpCJae80guqjgxZCa2S-alDjeMnr_TPM8lMOrSJc9I4Coz3EXspYNIty__U_QW6R7kcBViGrRBxoFL2EjPGqwEs0wpY4JcCjE"/>
             </div>
-            <span className="font-headline-md text-headline-md text-primary tracking-tight">Barangay San Isidro</span>
-          </div>
-          <div className="bg-secondary-container px-sm py-xs rounded-full flex items-center gap-xs">
-            <div className="w-2 h-2 rounded-full bg-secondary"></div>
-            <span className="font-label-sm text-label-sm text-on-secondary-container">3 pending</span>
+            <div className="flex flex-col">
+              <span className="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">Patient Profile</span>
+              <h1 className="font-headline-md text-headline-md text-primary tracking-tight leading-none">{currentUserName || 'Maria Santos'}</h1>
+            </div>
           </div>
         </div>
-        <h1 className="mt-lg font-display-lg text-display-lg text-primary">{t('settings')}</h1>
+        <h2 className="mt-lg font-display-lg text-display-lg text-primary">{t('settings')}</h2>
       </header>
       
       <main className="pt-[160px] px-edge_margin space-y-stack_gap">
@@ -116,7 +115,9 @@ export default function PatientSettings() {
               <span className="material-symbols-outlined text-secondary text-[28px]">chat_bubble</span>
               <span className="font-body-md text-body-md text-primary">Help Center</span>
             </div>
-            <div className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_12px_rgba(30,58,47,0.04)] flex flex-col items-center justify-center text-center gap-xs active:scale-95 transition-transform duration-200 cursor-pointer">
+            <div onClick={() => {
+              useMobileStore.getState().signOut().then(() => navigate('/login'));
+            }} className="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_12px_rgba(30,58,47,0.04)] flex flex-col items-center justify-center text-center gap-xs active:scale-95 transition-transform duration-200 cursor-pointer">
               <span className="material-symbols-outlined text-secondary text-[28px]">logout</span>
               <span className="font-body-md text-body-md text-primary">Sign Out</span>
             </div>

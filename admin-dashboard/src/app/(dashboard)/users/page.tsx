@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { useDemoStore } from "@/store/useDemoStore";
 import { UserCog, Plus, Search } from 'lucide-react';
 import type { UserRole } from '@/store/useDemoStore';
+import { supabase } from '../../../lib/supabase';
 
 export default function UsersPage() {
   const { users, facilities } = useDemoStore();
@@ -51,35 +52,50 @@ export default function UsersPage() {
     };
   });
 
-  const toggleUser = (userId: string) => {
+  const toggleUser = async (userId: string) => {
     setLocalUsers(prev => prev.map(u => {
       if (u.id === userId) {
         return { ...u, active: !(u as any).active };
       }
       return u;
     }));
+    const user = localUsers.find(u => u.id === userId);
+    if (user) {
+      await supabase.from('users').update({ active: !(user as any).active }).eq('id', userId);
+    }
   };
 
-  const sendInvite = () => {
+  const sendInvite = async () => {
     if (!invName.trim() || !invEmail.trim()) {
       setInvError(true);
       return;
     }
     setInvError(false);
     
+    const newUserId = 'USR-NEW-' + Date.now();
+    const newFacilityId = invFacility || facilities[0]?.id || null;
+    
     // Add to local list for demo purposes
     setLocalUsers(prev => [{
-      id: `USR-NEW-${Date.now()}`,
+      id: newUserId,
       name: invName,
       email: invEmail,
       role: invRole,
-      facilityId: invFacility || facilities[0]?.id || null,
+      facilityId: newFacilityId,
       status: 'active'
     } as any, ...prev]);
 
     setShowInvite(false);
     setInvName('');
     setInvEmail('');
+
+    await supabase.from('users').insert({ 
+      id: newUserId, 
+      name: invName, 
+      email: invEmail, 
+      role: invRole, 
+      facilityId: newFacilityId 
+    });
   };
 
   return (

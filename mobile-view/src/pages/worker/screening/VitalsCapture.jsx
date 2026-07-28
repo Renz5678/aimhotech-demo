@@ -11,10 +11,23 @@ export default function VitalsCapture() {
   const { selectedPatientId, setVitalsSession } = useMobileStore();
   const patients = useLiveDemoStore(s => s.patients);
   const patient = patients.find(p => p.id === selectedPatientId) || patients[0];
-  const [showConfirm, setShowConfirm] = useState(true);
+  const [bp, setBp] = useState({ systolic: 164, diastolic: 99 });
+  const [heartRate, setHeartRate] = useState(88);
+  const [glucose, setGlucose] = useState(128);
+  const [height, setHeight] = useState(165);
+  const [weight, setWeight] = useState(70);
+  const [syncing, setSyncing] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const bmi = weight && height ? (weight / ((height / 100) ** 2)).toFixed(1) : '—';
 
-  const handleAnalyze = () => {
-    setVitalsSession({ bpSystolic: 164, bpDiastolic: 99, heartRate: 88, glucose: 128 });
+  const handleAnalyze = async () => {
+    setSyncing(true);
+    const vitals = { bpSystolic: bp.systolic, bpDiastolic: bp.diastolic, heartRate, glucose, afibFlag: true, height, weight };
+    setVitalsSession(vitals);
+    // Trigger Supabase sync via shared store
+    const { triggerLiveSync } = useLiveDemoStore.getState();
+    await triggerLiveSync(vitals, selectedPatientId);
+    setSyncing(false);
     navigate('/worker/screening/result');
   };
 
@@ -53,33 +66,33 @@ export default function VitalsCapture() {
               <div className="text-red-800 font-bold">Blood Pressure</div>
               <span className="material-symbols-outlined text-primary">bluetooth</span>
             </div>
-            <div className="text-4xl font-black text-red-700">164<span className="text-2xl text-red-500 font-bold">/99</span></div>
+            <div className="text-4xl font-black text-red-700">{bp.systolic}<span className="text-2xl text-red-500 font-bold">/{bp.diastolic}</span></div>
             <div className="text-sm text-red-600 mt-1">mmHg</div>
             <div className="mt-4 bg-white/50 text-xs font-semibold px-2 py-1 rounded inline-block">From Microlife B6</div>
           </div>
 
           <div className="bg-surface-container rounded-2xl p-4 card-shadow-1">
             <div className="text-secondary font-bold text-sm mb-1">Heart Rate</div>
-            <div className="text-2xl font-bold">88 <span className="text-sm font-normal">bpm</span></div>
+            <div className="text-2xl font-bold">{heartRate} <span className="text-sm font-normal">bpm</span></div>
             <div className="mt-2 bg-surface text-xs font-semibold px-2 py-1 rounded inline-block">From Microlife B6</div>
           </div>
 
           <div className="bg-surface-container rounded-2xl p-4 card-shadow-1">
             <div className="text-secondary font-bold text-sm mb-1">Glucose</div>
-            <div className="text-2xl font-bold">128 <span className="text-sm font-normal">mg/dL</span></div>
+            <div className="text-2xl font-bold">{glucose} <span className="text-sm font-normal">mg/dL</span></div>
             <div className="mt-2 bg-surface text-xs font-semibold px-2 py-1 rounded inline-block">From Bionime iFree</div>
           </div>
 
           <div className="col-span-2 bg-surface-container rounded-2xl p-4 card-shadow-1 flex gap-4">
-            <div className="flex-1"><label className="text-xs font-bold text-secondary">Height (cm)</label><input type="number" defaultValue="165" className="w-full bg-surface border border-outline-variant p-2 rounded mt-1 font-bold" /></div>
-            <div className="flex-1"><label className="text-xs font-bold text-secondary">Weight (kg)</label><input type="number" defaultValue="70" className="w-full bg-surface border border-outline-variant p-2 rounded mt-1 font-bold" /></div>
-            <div className="flex-1 flex flex-col justify-end"><div className="text-xs text-secondary font-bold">BMI</div><div className="font-bold text-lg">25.7</div></div>
+            <div className="flex-1"><label className="text-xs font-bold text-secondary">Height (cm)</label><input type="number" value={height} onChange={e => setHeight(Number(e.target.value))} className="w-full bg-surface border border-outline-variant p-2 rounded mt-1 font-bold" /></div>
+            <div className="flex-1"><label className="text-xs font-bold text-secondary">Weight (kg)</label><input type="number" value={weight} onChange={e => setWeight(Number(e.target.value))} className="w-full bg-surface border border-outline-variant p-2 rounded mt-1 font-bold" /></div>
+            <div className="flex-1 flex flex-col justify-end"><div className="text-xs text-secondary font-bold">BMI</div><div className="font-bold text-lg">{bmi}</div></div>
           </div>
         </div>
       </div>
 
       <div className="p-4 bg-surface border-t border-outline-variant/30">
-        <button onClick={handleAnalyze} className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg active:scale-95 card-shadow-1 transition-transform">{t('analyzeRisk')}</button>
+        <button onClick={handleAnalyze} disabled={syncing} className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg active:scale-95 card-shadow-1 transition-transform disabled:opacity-50 disabled:active:scale-100">{t('analyzeRisk')}</button>
       </div>
 
       {showConfirm && (
@@ -93,6 +106,14 @@ export default function VitalsCapture() {
               <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 bg-red-500 text-white rounded-xl font-bold card-shadow-1 active:scale-95 transition-transform">Confirm</button>
             </div>
           </div>
+        </div>
+      )}
+
+      {syncing && (
+        <div className="absolute inset-0 bg-black/60 z-50 flex flex-col items-center justify-center gap-4">
+          <span className="material-symbols-outlined animate-spin text-white text-5xl">sync</span>
+          <div className="text-white font-bold text-lg">Syncing to AI Brain...</div>
+          <div className="text-white/70 text-sm">Uploading vitals securely</div>
         </div>
       )}
     </div>

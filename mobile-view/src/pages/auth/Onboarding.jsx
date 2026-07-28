@@ -11,6 +11,13 @@ export default function Onboarding() {
   
   const [step, setStep] = useState(1);
   const [consentChecked, setConsentChecked] = useState(false);
+  const setMode = useMobileStore(s => s.setMode);
+
+  const handleSignUp = () => {
+    // Route to login — user must authenticate with their Patient ID
+    navigate('/login');
+  };
+
 
   return (
     <div className="flex flex-col h-full w-full bg-surface page-enter relative overflow-hidden p-8 text-center">
@@ -99,7 +106,7 @@ export default function Onboarding() {
           </button>
         ) : (
           <button 
-            onClick={() => navigate('/login')}
+            onClick={handleSignUp}
             disabled={!consentChecked}
             className={`w-full py-4 rounded-2xl font-bold text-lg card-shadow-1 transition-all ${consentChecked ? 'bg-primary text-white hover:scale-[1.02] active:scale-[0.98]' : 'bg-surface-container text-on-surface-variant opacity-50'}`}
           >

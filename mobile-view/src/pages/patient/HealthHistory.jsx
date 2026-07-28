@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useMobileStore } from '../../store/useMobileStore';
 
 const SRC_STYLE = {
   kiosk: 'bg-primary-fixed text-on-primary-fixed',
@@ -11,12 +12,20 @@ const SRC_STYLE = {
 export default function HealthHistory() {
   const { t } = useLanguage();
   const [filter, setFilter] = useState('bp');
-  const mobileHealthHistory = useLiveDemoStore(s => s.mobileHealthHistory);
+  
+  const screenings = useLiveDemoStore(s => s.screenings);
+  const referrals = useLiveDemoStore(s => s.referrals);
+  const selectedPatientId = useMobileStore(s => s.selectedPatientId);
+  const patientScreenings = screenings
+    .filter(s => s.patientId === selectedPatientId)
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+    .slice(0, 10);
+  const recentScreenings = patientScreenings.length ? patientScreenings : [{ bpSystolic: 124, bpDiastolic: 82 }];
   
   return (
     <div className="bg-background text-on-background min-h-screen pb-32">
       {/* TopAppBar */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-background flex flex-col px-edge_margin pt-xl pb-md">
+      <header className="absolute top-0 left-0 w-full z-50 bg-background flex flex-col px-edge_margin pt-xl pb-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-sm">
             <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
@@ -29,7 +38,7 @@ export default function HealthHistory() {
           </div>
           <div className="flex items-center gap-xs px-3 py-1.5 rounded-full bg-secondary-container/30 border border-outline-variant/30">
             <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-            <span className="text-label-sm font-label-sm text-on-secondary-container">3 pending</span>
+            <span className="text-label-sm font-label-sm text-on-secondary-container">{referrals.filter(r => r.patientId === selectedPatientId && r.status !== 'resolved').length} pending</span>
           </div>
         </div>
       </header>
@@ -65,7 +74,7 @@ export default function HealthHistory() {
             <div>
               <h3 className="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">Blood pressure</h3>
               <div className="flex items-baseline gap-xs mt-1">
-                <span className="text-display-lg font-display-lg text-primary">124/82</span>
+                <span className="text-display-lg font-display-lg text-primary">{patientScreenings[0]?.bpSystolic ?? 124}/{patientScreenings[0]?.bpDiastolic ?? 82}</span>
                 <div className="flex items-center gap-1 text-on-primary-container bg-primary-fixed px-2 py-0.5 rounded-full">
                   <span className="material-symbols-outlined text-[16px]">trending_down</span>
                   <span className="text-label-sm font-label-sm">improving</span>
@@ -85,9 +94,18 @@ export default function HealthHistory() {
                 </linearGradient>
               </defs>
               <path className="chart-gradient" style={{ fill: 'url(#chart-bg)' }} d="M0,80 Q50,75 100,85 T200,70 T300,95 T400,90 L400,120 L0,120 Z"></path>
-              <path d="M0,80 Q50,75 100,85 T200,70 T300,95 T400,90" fill="none" stroke="#1E3A2F" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3"></path>
-              <circle cx="395" cy="91" fill="#1E3A2F" r="5"></circle>
-              <circle cx="395" cy="91" fill="#1E3A2F" fillOpacity="0.1" r="8"></circle>
+              <path d={
+                patientScreenings.length > 0 ? (() => {
+                  const values = patientScreenings.slice(0, 6).map(s => s.bpSystolic || 124).reverse();
+                  while (values.length < 6) values.unshift(124);
+                  const maxV = 200;
+                  const stepX = 400 / 5;
+                  const pts = values.map((v, i) => `${i * stepX},${110 - (v / maxV) * 100}`);
+                  return `M${pts.join(' L')}`;
+                })() : "M0,80 Q50,75 100,85 T200,70 T300,95 T400,90"
+              } fill="none" stroke="#1E3A2F" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3"></path>
+              <circle cx="400" cy={patientScreenings.length > 0 ? 110 - ((patientScreenings[0]?.bpSystolic || 124) / 200) * 100 : 91} fill="#1E3A2F" r="5"></circle>
+              <circle cx="400" cy={patientScreenings.length > 0 ? 110 - ((patientScreenings[0]?.bpSystolic || 124) / 200) * 100 : 91} fill="#1E3A2F" fillOpacity="0.1" r="8"></circle>
             </svg>
             <div className="absolute bottom-0 left-0 w-full flex justify-between px-2 pt-2 border-t border-outline-variant/20">
               <span className="text-label-sm font-label-sm text-on-surface-variant">JAN</span>
@@ -127,25 +145,26 @@ export default function HealthHistory() {
             <button className="text-label-sm font-label-sm text-primary font-bold">View Archive</button>
           </div>
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-surface-variant/20">
-            {(mobileHealthHistory || []).map((h, i) => {
-              const [, datePart] = h.detail.split(' · ');
-              const dateObj = new Date(h.detail.split(' · ')[0]);
+            {patientScreenings.map((s, i) => {
+              const dateObj = new Date(s.timestamp);
               const mon = dateObj.toLocaleString('en', { month: 'short' }).toUpperCase();
               const day = dateObj.getDate();
-              const srcStyle = SRC_STYLE[h.srcType] || SRC_STYLE.kiosk;
+              const srcStyle = SRC_STYLE[s.source] || SRC_STYLE.kiosk;
+              const bpStr = s.bp || s.bpSystolic + '/' + s.bpDiastolic;
+              const glucStr = s.glucose || s.glucoseValue + ' mg/dL';
               return (
-                <div key={i} className={`p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors ${i < (mobileHealthHistory.length - 1) ? 'border-b border-outline-variant/10' : ''}`}>
+                <div key={i} className={`p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors ${i < (patientScreenings.length - 1) ? 'border-b border-outline-variant/10' : ''}`}>
                   <div className="flex gap-md">
                     <div className="flex flex-col items-center justify-center bg-surface-container-high w-14 h-14 rounded-2xl">
                       <span className="text-label-sm font-label-sm text-on-surface-variant">{mon}</span>
                       <span className="text-headline-sm font-headline-sm text-primary">{day || '—'}</span>
                     </div>
                     <div className="flex flex-col justify-center">
-                      <p className="text-body-lg font-body-lg text-primary">{h.title}</p>
-                      <p className="text-body-md font-body-md text-on-surface-variant">{datePart}</p>
+                      <p className="text-body-lg font-body-lg text-primary">{`BP ${bpStr} · HR ${s.heartRate} bpm`}</p>
+                      <p className="text-body-md font-body-md text-on-surface-variant">{`Glucose ${glucStr}`}</p>
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-label-sm font-label-sm ${srcStyle}`}>{h.src}</span>
+                  <span className={`px-3 py-1 rounded-full text-label-sm font-label-sm ${srcStyle}`}>{s.source === 'kiosk' ? 'Kiosk' : s.source}</span>
                 </div>
               );
             })}

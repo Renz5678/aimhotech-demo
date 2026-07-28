@@ -60,7 +60,7 @@ export default function PatientLookup() {
           <div className="text-center py-12 flex flex-col items-center">
             <span className="material-symbols-outlined text-6xl text-secondary/30 mb-4">person_search</span>
             <p className="text-secondary font-bold mb-6">{t('noPatientFound')}</p>
-            <button className="bg-primary/10 text-primary border-2 border-primary px-6 py-3 rounded-xl font-bold">{t('enrollPatient')}</button>
+            <button onClick={() => navigate('/onboarding')} className="bg-primary/10 text-primary border-2 border-primary px-6 py-3 rounded-xl font-bold">{t('enrollPatient')}</button>
           </div>
         )}
       </div>

@@ -18,11 +18,22 @@ interface AdminStoreState {
   toggleDarkMode: () => void;
   clearNotifications: () => void;
   markAllRead: () => void;
+
+  currentUserId: string | null;
+  currentUserName: string;
+  currentUserEmail: string;
+  prcLicense: string;
+  setCurrentUser: (userId: string | null, name: string, email: string, role: Role, prcLicense?: string) => void;
+  signOut: () => void;
 }
 
 export const useAdminStore = create<AdminStoreState>((set) => ({
   currentRole: 'rhu_physician',
   isDarkMode: false,
+  currentUserId: null,
+  currentUserName: 'Admin',
+  currentUserEmail: '',
+  prcLicense: '',
   notifications: [
     {
       id: 'notif-1',
@@ -64,4 +75,10 @@ export const useAdminStore = create<AdminStoreState>((set) => ({
     set((state) => ({
       notifications: state.notifications.map((n) => ({ ...n, read: true })),
     })),
+  setCurrentUser: (userId, name, email, role, prcLicense = '') => set({ currentUserId: userId, currentUserName: name, currentUserEmail: email, currentRole: role, prcLicense }),
+  signOut: async () => { 
+    const { supabase } = await import('../lib/supabase'); 
+    await supabase.auth.signOut(); 
+    set({ currentUserId: null, currentUserName: 'Admin', currentUserEmail: '', prcLicense: '' }); 
+  },
 }));

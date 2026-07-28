@@ -3,19 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import TopBar from '../../components/layout/TopBar';
 import { useMobileStore } from '../../store/useMobileStore';
 import { useLanguage } from '../../hooks/useLanguage';
+import { supabase } from '../../../../packages/shared/src/lib/supabase';
+import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
 
 export default function WorkerSync() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { syncQueueCount, isSynced, syncToBrain } = useMobileStore();
+  const { syncQueueCount, isSynced, syncToBrain, hasCapturedVitals, vitalsSession, currentUserId } = useMobileStore();
   const [isSyncing, setIsSyncing] = useState(false);
+  const [syncProgress, setSyncProgress] = useState(0);
 
   const handleSync = async () => {
     setIsSyncing(true);
-    await syncToBrain();
-    setTimeout(() => {
-      setIsSyncing(false);
-    }, 1000);
+    setSyncProgress(0);
+    
+    for (let i = 0; i < syncQueueCount; i++) {
+      await supabase.from('screenings').insert([{
+        patient_id: 'BGY-041-00217',
+        health_worker_id: currentUserId || 'WORKER-1',
+        vitals: vitalsSession,
+        timestamp: new Date().toISOString()
+      }]);
+      setSyncProgress(i + 1);
+      await new Promise(resolve => setTimeout(resolve, 300));
+    }
+
+    useLiveDemoStore.getState().hydrateFromSupabase();
+    syncToBrain();
+    setIsSyncing(false);
   };
 
   return (
@@ -37,8 +52,13 @@ export default function WorkerSync() {
               }`}
             >
               <span className={`material-symbols-outlined ${isSyncing ? 'animate-spin' : ''}`}>sync</span>
-              {isSyncing ? t('syncing') : t('syncNow')}
+              {isSyncing ? `Syncing... ${syncProgress}/${syncQueueCount}` : t('syncNow')}
             </button>
+            {isSyncing && (
+              <div className="w-full bg-amber-200 h-2 mt-4 rounded-full overflow-hidden">
+                <div className="bg-amber-600 h-full transition-all duration-300" style={{ width: `${(syncProgress / syncQueueCount) * 100}%` }}></div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 text-center card-shadow-1">

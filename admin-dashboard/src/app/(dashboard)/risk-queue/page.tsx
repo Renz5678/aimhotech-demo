@@ -10,25 +10,30 @@ const RISK_META: Record<string, { label: string; color: string; bg: string; bord
 };
 
 export default function RiskQueuePage() {
-  const { riskQueue, patients, claimQueueItem } = useDemoStore() as any;
+  const { riskFlags, patients, claimQueueItem } = useDemoStore() as any;
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
   const patientById = (pid: string) => (patients || []).find((p: any) => p.id === pid);
 
-  const rows = (riskQueue || []).map((q: any) => {
-    const p = patientById(q.pid);
-    return { ...q, patient: p };
+  const rows = (riskFlags || []).map((flag: any) => {
+    const p = patientById(flag.patientId);
+    return { 
+      ...flag, 
+      pid: flag.patientId, 
+      patient: p,
+      flagged: new Date(flag.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+    };
   }).filter((row: any) => row.patient);
 
   const filtered = activeFilter === 'all' ? rows
-    : activeFilter === 'elevated' ? rows.filter((r: any) => r.patient?.risk === 'elevated')
-    : activeFilter === 'moderate' ? rows.filter((r: any) => r.patient?.risk === 'moderate')
+    : activeFilter === 'elevated' ? rows.filter((r: any) => r.category === 'elevated' || r.patient?.risk === 'elevated')
+    : activeFilter === 'moderate' ? rows.filter((r: any) => r.category === 'moderate' || r.patient?.risk === 'moderate')
     : rows.filter((r: any) => r.status === 'unclaimed');
 
   const counts = {
     all: rows.length,
-    elevated: rows.filter((r: any) => r.patient?.risk === 'elevated').length,
-    moderate: rows.filter((r: any) => r.patient?.risk === 'moderate').length,
+    elevated: rows.filter((r: any) => r.category === 'elevated' || r.patient?.risk === 'elevated').length,
+    moderate: rows.filter((r: any) => r.category === 'moderate' || r.patient?.risk === 'moderate').length,
     unclaimed: rows.filter((r: any) => r.status === 'unclaimed').length,
   };
 
@@ -92,7 +97,7 @@ export default function RiskQueuePage() {
               const isUnclaimed = item.status === 'unclaimed';
 
               return (
-                <tr key={item.pid} className={`border-b border-gray-50 hover:bg-gray-50/80 transition-colors ${i % 2 === 1 ? 'bg-[#FAFAF8]' : ''}`}>
+                <tr key={item.id} className={`border-b border-gray-50 hover:bg-gray-50/80 transition-colors ${i % 2 === 1 ? 'bg-[#FAFAF8]' : ''}`}>
                   <td className="py-4 px-5"><input type="checkbox" className="rounded" /></td>
                   <td className="py-4 px-5">
                     <div className="w-6 h-6 rounded flex items-center justify-center text-xs font-bold" style={{ background: meta.bg, color: meta.color }}>

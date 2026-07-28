@@ -2,24 +2,40 @@
 
 import React, { useState } from 'react';
 import { ShieldCheck, QrCode, CheckCircle } from 'lucide-react';
+import { useLiveDemoStore } from '../../../../../packages/shared/src/store/useLiveDemoStore';
+import { useAdminStore } from '@/store/useAdminStore';
+import { supabase } from '../../../lib/supabase';
 
 type ScanState = 'idle' | 'scanning' | 'verified';
 
-const PENDING_RECORDS = [
-  { id: 'S-8902', patient: 'Ernesto Salvador', date: 'Jul 26, 2026', bp: '178/108', glucose: 245, spo2: 94, summary: 'Patient complains of persistent dizziness and headache for 3 days. BP consistently elevated across 4 readings.' },
-  { id: 'S-8842', patient: 'Eduardo Santos', date: 'Jul 24, 2026', bp: '165/102', glucose: 212, spo2: 96, summary: 'Chest discomfort reported. Possible AFIB pattern detected. Glucose borderline.' },
-  { id: 'S-8830', patient: 'Rosario Dimagiba', date: 'Jul 21, 2026', bp: '152/95', glucose: 188, spo2: 97, summary: 'Follow-up screening. Blood pressure remains elevated despite medication.' },
-];
-
-const RECENTLY_VALIDATED = [
-  { id: 'S-8841', patient: 'Rosario Dimagiba', doctor: 'Dr. Amelia Reyes', initials: 'AR', time: '2 hours ago' },
-  { id: 'S-8840', patient: 'Teresita Manalo', doctor: 'Dr. Emmanuel Cruz', initials: 'EC', time: 'Yesterday' },
-  { id: 'S-8835', patient: 'Juanito Bartolome', doctor: 'Dr. Amelia Reyes', initials: 'AR', time: '2 days ago' },
-];
-
 export default function ClinicalValidationPage() {
+  const { screenings, clinicalValidations, submitClinicalValidation } = useLiveDemoStore();
+  const { prcLicense, currentUserName } = useAdminStore();
+  const validatedScreeningIds = new Set(clinicalValidations.map((cv: any) => cv.screeningId));
+  const pendingScreenings = screenings.filter((s: any) => !validatedScreeningIds.has(s.id)).slice(0, 5);
+
+  const PENDING_RECORDS = pendingScreenings.map((s: any) => ({
+    id: s.id,
+    patient: s.patientName || s.patientId || 'Unknown Patient',
+    date: new Date(s.timestamp).toLocaleDateString(),
+    bp: s.metrics
+      ? `${s.metrics.systolic ?? s.bpSystolic ?? '--'}/${s.metrics.diastolic ?? s.bpDiastolic ?? '--'}`
+      : `${s.bpSystolic ?? s.bp ?? '--'}/${s.bpDiastolic ?? '--'}`,
+    glucose: s.metrics?.glucose ?? s.glucoseValue ?? s.glucose ?? '--',
+    spo2: s.metrics?.spo2 ?? '--',
+    summary: s.notes || `BP ${s.bpSystolic ?? '--'}/${s.bpDiastolic ?? '--'} · HR ${s.heartRate ?? '--'}`
+  }));
+
+  const RECENTLY_VALIDATED = clinicalValidations.slice(0, 5).map((cv: any) => ({
+    id: cv.screeningId,
+    patient: cv.patientName || 'Unknown Patient',
+    doctor: cv.validatedBy || 'Unknown Doctor',
+    initials: (cv.validatedBy || 'UD').split(' ').map((n: string) => n[0]).join(''),
+    time: new Date(cv.validatedAt).toLocaleString()
+  }));
+
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const [license, setLicense] = useState('');
+  const [license, setLicense] = useState(prcLicense || '');
   const [scanState, setScanState] = useState<ScanState>('idle');
   const [submitted, setSubmitted] = useState(false);
 
@@ -30,8 +46,18 @@ export default function ClinicalValidationPage() {
     setTimeout(() => setScanState('verified'), 2000);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSubmitted(true);
+    if (record) {
+      submitClinicalValidation(record.id);
+      await supabase.from('activity_feed').insert({ 
+        id: 'af-cv-' + Date.now(), 
+        type: 'validation', 
+        text: currentUserName + ' validated screening ' + record.id, 
+        time: 'Just now', 
+        dot: '#4C7A5A' 
+      });
+    }
     setTimeout(() => setSubmitted(false), 3000);
   };
 
@@ -166,7 +192,7 @@ export default function ClinicalValidationPage() {
             )}
 
             <p className="text-[10px] font-bold text-gray-300 text-center uppercase tracking-widest mt-3">
-              Action will be recorded under Dr. Amelia Reyes
+              Action will be recorded under {currentUserName}
             </p>
           </div>
         </div>

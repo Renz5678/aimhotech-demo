@@ -16,13 +16,13 @@ const BottomNav = ({ mode }) => {
     { label: 'Home', path: '/worker/home', icon: 'home' },
     { label: 'Screening', path: '/worker/lookup', icon: 'add_circle' },
     { label: 'Lookup', path: '/worker/lookup', icon: 'person_search' },
-    { label: 'Settings', path: '/patient/settings', icon: 'settings' }
+    { label: 'Settings', path: '/worker/settings', icon: 'settings' }
   ];
 
   const tabs = mode === 'patient' ? patientTabs : workerTabs;
 
   return (
-    <div className="fixed bottom-0 w-full bg-white border-t border-gray-100 flex justify-around items-center h-16 pb-safe z-50">
+    <div className="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around items-center h-16 pb-safe z-50">
       {tabs.map(tab => {
         const active = location.pathname.startsWith(tab.path);
         return (

@@ -9,9 +9,11 @@
     "./types": "./src/types/index.ts",
     "./data": "./src/data/seed-data.json",
     "./store": "./src/store/useLiveDemoStore.ts",
-    "./utils": "./src/utils/index.ts"
+    "./utils": "./src/utils/index.ts",
+    "./supabase": "./src/lib/supabase.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.9",
     "zustand": "^4.5.7"
   },
   "peerDependencies": {
