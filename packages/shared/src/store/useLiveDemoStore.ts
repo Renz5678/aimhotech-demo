@@ -90,7 +90,7 @@ export const useLiveDemoStore = create<LiveDemoState>((set) => ({
 
       const newScreening = getStep(1) as Screening | undefined;
       const provisionalFlag = getStep(2) as RiskFlag | undefined;
-      const confirmedFlag = { ...(getStep(4) as RiskFlag), timestamp: new Date().toISOString() } as RiskFlag;
+      const confirmedFlag = { ...(getStep(4) as unknown as RiskFlag), timestamp: new Date().toISOString() } as RiskFlag;
 
       if (!newScreening || !provisionalFlag) return state;
 
