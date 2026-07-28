@@ -39,7 +39,7 @@ export default function UsersPage() {
   }, [localUsers, search, facilities]);
 
   const userRows = filteredUsers.map(u => {
-    const active = u.status !== 'deactivated';
+    const active = (u as any).active !== false;
     return {
       ...u,
       roleLabel: roleLabels[u.role] || u.role,
@@ -54,7 +54,7 @@ export default function UsersPage() {
   const toggleUser = (userId: string) => {
     setLocalUsers(prev => prev.map(u => {
       if (u.id === userId) {
-        return { ...u, status: (u.status !== 'deactivated') ? 'deactivated' : 'active' };
+        return { ...u, active: !(u as any).active };
       }
       return u;
     }));

@@ -1,261 +1,355 @@
 {
-  "_notes": "Single authoritative seed data for the entire AImhotech monorepo. Both admin-dashboard and mobile-view import from @aimhotech/shared/data. Do NOT maintain separate copies.",
+  "_notes": "Single authoritative seed data for the entire AImhotech monorepo. Sourced from references/admin and references/mobile HTML files. Both admin-dashboard and mobile-view import from here.",
 
   "facilities": [
-    { "id": "RHU-QC-07", "type": "RHU", "name": "Quezon City RHU District 7", "address": "Barangay Commonwealth, Quezon City", "lgu": "Quezon City" },
-    { "id": "BHS-QC-097", "type": "barangay_station", "name": "Barangay San Isidro Health Station", "address": "San Isidro, Quezon City", "lgu": "Quezon City", "areaCodePrefix": "QC-097" },
-    { "id": "BHS-QC-133", "type": "barangay_station", "name": "Barangay Poblacion Health Station", "address": "Poblacion, Quezon City", "lgu": "Quezon City", "areaCodePrefix": "QC-133" },
-    { "id": "BHS-QC-024", "type": "barangay_station", "name": "Barangay Malanday Health Station", "address": "Malanday, Quezon City", "lgu": "Quezon City", "areaCodePrefix": "QC-024" },
-    { "id": "BHS-MRK-011", "type": "barangay_station", "name": "Barangay Bagong Silang Health Station", "address": "Bagong Silang, Marikina City", "lgu": "Marikina City", "areaCodePrefix": "MRK-011" },
-    { "id": "HOSP-QC-STLUKES", "type": "hospital", "name": "St. Luke's Medical Center - QC", "address": "E Rodriguez Sr. Ave, Quezon City", "lgu": "Quezon City" },
-    { "id": "HOSP-QC-EASTAVENUE", "type": "hospital", "name": "East Avenue Medical Center", "address": "East Avenue, Quezon City", "lgu": "Quezon City" },
-    { "id": "HOSP-QC-GENERAL", "type": "hospital", "name": "Quezon City General Hospital", "address": "Seminary Road, Quezon City", "lgu": "Quezon City" }
+    { "id": "RHU-042", "type": "RHU", "name": "RHU Malanday", "address": "Malanday, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-01", "type": "barangay_station", "name": "Brgy. San Isidro Health Station", "address": "San Isidro, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-02", "type": "barangay_station", "name": "Brgy. Poblacion Health Station", "address": "Poblacion, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-03", "type": "barangay_station", "name": "Brgy. Malanday Health Station", "address": "Malanday, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-04", "type": "barangay_station", "name": "Brgy. Bagong Silang Health Station", "address": "Bagong Silang, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-05", "type": "barangay_station", "name": "Brgy. Sta. Cruz Health Station", "address": "Sta. Cruz, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-06", "type": "barangay_station", "name": "Brgy. Mabini Health Station", "address": "Mabini, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-07", "type": "barangay_station", "name": "Brgy. Del Pilar Health Station", "address": "Del Pilar, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "BHS-042-08", "type": "barangay_station", "name": "Brgy. Maligaya Health Station", "address": "Maligaya, Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "HOSP-PROV", "type": "hospital", "name": "Provincial Hospital", "address": "Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "HOSP-DIST", "type": "hospital", "name": "District Hospital", "address": "Valenzuela City", "lgu": "Valenzuela City" },
+    { "id": "HOSP-FAREAST", "type": "hospital", "name": "Far EasTone Health⁺", "address": "Metro Manila", "lgu": "Metro Manila" }
   ],
 
   "users": [
-    { "id": "U-BHW-001", "name": "Liza Marasigan", "role": "barangay_health_worker", "facilityId": "BHS-QC-097", "email": "liza@aimhotech.io", "status": "active", "lastLogin": "2026-07-28T06:30:00Z" },
-    { "id": "U-BHW-002", "name": "Ronnel Gatpayat", "role": "barangay_health_worker", "facilityId": "BHS-QC-133", "email": "ronnel@aimhotech.io", "status": "active", "lastLogin": "2026-07-28T07:10:00Z" },
-    { "id": "U-BHW-003", "name": "Jenny Villaflor", "role": "barangay_health_worker", "facilityId": "BHS-QC-024", "email": "jenny@aimhotech.io", "status": "active", "lastLogin": "2026-07-27T08:00:00Z" },
-    { "id": "U-BHW-004", "name": "Mark Anthony Fajardo", "role": "barangay_health_worker", "facilityId": "BHS-MRK-011", "email": "mark@aimhotech.io", "status": "active", "lastLogin": "2026-07-26T09:00:00Z" },
-    { "id": "U-PHY-001", "name": "Dr. Carmela Ramos", "role": "rhu_physician", "facilityId": "RHU-QC-07", "email": "c.ramos@rhu-qc07.gov.ph", "status": "active", "lastLogin": "2026-07-28T08:00:00Z" },
-    { "id": "U-PHY-002", "name": "Dr. Emmanuel Cruz", "role": "rhu_physician", "facilityId": "RHU-QC-07", "email": "e.cruz@rhu-qc07.gov.ph", "status": "active", "lastLogin": "2026-07-27T09:30:00Z" },
-    { "id": "U-DOH-001", "name": "Atty. Grace Villanueva", "role": "doh_regional_officer", "facilityId": null, "region": "NCR", "email": "g.villanueva@doh.gov.ph", "status": "active", "lastLogin": "2026-07-25T10:00:00Z" },
-    { "id": "U-ADMIN-001", "name": "Daniel Scaparro", "role": "super_admin", "facilityId": null, "email": "daniel@hardyandco.ph", "status": "active", "lastLogin": "2026-07-28T09:00:00Z" }
+    { "id": "U-PHY-001", "name": "Dr. Amelia Reyes", "email": "a.reyes@rhu.gov.ph", "role": "rhu_physician", "facilityId": "RHU-042", "prcLicense": "PRC 0384712", "active": true, "lastLogin": "2026-07-28T08:00:00Z" },
+    { "id": "U-PHY-002", "name": "Dr. Jonathan Uy", "email": "j.uy@rhu.gov.ph", "role": "rhu_physician", "facilityId": "RHU-042", "prcLicense": "PRC 0291045", "active": true, "lastLogin": "2026-07-27T09:30:00Z" },
+    { "id": "U-BHW-001", "name": "Maria Dela Cruz", "email": "m.delacruz@brgy.gov.ph", "role": "barangay_health_worker", "facilityId": "BHS-042-01", "active": true, "lastLogin": "2026-07-28T07:10:00Z" },
+    { "id": "U-BHW-002", "name": "Josefina Lim", "email": "j.lim@brgy.gov.ph", "role": "barangay_health_worker", "facilityId": "BHS-042-02", "active": true, "lastLogin": "2026-07-28T06:45:00Z" },
+    { "id": "U-BHW-003", "name": "Nena Santos", "email": "n.santos@brgy.gov.ph", "role": "barangay_health_worker", "facilityId": "BHS-042-03", "active": true, "lastLogin": "2026-07-27T08:00:00Z" },
+    { "id": "U-DOH-001", "name": "Ramon Villareal", "email": "r.villareal@doh.gov.ph", "role": "doh_regional_officer", "facilityId": null, "region": "Region IV-A", "active": true, "lastLogin": "2026-07-25T10:00:00Z" },
+    { "id": "U-ADMIN-001", "name": "Carlo Mendoza", "email": "c.mendoza@hardyco.ph", "role": "super_admin", "facilityId": null, "active": true, "lastLogin": "2026-07-28T09:00:00Z" },
+    { "id": "U-BHW-004", "name": "Elena Pascual", "email": "e.pascual@brgy.gov.ph", "role": "barangay_health_worker", "facilityId": "BHS-042-06", "active": false, "lastLogin": "2026-07-10T10:00:00Z" }
   ],
 
   "devices": [
-    { "id": "DEV-MLB6-1001", "type": "microlife_b6_connect", "facilityId": "BHS-QC-097", "status": "online", "lastMaintenance": "2026-06-15", "firmwareVersion": "v2.4.1", "lastSeen": "2026-07-28T09:30:00Z" },
-    { "id": "DEV-BION-2001", "type": "bionime_rightest_ifree", "facilityId": "BHS-QC-097", "status": "online", "lastMaintenance": "2026-06-15", "firmwareVersion": "v1.8.0", "lastSeen": "2026-07-28T09:30:00Z" },
-    { "id": "DEV-MLB6-1002", "type": "microlife_b6_connect", "facilityId": "BHS-QC-133", "status": "online", "lastMaintenance": "2026-05-30", "firmwareVersion": "v2.4.1", "lastSeen": "2026-07-28T07:15:00Z" },
-    { "id": "DEV-BION-2002", "type": "bionime_rightest_ifree", "facilityId": "BHS-QC-133", "status": "maintenance_needed", "lastMaintenance": "2026-03-02", "firmwareVersion": "v1.6.2", "lastSeen": "2026-07-25T14:00:00Z" },
-    { "id": "DEV-MLB6-1003", "type": "microlife_b6_connect", "facilityId": "BHS-QC-024", "status": "online", "lastMaintenance": "2026-07-01", "firmwareVersion": "v2.4.1", "lastSeen": "2026-07-28T08:45:00Z" },
-    { "id": "DEV-MLB6-1004", "type": "microlife_b6_connect", "facilityId": "BHS-MRK-011", "status": "offline", "lastMaintenance": "2026-04-18", "firmwareVersion": "v2.3.0", "lastSeen": "2026-07-15T10:00:00Z" }
+    { "id": "KSK-042-01", "type": "Kiosk terminal", "facilityId": "BHS-042-01", "status": "online", "firmwareVersion": "v2.4.1", "lastSeen": "2 min ago" },
+    { "id": "MLF-BP-0148", "type": "Microlife BP A7", "facilityId": "BHS-042-01", "status": "online", "firmwareVersion": "v1.9.0", "lastSeen": "2 min ago" },
+    { "id": "BNM-GL-0072", "type": "Bionime GM700", "facilityId": "BHS-042-01", "status": "online", "firmwareVersion": "v3.1.2", "lastSeen": "2 min ago" },
+    { "id": "KSK-042-02", "type": "Kiosk terminal", "facilityId": "BHS-042-02", "status": "online", "firmwareVersion": "v2.4.1", "lastSeen": "11 min ago" },
+    { "id": "MLF-BP-0152", "type": "Microlife BP A7", "facilityId": "BHS-042-02", "status": "maintenance", "firmwareVersion": "v1.8.4", "lastSeen": "6 h ago" },
+    { "id": "KSK-042-03", "type": "Kiosk terminal", "facilityId": "BHS-042-03", "status": "online", "firmwareVersion": "v2.4.1", "lastSeen": "4 min ago" },
+    { "id": "BNM-GL-0075", "type": "Bionime GM700", "facilityId": "BHS-042-03", "status": "online", "firmwareVersion": "v3.1.2", "lastSeen": "4 min ago" },
+    { "id": "KSK-042-04", "type": "Kiosk terminal", "facilityId": "BHS-042-04", "status": "offline", "firmwareVersion": "v2.3.9", "lastSeen": "2 d ago" },
+    { "id": "MLF-BP-0160", "type": "Microlife BP A7", "facilityId": "BHS-042-05", "status": "online", "firmwareVersion": "v1.9.0", "lastSeen": "18 min ago" }
   ],
 
   "patients": [
-    { "id": "QC-097-00214", "name": "Rosalinda Buenaventura", "dob": "1968-03-11", "sex": "F", "facilityId": "BHS-QC-097", "consentStatus": "given", "consentDate": "2026-05-10", "phone": "09171234567" },
-    { "id": "QC-097-00215", "name": "Eduardo Santos", "dob": "1955-07-22", "sex": "M", "facilityId": "BHS-QC-097", "consentStatus": "given", "consentDate": "2026-04-15", "phone": "09189876543" },
-    { "id": "QC-133-00089", "name": "Teresita Manalo", "dob": "1972-11-04", "sex": "F", "facilityId": "BHS-QC-133", "consentStatus": "given", "consentDate": "2026-06-01", "phone": "09204567890" },
-    { "id": "QC-024-00312", "name": "Roberto Dela Cruz", "dob": "1960-01-30", "sex": "M", "facilityId": "BHS-QC-024", "consentStatus": "given", "consentDate": "2026-03-20", "phone": "09155551234" },
-    { "id": "QC-097-00310", "name": "Maria Dela Cruz", "dob": "1978-09-14", "sex": "F", "facilityId": "BHS-QC-097", "consentStatus": "given", "consentDate": "2026-07-01", "phone": "09176543210" }
+    { "id": "PT-042-0117", "name": "Rosario Dimagiba", "dob": "1959-03-14", "age": 67, "sex": "F", "facilityId": "BHS-042-01", "barangay": "San Isidro", "risk": "elevated", "vitals": "BP 165/102 · GLU 182", "lastScreening": "Jul 24", "screenCount": 6, "reason": "Repeat elevated BP + fasting glucose above threshold", "consentStatus": "given", "consentDate": "2026-03-03", "phone": "09171234567" },
+    { "id": "PT-042-0093", "name": "Ernesto Salvador", "dob": "1968-05-22", "age": 58, "sex": "M", "facilityId": "BHS-042-02", "barangay": "Poblacion", "risk": "elevated", "vitals": "BP 158/98 · GLU 210", "lastScreening": "Jul 24", "screenCount": 4, "reason": "Glucose trend rising across 3 screenings", "consentStatus": "given", "consentDate": "2026-04-10", "phone": "09189876543" },
+    { "id": "PT-042-0210", "name": "Marites Ocampo", "dob": "1977-09-30", "age": 49, "sex": "F", "facilityId": "BHS-042-03", "barangay": "Malanday", "risk": "elevated", "vitals": "BP 150/95 · GLU 168", "lastScreening": "Jul 23", "screenCount": 5, "reason": "Stage-2 hypertension range, untreated", "consentStatus": "given", "consentDate": "2026-02-28", "phone": "09204567890" },
+    { "id": "PT-042-0076", "name": "Luzviminda Santos", "dob": "1963-11-08", "age": 63, "sex": "F", "facilityId": "BHS-042-02", "barangay": "Poblacion", "risk": "elevated", "vitals": "BP 170/105 · GLU 195", "lastScreening": "Jul 20", "screenCount": 8, "reason": "Highest composite risk score in RHU scope", "consentStatus": "given", "consentDate": "2026-01-15", "phone": "09155551234" },
+    { "id": "PT-042-0058", "name": "Antonio Mercado", "dob": "1956-02-19", "age": 70, "sex": "M", "facilityId": "BHS-042-03", "barangay": "Malanday", "risk": "elevated", "vitals": "BP 162/100", "lastScreening": "Jul 17", "screenCount": 5, "reason": "Elevated BP, missed follow-up window", "consentStatus": "given", "consentDate": "2026-03-20", "phone": "09176543210" },
+    { "id": "PT-042-0064", "name": "Lito Bautista", "dob": "1965-07-11", "age": 61, "sex": "M", "facilityId": "BHS-042-04", "barangay": "Bagong Silang", "risk": "moderate", "vitals": "BP 142/90", "lastScreening": "Jul 23", "screenCount": 3, "reason": "Borderline BP two screenings in a row", "consentStatus": "given", "consentDate": "2026-05-01", "phone": "09201234567" },
+    { "id": "PT-042-0155", "name": "Corazon Villanueva", "dob": "1954-06-03", "age": 72, "sex": "F", "facilityId": "BHS-042-01", "barangay": "San Isidro", "risk": "moderate", "vitals": "BP 145/88 · GLU 131", "lastScreening": "Jul 22", "screenCount": 7, "reason": "Age-weighted BP risk", "consentStatus": "given", "consentDate": "2026-02-10", "phone": "09167654321" },
+    { "id": "PT-042-0031", "name": "Danilo Reyes", "dob": "1982-04-25", "age": 44, "sex": "M", "facilityId": "BHS-042-05", "barangay": "Sta. Cruz", "risk": "moderate", "vitals": "BP 138/86", "lastScreening": "Jul 22", "screenCount": 2, "reason": "First-time borderline reading", "consentStatus": "given", "consentDate": "2026-06-15", "phone": "09198887766" },
+    { "id": "PT-042-0121", "name": "Teresita Ramos", "dob": "1967-08-17", "age": 59, "sex": "F", "facilityId": "BHS-042-01", "barangay": "San Isidro", "risk": "moderate", "vitals": "BP 140/89 · GLU 127", "lastScreening": "Jul 18", "screenCount": 4, "reason": "Pre-diabetic glucose range", "consentStatus": "given", "consentDate": "2026-04-22", "phone": "09152223344" },
+    { "id": "PT-042-0188", "name": "Imelda Navarro", "dob": "1971-12-01", "age": 55, "sex": "F", "facilityId": "BHS-042-06", "barangay": "Mabini", "risk": "low", "vitals": "BP 122/78 · GLU 98", "lastScreening": "Jul 21", "screenCount": 3, "reason": null, "consentStatus": "given", "consentDate": "2026-05-12", "phone": "09183334455" },
+    { "id": "PT-042-0142", "name": "Roberto Cruz", "dob": "1987-03-30", "age": 39, "sex": "M", "facilityId": "BHS-042-07", "barangay": "Del Pilar", "risk": "low", "vitals": "BP 118/76 · GLU 92", "lastScreening": "Jul 21", "screenCount": 2, "reason": null, "consentStatus": "given", "consentDate": "2026-06-01", "phone": "09174445566" },
+    { "id": "PT-042-0199", "name": "Fernando Aquino", "dob": "1974-10-14", "age": 52, "sex": "M", "facilityId": "BHS-042-08", "barangay": "Maligaya", "risk": "low", "vitals": "BP 125/80 · GLU 101", "lastScreening": "Jul 19", "screenCount": 3, "reason": null, "consentStatus": "given", "consentDate": "2026-03-30", "phone": "09165556677" },
+    { "id": "BGY-041-00217", "name": "Maria Santos", "dob": "1968-05-14", "age": 58, "sex": "F", "facilityId": "BHS-042-01", "barangay": "San Isidro", "risk": "low", "vitals": "BP 124/82 · GLU 108", "lastScreening": "Jul 12", "screenCount": 4, "reason": null, "consentStatus": "given", "consentDate": "2026-03-03", "phone": "09171111222" }
   ],
 
   "screenings": [
-    { "id": "SCR-001", "patientId": "QC-097-00214", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-QC-097", "timestamp": "2026-07-15T09:15:00Z", "bp": "158/98", "bpSystolic": 158, "bpDiastolic": 98, "glucose": "112 mg/dL", "glucoseValue": 112, "heartRate": 82, "bmi": 27.4, "afibFlag": false, "deviceId": "DEV-MLB6-1001", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
-    { "id": "SCR-002", "patientId": "QC-097-00214", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-QC-097", "timestamp": "2026-06-10T10:30:00Z", "bp": "152/94", "bpSystolic": 152, "bpDiastolic": 94, "glucose": "108 mg/dL", "glucoseValue": 108, "heartRate": 78, "bmi": 27.1, "afibFlag": false, "deviceId": "DEV-MLB6-1001", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
-    { "id": "SCR-003", "patientId": "QC-097-00214", "healthWorkerId": "U-PHY-001", "facilityId": "RHU-QC-07", "timestamp": "2026-05-05T14:00:00Z", "bp": "145/90", "bpSystolic": 145, "bpDiastolic": 90, "glucose": "102 mg/dL", "glucoseValue": 102, "heartRate": 75, "bmi": 26.8, "afibFlag": false, "gradeLevel": "diagnostic", "syncStatus": "synced", "source": "rhu", "notes": "Patient reports occasional headache" },
-    { "id": "SCR-004", "patientId": "QC-097-00215", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-QC-097", "timestamp": "2026-07-20T08:45:00Z", "bp": "178/108", "bpSystolic": 178, "bpDiastolic": 108, "glucose": "245 mg/dL", "glucoseValue": 245, "heartRate": 94, "bmi": 31.2, "afibFlag": true, "deviceId": "DEV-MLB6-1001", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
-    { "id": "SCR-005", "patientId": "QC-133-00089", "healthWorkerId": "U-BHW-002", "facilityId": "BHS-QC-133", "timestamp": "2026-07-18T11:00:00Z", "bp": "138/86", "bpSystolic": 138, "bpDiastolic": 86, "glucose": "95 mg/dL", "glucoseValue": 95, "heartRate": 72, "bmi": 24.3, "afibFlag": false, "deviceId": "DEV-MLB6-1002", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
-    { "id": "SCR-006", "patientId": "QC-024-00312", "healthWorkerId": "U-BHW-003", "facilityId": "BHS-QC-024", "timestamp": "2026-07-22T09:00:00Z", "bp": "165/102", "bpSystolic": 165, "bpDiastolic": 102, "glucose": "189 mg/dL", "glucoseValue": 189, "heartRate": 88, "bmi": 29.5, "afibFlag": false, "deviceId": "DEV-MLB6-1003", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" }
+    { "id": "SCR-001", "patientId": "PT-042-0117", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-07-24T09:15:00Z", "bp": "165/102", "bpSystolic": 165, "bpDiastolic": 102, "glucose": "182 mg/dL", "glucoseValue": 182, "heartRate": 86, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-002", "patientId": "PT-042-0117", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-06-30T10:30:00Z", "bp": "148/92", "bpSystolic": 148, "bpDiastolic": 92, "glucose": "156 mg/dL", "glucoseValue": 156, "heartRate": 80, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-003", "patientId": "PT-042-0117", "healthWorkerId": "U-PHY-001", "facilityId": "HOSP-PROV", "timestamp": "2026-05-12T14:00:00Z", "bp": "150/94", "bpSystolic": 150, "bpDiastolic": 94, "glucose": "HbA1c 6.9%", "glucoseValue": 148, "heartRate": 78, "afibFlag": false, "gradeLevel": "diagnostic", "syncStatus": "synced", "source": "hospital", "notes": "Submitted by Dr. A. Reyes, license + QR verified." },
+    { "id": "SCR-004", "patientId": "PT-042-0093", "healthWorkerId": "U-BHW-002", "facilityId": "BHS-042-02", "timestamp": "2026-07-24T08:41:00Z", "bp": "158/98", "bpSystolic": 158, "bpDiastolic": 98, "glucose": "210 mg/dL", "glucoseValue": 210, "heartRate": 92, "afibFlag": false, "deviceId": "KSK-042-02", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-005", "patientId": "PT-042-0210", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-07-23T14:22:00Z", "bp": "150/95", "bpSystolic": 150, "bpDiastolic": 95, "glucose": "168 mg/dL", "glucoseValue": 168, "heartRate": 84, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-006", "patientId": "PT-042-0076", "healthWorkerId": "U-BHW-002", "facilityId": "BHS-042-02", "timestamp": "2026-07-20T07:12:00Z", "bp": "170/105", "bpSystolic": 170, "bpDiastolic": 105, "glucose": "195 mg/dL", "glucoseValue": 195, "heartRate": 95, "afibFlag": true, "deviceId": "KSK-042-02", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-007", "patientId": "PT-042-0058", "healthWorkerId": "U-BHW-003", "facilityId": "BHS-042-03", "timestamp": "2026-07-17T09:55:00Z", "bp": "162/100", "bpSystolic": 162, "bpDiastolic": 100, "glucose": "N/A", "glucoseValue": null, "heartRate": 88, "afibFlag": false, "deviceId": "KSK-042-03", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-008", "patientId": "PT-042-0064", "healthWorkerId": "U-BHW-003", "facilityId": "BHS-042-03", "timestamp": "2026-07-23T10:18:00Z", "bp": "142/90", "bpSystolic": 142, "bpDiastolic": 90, "glucose": "N/A", "glucoseValue": null, "heartRate": 76, "afibFlag": false, "deviceId": "KSK-042-03", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-009", "patientId": "PT-042-0155", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-07-22T11:30:00Z", "bp": "145/88", "bpSystolic": 145, "bpDiastolic": 88, "glucose": "131 mg/dL", "glucoseValue": 131, "heartRate": 74, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-010", "patientId": "PT-042-0031", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-07-22T09:00:00Z", "bp": "138/86", "bpSystolic": 138, "bpDiastolic": 86, "glucose": "N/A", "glucoseValue": null, "heartRate": 72, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-011", "patientId": "PT-042-0121", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-07-18T16:44:00Z", "bp": "140/89", "bpSystolic": 140, "bpDiastolic": 89, "glucose": "127 mg/dL", "glucoseValue": 127, "heartRate": 75, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-012", "patientId": "BGY-041-00217", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-07-12T09:00:00Z", "bp": "124/82", "bpSystolic": 124, "bpDiastolic": 82, "glucose": "108 mg/dL", "glucoseValue": 108, "heartRate": 70, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-013", "patientId": "BGY-041-00217", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-05-28T11:00:00Z", "bp": "131/85", "bpSystolic": 131, "bpDiastolic": 85, "glucose": "112 mg/dL", "glucoseValue": 112, "heartRate": 72, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "rhu" },
+    { "id": "SCR-014", "patientId": "BGY-041-00217", "healthWorkerId": "U-BHW-001", "facilityId": "BHS-042-01", "timestamp": "2026-04-02T09:30:00Z", "bp": "138/89", "bpSystolic": 138, "bpDiastolic": 89, "glucose": "121 mg/dL", "glucoseValue": 121, "heartRate": 74, "afibFlag": false, "deviceId": "KSK-042-01", "gradeLevel": "screening", "syncStatus": "synced", "source": "kiosk" },
+    { "id": "SCR-015", "patientId": "BGY-041-00217", "healthWorkerId": "U-PHY-001", "facilityId": "HOSP-PROV", "timestamp": "2026-01-15T09:00:00Z", "bp": "136/84", "bpSystolic": 136, "bpDiastolic": 84, "glucose": "Annual physical exam", "glucoseValue": null, "heartRate": 68, "afibFlag": false, "gradeLevel": "diagnostic", "syncStatus": "synced", "source": "hospital", "notes": "Lab panel included. All within normal range." }
   ],
 
   "vitalsHistory": {
-    "QC-097-00214": [
-      { "timestamp": "2026-03-01T09:00:00Z", "bpSystolic": 138, "bpDiastolic": 86, "glucoseValue": 98, "heartRate": 74, "riskCategory": "low" },
-      { "timestamp": "2026-04-05T10:00:00Z", "bpSystolic": 142, "bpDiastolic": 89, "glucoseValue": 102, "heartRate": 76, "riskCategory": "moderate" },
-      { "timestamp": "2026-05-05T14:00:00Z", "bpSystolic": 145, "bpDiastolic": 90, "glucoseValue": 102, "heartRate": 75, "riskCategory": "moderate" },
-      { "timestamp": "2026-06-10T10:30:00Z", "bpSystolic": 152, "bpDiastolic": 94, "glucoseValue": 108, "heartRate": 78, "riskCategory": "moderate" },
-      { "timestamp": "2026-07-15T09:15:00Z", "bpSystolic": 158, "bpDiastolic": 98, "glucoseValue": 112, "heartRate": 82, "riskCategory": "elevated" }
+    "PT-042-0117": [
+      { "timestamp": "2026-05-12T14:00:00Z", "bpSystolic": 150, "bpDiastolic": 94, "glucoseValue": 148, "heartRate": 78, "riskCategory": "moderate" },
+      { "timestamp": "2026-06-30T10:30:00Z", "bpSystolic": 148, "bpDiastolic": 92, "glucoseValue": 156, "heartRate": 80, "riskCategory": "moderate" },
+      { "timestamp": "2026-07-24T09:15:00Z", "bpSystolic": 165, "bpDiastolic": 102, "glucoseValue": 182, "heartRate": 86, "riskCategory": "elevated" }
     ],
-    "QC-097-00215": [
-      { "timestamp": "2026-05-10T09:00:00Z", "bpSystolic": 162, "bpDiastolic": 100, "glucoseValue": 220, "heartRate": 90, "riskCategory": "elevated" },
-      { "timestamp": "2026-06-20T11:00:00Z", "bpSystolic": 170, "bpDiastolic": 104, "glucoseValue": 235, "heartRate": 92, "riskCategory": "elevated" },
-      { "timestamp": "2026-07-20T08:45:00Z", "bpSystolic": 178, "bpDiastolic": 108, "glucoseValue": 245, "heartRate": 94, "riskCategory": "elevated" }
+    "PT-042-0076": [
+      { "timestamp": "2026-05-10T09:00:00Z", "bpSystolic": 158, "bpDiastolic": 98, "glucoseValue": 175, "heartRate": 88, "riskCategory": "elevated" },
+      { "timestamp": "2026-06-15T11:00:00Z", "bpSystolic": 163, "bpDiastolic": 100, "glucoseValue": 183, "heartRate": 90, "riskCategory": "elevated" },
+      { "timestamp": "2026-07-20T07:12:00Z", "bpSystolic": 170, "bpDiastolic": 105, "glucoseValue": 195, "heartRate": 95, "riskCategory": "elevated" }
     ],
-    "QC-097-00310": [
-      { "timestamp": "2026-05-15T09:00:00Z", "bpSystolic": 128, "bpDiastolic": 82, "glucoseValue": 95, "heartRate": 72, "riskCategory": "low" },
-      { "timestamp": "2026-06-20T10:00:00Z", "bpSystolic": 134, "bpDiastolic": 85, "glucoseValue": 98, "heartRate": 74, "riskCategory": "low" }
+    "BGY-041-00217": [
+      { "timestamp": "2026-01-15T09:00:00Z", "bpSystolic": 136, "bpDiastolic": 84, "glucoseValue": null, "heartRate": 68, "riskCategory": "low" },
+      { "timestamp": "2026-04-02T09:30:00Z", "bpSystolic": 138, "bpDiastolic": 89, "glucoseValue": 121, "heartRate": 74, "riskCategory": "low" },
+      { "timestamp": "2026-05-28T11:00:00Z", "bpSystolic": 131, "bpDiastolic": 85, "glucoseValue": 112, "heartRate": 72, "riskCategory": "low" },
+      { "timestamp": "2026-07-12T09:00:00Z", "bpSystolic": 124, "bpDiastolic": 82, "glucoseValue": 108, "heartRate": 70, "riskCategory": "low" }
     ]
   },
 
   "riskFlags": [
-    { "id": "RF-001", "patientId": "QC-097-00214", "screeningId": "SCR-001", "category": "elevated", "confidence": 0.87, "source": "AI Brain v2.1", "recommendedAction": "Immediate referral to RHU physician recommended. Blood pressure and glucose trending upward over 5 months.", "timestamp": "2026-07-15T09:18:00Z", "provisional": false },
-    { "id": "RF-002", "patientId": "QC-097-00215", "screeningId": "SCR-004", "category": "elevated", "confidence": 0.94, "source": "AI Brain v2.1", "recommendedAction": "Urgent referral required. Suspected uncontrolled hypertension with possible AFIB and high glucose — multi-condition risk.", "timestamp": "2026-07-20T08:47:00Z", "provisional": false },
-    { "id": "RF-003", "patientId": "QC-024-00312", "screeningId": "SCR-006", "category": "moderate", "confidence": 0.72, "source": "AI Brain v2.1", "recommendedAction": "Schedule follow-up within 2 weeks. Monitor BP and glucose trends. Lifestyle counseling advised.", "timestamp": "2026-07-22T09:03:00Z", "provisional": false }
+    { "id": "RF-001", "patientId": "PT-042-0076", "screeningId": "SCR-006", "category": "elevated", "confidence": 0.92, "source": "AI Brain v3.2", "recommendedAction": "Highest composite risk score in RHU scope. AFIB pattern detected. Urgent referral to Provincial Hospital Cardio recommended.", "timestamp": "2026-07-20T07:20:00Z", "provisional": false, "status": "unclaimed", "flaggedAt": "Jul 20, 07:12" },
+    { "id": "RF-002", "patientId": "PT-042-0117", "screeningId": "SCR-001", "category": "elevated", "confidence": 0.87, "source": "AI Brain v3.2", "recommendedAction": "Repeat elevated BP + fasting glucose above threshold across 6 screenings. Referral to RHU physician and Far EasTone Health⁺ consult recommended.", "timestamp": "2026-07-24T08:03:00Z", "provisional": false, "status": "unclaimed", "flaggedAt": "Jul 24, 08:03" },
+    { "id": "RF-003", "patientId": "PT-042-0093", "screeningId": "SCR-004", "category": "elevated", "confidence": 0.84, "source": "AI Brain v3.2", "recommendedAction": "Glucose trend rising across 3 screenings. Schedule follow-up and diabetes screening panel.", "timestamp": "2026-07-24T08:41:00Z", "provisional": false, "status": "other", "reviewer": "Dr. Reyes", "flaggedAt": "Jul 24, 08:41" },
+    { "id": "RF-004", "patientId": "PT-042-0210", "screeningId": "SCR-005", "category": "elevated", "confidence": 0.79, "source": "AI Brain v3.2", "recommendedAction": "Stage-2 hypertension range, untreated. Refer to Provincial Hospital Internal Medicine.", "timestamp": "2026-07-23T14:30:00Z", "provisional": false, "status": "unclaimed", "flaggedAt": "Jul 23, 14:22" },
+    { "id": "RF-005", "patientId": "PT-042-0058", "screeningId": "SCR-007", "category": "elevated", "confidence": 0.75, "source": "AI Brain v3.2", "recommendedAction": "Elevated BP, missed follow-up window. Patient overdue for RHU physician review.", "timestamp": "2026-07-17T10:05:00Z", "provisional": false, "status": "unclaimed", "flaggedAt": "Jul 17, 09:55" },
+    { "id": "RF-006", "patientId": "PT-042-0064", "screeningId": "SCR-008", "category": "moderate", "confidence": 0.68, "source": "AI Brain v3.2", "recommendedAction": "Borderline BP two screenings in a row. Monitor monthly, lifestyle counseling advised.", "timestamp": "2026-07-23T10:25:00Z", "provisional": false, "status": "other", "reviewer": "Dr. Uy", "flaggedAt": "Jul 23, 10:18" },
+    { "id": "RF-007", "patientId": "PT-042-0155", "screeningId": "SCR-009", "category": "moderate", "confidence": 0.65, "source": "AI Brain v3.2", "recommendedAction": "Age-weighted BP risk. Semi-annual review recommended.", "timestamp": "2026-07-22T11:38:00Z", "provisional": false, "status": "unclaimed", "flaggedAt": "Jul 22, 11:30" },
+    { "id": "RF-008", "patientId": "PT-042-0121", "screeningId": "SCR-011", "category": "moderate", "confidence": 0.61, "source": "AI Brain v3.2", "recommendedAction": "Pre-diabetic glucose range. Lifestyle intervention and quarterly glucose monitoring recommended.", "timestamp": "2026-07-18T16:52:00Z", "provisional": false, "status": "unclaimed", "flaggedAt": "Jul 18, 16:44" }
+  ],
+
+  "riskQueue": [
+    { "pid": "PT-042-0076", "status": "unclaimed", "flagged": "Jul 20, 07:12" },
+    { "pid": "PT-042-0117", "status": "unclaimed", "flagged": "Jul 24, 08:03" },
+    { "pid": "PT-042-0093", "status": "other", "reviewer": "Dr. Reyes", "flagged": "Jul 24, 08:41" },
+    { "pid": "PT-042-0210", "status": "unclaimed", "flagged": "Jul 23, 14:22" },
+    { "pid": "PT-042-0058", "status": "unclaimed", "flagged": "Jul 17, 09:55" },
+    { "pid": "PT-042-0064", "status": "other", "reviewer": "Dr. Uy", "flagged": "Jul 23, 10:18" },
+    { "pid": "PT-042-0155", "status": "unclaimed", "flagged": "Jul 22, 11:30" },
+    { "pid": "PT-042-0121", "status": "unclaimed", "flagged": "Jul 18, 16:44" }
   ],
 
   "referrals": [
     {
-      "id": "REF-001",
-      "patientId": "QC-097-00215",
-      "riskFlagId": "RF-002",
-      "destinationFacilityId": "HOSP-QC-STLUKES",
+      "id": "REF-2107",
+      "patientId": "PT-042-0076",
+      "riskFlagId": "RF-001",
+      "destinationFacilityId": "HOSP-PROV",
+      "destinationLabel": "Prov. Hospital — Cardio",
       "status": "referred",
-      "statusHistory": [
-        { "status": "flagged", "timestamp": "2026-07-20T08:47:00Z", "note": "AI Brain flagged elevated risk", "updatedBy": "AI Brain" },
-        { "status": "referred", "timestamp": "2026-07-20T10:15:00Z", "note": "Referred to St. Luke's by Dr. Carmela Ramos", "updatedBy": "U-PHY-001" }
-      ],
-      "createdAt": "2026-07-20T10:15:00Z",
-      "updatedAt": "2026-07-20T10:15:00Z",
-      "agingDays": 8,
+      "stage": 1,
+      "agingDays": 9,
       "stalled": true,
-      "notes": "Patient notified via SMS. Appointment pending confirmation from facility."
+      "statusHistory": [
+        { "status": "flagged", "timestamp": "2026-07-20T07:20:00Z", "note": "AI Brain flagged elevated risk with AFIB pattern", "updatedBy": "AI Brain" },
+        { "status": "referred", "timestamp": "2026-07-20T10:00:00Z", "note": "Referred to Prov. Hospital Cardio by Dr. Amelia Reyes", "updatedBy": "U-PHY-001" }
+      ],
+      "createdAt": "2026-07-20T10:00:00Z"
+    },
+    {
+      "id": "REF-2111",
+      "patientId": "PT-042-0117",
+      "riskFlagId": "RF-002",
+      "destinationFacilityId": "HOSP-FAREAST",
+      "destinationLabel": "Far EasTone Health⁺ consult",
+      "status": "flagged",
+      "stage": 0,
+      "agingDays": 2,
+      "stalled": false,
+      "statusHistory": [
+        { "status": "flagged", "timestamp": "2026-07-24T08:03:00Z", "note": "AI Brain flagged repeat elevated BP + glucose", "updatedBy": "AI Brain" }
+      ],
+      "createdAt": "2026-07-24T08:03:00Z"
+    },
+    {
+      "id": "REF-2098",
+      "patientId": "PT-042-0210",
+      "riskFlagId": "RF-004",
+      "destinationFacilityId": "HOSP-PROV",
+      "destinationLabel": "Prov. Hospital — IM",
+      "status": "seen",
+      "stage": 2,
+      "agingDays": 3,
+      "stalled": false,
+      "statusHistory": [
+        { "status": "flagged", "timestamp": "2026-07-23T14:30:00Z", "note": "Stage-2 hypertension, AI Brain flagged", "updatedBy": "AI Brain" },
+        { "status": "referred", "timestamp": "2026-07-23T15:00:00Z", "note": "Referred to Prov. Hospital IM", "updatedBy": "U-PHY-001" },
+        { "status": "seen", "timestamp": "2026-07-24T11:00:00Z", "note": "Patient seen by Dr. Santos at Prov. Hospital", "updatedBy": "U-PHY-002" }
+      ],
+      "createdAt": "2026-07-23T15:00:00Z"
+    },
+    {
+      "id": "REF-2091",
+      "patientId": "PT-042-0058",
+      "riskFlagId": "RF-005",
+      "destinationFacilityId": "HOSP-DIST",
+      "destinationLabel": "District Hospital — IM",
+      "status": "referred",
+      "stage": 1,
+      "agingDays": 11,
+      "stalled": true,
+      "statusHistory": [
+        { "status": "flagged", "timestamp": "2026-07-17T10:05:00Z", "note": "Elevated BP, missed follow-up", "updatedBy": "AI Brain" },
+        { "status": "referred", "timestamp": "2026-07-17T11:30:00Z", "note": "Referred to District Hospital IM", "updatedBy": "U-PHY-001" }
+      ],
+      "createdAt": "2026-07-17T11:30:00Z"
+    },
+    {
+      "id": "REF-2086",
+      "patientId": "PT-042-0155",
+      "riskFlagId": "RF-007",
+      "destinationFacilityId": "HOSP-FAREAST",
+      "destinationLabel": "Far EasTone Health⁺ consult",
+      "status": "resolved",
+      "stage": 3,
+      "agingDays": 0,
+      "stalled": false,
+      "statusHistory": [
+        { "status": "flagged", "timestamp": "2026-07-15T11:38:00Z", "note": "Age-weighted BP risk flagged", "updatedBy": "AI Brain" },
+        { "status": "referred", "timestamp": "2026-07-15T13:00:00Z", "note": "Referred to Far EasTone consult", "updatedBy": "U-PHY-002" },
+        { "status": "seen", "timestamp": "2026-07-16T10:00:00Z", "note": "Patient completed video consult", "updatedBy": "U-PHY-002" },
+        { "status": "resolved", "timestamp": "2026-07-22T09:00:00Z", "note": "Follow-up completed, medication adjusted", "updatedBy": "U-PHY-001" }
+      ],
+      "createdAt": "2026-07-15T13:00:00Z"
+    },
+    {
+      "id": "REF-2079",
+      "patientId": "PT-042-0031",
+      "riskFlagId": null,
+      "destinationFacilityId": "RHU-042",
+      "destinationLabel": "RHU Malanday follow-up",
+      "status": "resolved",
+      "stage": 3,
+      "agingDays": 0,
+      "stalled": false,
+      "statusHistory": [
+        { "status": "flagged", "timestamp": "2026-07-10T09:00:00Z", "note": "First-time borderline reading", "updatedBy": "AI Brain" },
+        { "status": "referred", "timestamp": "2026-07-10T10:00:00Z", "note": "Referred to RHU Malanday", "updatedBy": "U-PHY-001" },
+        { "status": "seen", "timestamp": "2026-07-12T09:00:00Z", "note": "Seen at RHU", "updatedBy": "U-PHY-001" },
+        { "status": "resolved", "timestamp": "2026-07-22T10:00:00Z", "note": "Lifestyle counseling completed, resolved", "updatedBy": "U-PHY-001" }
+      ],
+      "createdAt": "2026-07-10T10:00:00Z"
     }
   ],
 
   "clinicalValidations": [
-    {
-      "id": "CV-001",
-      "screeningId": "SCR-003",
-      "patientId": "QC-097-00214",
-      "validatingClinicianId": "U-PHY-001",
-      "licenseNumber": "PRC-87421",
-      "qrVerified": true,
-      "status": "submitted",
-      "submittedAt": "2026-05-05T15:30:00Z",
-      "notes": "Confirmed hypertension Stage 1. Prescribed amlodipine 5mg."
-    }
+    { "id": "CV-001", "screeningId": "S-8841", "record": "Screening #S-8841 — Luzviminda Santos", "by": "Dr. A. Reyes (PRC 0384712)", "when": "Jul 24, 15:02", "status": "submitted" },
+    { "id": "CV-002", "screeningId": "S-8790", "record": "Screening #S-8790 — Corazon Villanueva", "by": "Dr. J. Uy (PRC 0291045)", "when": "Jul 22, 10:47", "status": "submitted" },
+    { "id": "CV-003", "screeningId": "S-8712", "record": "Screening #S-8712 — Danilo Reyes", "by": "Dr. A. Reyes (PRC 0384712)", "when": "Jul 19, 09:15", "status": "submitted" }
+  ],
+
+  "validationQueue": [
+    { "id": "S-8902", "label": "Screening #S-8902 — Ernesto Salvador (Prov. Hospital)" },
+    { "id": "S-8877", "label": "Screening #S-8877 — Antonio Mercado (District Hospital)" }
   ],
 
   "appointments": [
     {
       "id": "APT-001",
-      "patientId": "QC-097-00214",
-      "facilityId": "RHU-QC-07",
+      "patientId": "BGY-041-00217",
+      "facilityId": "RHU-042",
+      "facilityName": "RHU Malanday",
       "type": "follow_up",
       "date": "2026-08-04",
       "time": "09:00",
       "status": "upcoming",
-      "notes": "Follow-up for BP monitoring after elevated AI Brain flag"
+      "notes": "Follow-up BP monitoring. Bring previous readings.",
+      "referralId": null
     },
     {
       "id": "APT-002",
-      "patientId": "QC-097-00215",
-      "facilityId": "HOSP-QC-STLUKES",
+      "patientId": "BGY-041-00217",
+      "facilityId": "HOSP-FAREAST",
+      "facilityName": "Far EasTone Health⁺",
       "type": "referral",
       "date": "2026-08-01",
       "time": "10:30",
       "status": "upcoming",
       "videoConsultUrl": "https://meet.fareastone.health/consult/abc123",
-      "notes": "Cardiology consultation for suspected AFIB"
+      "notes": "Cardiology video consult. Join via app 5 minutes early.",
+      "referralId": "REF-2111",
+      "referralStatus": "referred",
+      "referralSteps": [
+        { "label": "Flagged", "done": true, "date": "Jul 24" },
+        { "label": "Referred", "done": true, "date": "Jul 24" },
+        { "label": "Scheduled", "done": true, "date": "Jul 25" },
+        { "label": "Seen", "done": false, "date": null }
+      ]
     }
   ],
 
-  "auditLog": [
-    { "id": "AL-001", "actor": "Dr. Carmela Ramos", "actorRole": "rhu_physician", "action": "VIEW_PATIENT_RECORD", "entityType": "Patient", "entityId": "QC-097-00214", "timestamp": "2026-07-28T08:05:00Z", "ipAddress": "192.168.1.42", "details": "Accessed patient record from Risk Queue" },
-    { "id": "AL-002", "actor": "Dr. Carmela Ramos", "actorRole": "rhu_physician", "action": "CREATE_REFERRAL", "entityType": "Referral", "entityId": "REF-001", "timestamp": "2026-07-20T10:15:00Z", "ipAddress": "192.168.1.42", "details": "Created referral to St. Luke's for Eduardo Santos" },
-    { "id": "AL-003", "actor": "Liza Marasigan", "actorRole": "barangay_health_worker", "action": "SUBMIT_SCREENING", "entityType": "Screening", "entityId": "SCR-001", "timestamp": "2026-07-15T09:16:00Z", "ipAddress": "10.0.0.15", "details": "Submitted screening for Rosalinda Buenaventura" },
-    { "id": "AL-004", "actor": "Daniel Scaparro", "actorRole": "super_admin", "action": "USER_CREATED", "entityType": "User", "entityId": "U-BHW-004", "timestamp": "2026-07-01T11:00:00Z", "ipAddress": "203.177.12.5", "details": "Created BHW account for Mark Anthony Fajardo - BHS-MRK-011" },
-    { "id": "AL-005", "actor": "Dr. Carmela Ramos", "actorRole": "rhu_physician", "action": "CLINICAL_VALIDATION", "entityType": "Screening", "entityId": "SCR-003", "timestamp": "2026-05-05T15:30:00Z", "ipAddress": "192.168.1.42", "details": "Validated screening SCR-003 as diagnostic-grade" }
-  ],
-
-  "reports": [
-    { "id": "RPT-001", "type": "monthly_summary", "generatedBy": "U-DOH-001", "dateRangeStart": "2026-06-01", "dateRangeEnd": "2026-06-30", "facilityScope": null, "exportFormat": "pdf", "createdAt": "2026-07-05T10:00:00Z", "status": "ready" },
-    { "id": "RPT-002", "type": "referral_funnel", "generatedBy": "U-PHY-001", "dateRangeStart": "2026-07-01", "dateRangeEnd": "2026-07-28", "facilityScope": "RHU-QC-07", "exportFormat": "csv", "createdAt": "2026-07-28T09:00:00Z", "status": "ready" }
-  ],
-
   "barangayMetrics": [
-    { "name": "San Isidro", "barangayId": "BHS-QC-097", "totalScreened": 214, "elevatedRiskCount": 39, "elevatedRiskPct": 18, "riskLevel": "elevated" },
-    { "name": "Poblacion", "barangayId": "BHS-QC-133", "totalScreened": 189, "elevatedRiskCount": 42, "elevatedRiskPct": 22, "riskLevel": "elevated" },
-    { "name": "Malanday", "barangayId": "BHS-QC-024", "totalScreened": 176, "elevatedRiskCount": 26, "elevatedRiskPct": 15, "riskLevel": "moderate" },
-    { "name": "Bagong Silang", "barangayId": "BHS-MRK-011", "totalScreened": 142, "elevatedRiskCount": 13, "elevatedRiskPct": 9, "riskLevel": "low" }
+    { "name": "San Isidro", "barangayId": "BHS-042-01", "totalScreened": 214, "elevatedRiskCount": 39, "elevatedRiskPct": 18, "riskLevel": "elevated" },
+    { "name": "Poblacion", "barangayId": "BHS-042-02", "totalScreened": 189, "elevatedRiskCount": 42, "elevatedRiskPct": 22, "riskLevel": "elevated" },
+    { "name": "Malanday", "barangayId": "BHS-042-03", "totalScreened": 176, "elevatedRiskCount": 26, "elevatedRiskPct": 15, "riskLevel": "moderate" },
+    { "name": "Bagong Silang", "barangayId": "BHS-042-04", "totalScreened": 142, "elevatedRiskCount": 13, "elevatedRiskPct": 9, "riskLevel": "low" },
+    { "name": "Sta. Cruz", "barangayId": "BHS-042-05", "totalScreened": 138, "elevatedRiskCount": 15, "elevatedRiskPct": 11, "riskLevel": "moderate" },
+    { "name": "Mabini", "barangayId": "BHS-042-06", "totalScreened": 121, "elevatedRiskCount": 7, "elevatedRiskPct": 6, "riskLevel": "low" },
+    { "name": "Del Pilar", "barangayId": "BHS-042-07", "totalScreened": 97, "elevatedRiskCount": 5, "elevatedRiskPct": 5, "riskLevel": "low" },
+    { "name": "Maligaya", "barangayId": "BHS-042-08", "totalScreened": 88, "elevatedRiskCount": 6, "elevatedRiskPct": 7, "riskLevel": "low" }
   ],
 
   "weeklyScreeningData": [
-    { "week": "W1", "value": 40 }, { "week": "W2", "value": 55 }, { "week": "W3", "value": 50 },
-    { "week": "W4", "value": 70 }, { "week": "W5", "value": 65 }, { "week": "W6", "value": 80 },
-    { "week": "W7", "value": 75 }, { "week": "W8", "value": 90 }, { "week": "W9", "value": 85 },
-    { "week": "W10", "value": 92 }, { "week": "W11", "value": 95 }, { "week": "W12", "value": 100, "active": true }
+    { "week": "W1", "value": 62 }, { "week": "W2", "value": 71 }, { "week": "W3", "value": 68 },
+    { "week": "W4", "value": 84 }, { "week": "W5", "value": 79 }, { "week": "W6", "value": 92 },
+    { "week": "W7", "value": 88 }, { "week": "W8", "value": 103 }, { "week": "W9", "value": 97 },
+    { "week": "W10", "value": 110 }, { "week": "W11", "value": 118 }, { "week": "W12", "value": 124, "active": true }
+  ],
+
+  "kpis": [
+    { "label": "Screenings this month", "value": "1,165", "trend": "▲ 12%", "trendColor": "#4C7A5A", "trendNote": "vs last month" },
+    { "label": "Elevated-risk share", "value": "13.4%", "trend": "▲ 1.8 pts", "trendColor": "#B0523F", "trendNote": "vs last month" },
+    { "label": "Referral completion", "value": "78%", "trend": "▲ 6 pts", "trendColor": "#4C7A5A", "trendNote": "vs last month" },
+    { "label": "Stations online", "value": "7 / 8", "trend": "▼ 1 kiosk", "trendColor": "#C79A3C", "trendNote": "needs attention" }
+  ],
+
+  "activityFeed": [
+    { "text": "AI Brain flagged Rosario Dimagiba (San Isidro) — repeat elevated BP", "time": "36 min ago", "dot": "#B0523F", "type": "flag" },
+    { "text": "Referral REF-2098 marked \"Seen\" — Marites Ocampo at Prov. Hospital", "time": "1 h ago", "dot": "#4C7A5A", "type": "referral" },
+    { "text": "Kiosk KSK-042-04 (Bagong Silang) offline for 48h — ops notified", "time": "3 h ago", "dot": "#C79A3C", "type": "device" },
+    { "text": "Dr. Uy validated screening S-8841 as diagnostic-grade", "time": "Yesterday", "dot": "#4C7A5A", "type": "validation" },
+    { "text": "214 screenings synced from San Isidro station this week", "time": "Yesterday", "dot": "#A3B18B", "type": "sync" },
+    { "text": "Monthly DOH report RPT-0663 exported by Region IV-A office", "time": "Yesterday", "dot": "#A3B18B", "type": "report" }
+  ],
+
+  "anomalies": [
+    { "id": "IFA-1042", "sev": "critical", "type": "Data integrity", "title": "Physiologically implausible reading at KSK-042-02", "detail": "Glucose 812 mg/dL captured for PT-042-0142 (Poblacion). Value exceeds device ceiling — probable strip error or manual entry fault. Record quarantined from risk scoring.", "time": "Today 08:52", "status": "open" },
+    { "id": "IFA-1041", "sev": "critical", "type": "Device drift", "title": "BP cuff MLF-BP-0152 drifting +12 mmHg vs baseline", "detail": "Rolling 50-reading mean is 12 mmHg above facility baseline since Jul 22. 3 elevated-risk flags in Poblacion may be device-induced. Recalibration recommended before next session.", "time": "Today 07:15", "status": "open" },
+    { "id": "IFA-1039", "sev": "warning", "type": "Duplicate identity", "title": "Possible duplicate enrollment in San Isidro", "detail": "PT-042-0117 and kiosk enrollment K-5518 share name, birth year, and address fingerprint (match score 0.94). Merging preserves both screening histories.", "time": "Yesterday 16:40", "status": "open" },
+    { "id": "IFA-1036", "sev": "warning", "type": "Volume anomaly", "title": "Screening volume spike in Poblacion (+3.1σ)", "detail": "184 screenings in 48h vs seasonal mean of 61. Consistent with the announced barangay health drive — confirm to suppress alerts for this window.", "time": "Yesterday 11:02", "status": "open" },
+    { "id": "IFA-1031", "sev": "info", "type": "Coverage gap", "title": "No senior (65+) screenings in Del Pilar for 21 days", "detail": "Historical cadence is every 9 days. May indicate outreach lapse rather than data fault.", "time": "Jul 23", "status": "ack", "resolution": "Acknowledged — routed to BHW outreach worklist" },
+    { "id": "IFA-1028", "sev": "warning", "type": "Device drift", "title": "Glucometer BNM-GL-0072 cold-storage variance", "detail": "Morning readings 8% below afternoon distribution. Pattern matched strip storage temperature issue.", "time": "Jul 21", "status": "dismissed", "resolution": "Dismissed as false positive — fed to retraining set" }
+  ],
+
+  "mobileHealthHistory": [
+    { "title": "BP 124/82 · glucose 108", "detail": "Jul 12, 2026 · routine screening", "src": "Kiosk", "srcType": "kiosk" },
+    { "title": "BP 131/85 · glucose 112", "detail": "May 28, 2026 · follow-up", "src": "RHU", "srcType": "rhu" },
+    { "title": "BP 138/89 · glucose 121", "detail": "Apr 2, 2026 · routine screening", "src": "Kiosk", "srcType": "kiosk" },
+    { "title": "Annual physical exam", "detail": "Jan 15, 2026 · lab panel included", "src": "Hospital", "srcType": "hospital" }
+  ],
+
+  "workerStats": {
+    "todayScreenings": 12,
+    "activeReferrals": 2,
+    "pendingSync": 3,
+    "lastSync": "7:42 AM"
+  },
+
+  "auditLog": [
+    { "id": "AL-001", "actor": "Dr. Amelia Reyes", "actorRole": "rhu_physician", "action": "VIEW_PATIENT_RECORD", "entityType": "Patient", "entityId": "PT-042-0076", "timestamp": "2026-07-28T08:05:00Z", "ipAddress": "192.168.1.42", "details": "Accessed patient record from Risk Queue" },
+    { "id": "AL-002", "actor": "Dr. Amelia Reyes", "actorRole": "rhu_physician", "action": "CREATE_REFERRAL", "entityType": "Referral", "entityId": "REF-2107", "timestamp": "2026-07-20T10:00:00Z", "ipAddress": "192.168.1.42", "details": "Created referral to Prov. Hospital Cardio for Luzviminda Santos" },
+    { "id": "AL-003", "actor": "Maria Dela Cruz", "actorRole": "barangay_health_worker", "action": "SUBMIT_SCREENING", "entityType": "Screening", "entityId": "SCR-001", "timestamp": "2026-07-24T09:16:00Z", "ipAddress": "10.0.0.15", "details": "Submitted screening for Rosario Dimagiba" },
+    { "id": "AL-004", "actor": "Dr. Jonathan Uy", "actorRole": "rhu_physician", "action": "CLINICAL_VALIDATION", "entityType": "Screening", "entityId": "S-8841", "timestamp": "2026-07-24T15:02:00Z", "ipAddress": "192.168.1.44", "details": "Validated screening S-8841 as diagnostic-grade — Luzviminda Santos" },
+    { "id": "AL-005", "actor": "Carlo Mendoza", "actorRole": "super_admin", "action": "USER_CREATED", "entityType": "User", "entityId": "U-BHW-003", "timestamp": "2026-07-01T11:00:00Z", "ipAddress": "203.177.12.5", "details": "Created BHW account for Nena Santos — Brgy. Malanday" },
+    { "id": "AL-006", "actor": "Dr. Amelia Reyes", "actorRole": "rhu_physician", "action": "UPDATE_REFERRAL", "entityType": "Referral", "entityId": "REF-2098", "timestamp": "2026-07-24T11:00:00Z", "ipAddress": "192.168.1.42", "details": "Marked REF-2098 as Seen — Marites Ocampo at Prov. Hospital" }
+  ],
+
+  "reports": [
+    { "id": "RPT-0663", "type": "monthly_summary", "generatedBy": "U-DOH-001", "period": "July 2026", "scope": "All stations", "exportFormat": "pdf", "createdAt": "2026-07-28T09:00:00Z", "status": "ready" },
+    { "id": "RPT-0662", "type": "referral_funnel", "generatedBy": "U-PHY-001", "period": "July 2026", "scope": "RHU-042", "exportFormat": "csv", "createdAt": "2026-07-25T08:00:00Z", "status": "ready" }
+  ],
+
+  "reportBreakdown": [
+    { "barangay": "San Isidro", "screenings": 214, "elevated": "18%", "refs": 30, "cost": "₱118" },
+    { "barangay": "Poblacion", "screenings": 189, "elevated": "22%", "refs": 32, "cost": "₱125" },
+    { "barangay": "Malanday", "screenings": 176, "elevated": "15%", "refs": 20, "cost": "₱121" },
+    { "barangay": "Bagong Silang", "screenings": 142, "elevated": "9%", "refs": 9, "cost": "₱134" },
+    { "barangay": "Sta. Cruz", "screenings": 138, "elevated": "11%", "refs": 11, "cost": "₱129" },
+    { "barangay": "Mabini", "screenings": 121, "elevated": "6%", "refs": 5, "cost": "₱118" },
+    { "barangay": "Del Pilar", "screenings": 97, "elevated": "5%", "refs": 3, "cost": "₱141" },
+    { "barangay": "Maligaya", "screenings": 88, "elevated": "7%", "refs": 4, "cost": "₱138" }
   ],
 
   "healthTips": [
-    { "id": "TIP-001", "title": "Stay hydrated today!", "body": "Drinking at least 8 glasses of water helps your digestion and keeps your focus sharp during field work.", "icon": "water_drop" },
+    { "id": "TIP-001", "title": "Stay hydrated today!", "body": "Drinking at least 8 glasses of water helps your digestion and keeps your focus sharp.", "icon": "water_drop" },
     { "id": "TIP-002", "title": "Take a 10-minute walk", "body": "Even a short walk after meals can help lower blood sugar and improve your heart health over time.", "icon": "directions_walk" },
-    { "id": "TIP-003", "title": "Reduce your salt intake", "body": "Eating less than 1 teaspoon of salt per day can significantly lower your blood pressure over time.", "icon": "no_food" },
+    { "id": "TIP-003", "title": "Reduce your salt intake", "body": "Eating less than 1 teaspoon of salt per day can significantly lower your blood pressure.", "icon": "no_food" },
     { "id": "TIP-004", "title": "Check your BP regularly", "body": "Visit your barangay health station at least once a month to monitor your blood pressure trends.", "icon": "monitor_heart" },
     { "id": "TIP-005", "title": "Get enough sleep", "body": "7–8 hours of sleep each night helps your body regulate blood pressure and blood sugar levels.", "icon": "bedtime" }
-  ],
-
-  "liveTriggerScenario": {
-    "patientId": "QC-097-00310",
-    "description": "Live demo: Maria Dela Cruz walks into San Isidro kiosk. BHW captures elevated BP + AFIB. AI Brain flags elevated risk. RHU physician sees it on dashboard and creates referral. Maria sees it on her phone.",
-    "steps": [
-      {
-        "step": 1,
-        "actor": "Liza Marasigan (BHW)",
-        "action": "Submits vitals for Maria Dela Cruz",
-        "resultingRecord": {
-          "id": "SCR-LIVE-001",
-          "patientId": "QC-097-00310",
-          "healthWorkerId": "U-BHW-001",
-          "facilityId": "BHS-QC-097",
-          "timestamp": "2026-07-28T09:45:00Z",
-          "bp": "164/99",
-          "bpSystolic": 164,
-          "bpDiastolic": 99,
-          "glucose": "128 mg/dL",
-          "glucoseValue": 128,
-          "heartRate": 88,
-          "bmi": 26.1,
-          "afibFlag": true,
-          "deviceId": "DEV-MLB6-1001",
-          "gradeLevel": "screening",
-          "syncStatus": "pending",
-          "source": "kiosk"
-        }
-      },
-      {
-        "step": 2,
-        "actor": "On-device AI",
-        "action": "Provisional risk flag generated immediately (offline)",
-        "resultingRecord": {
-          "id": "RF-LIVE-001-provisional",
-          "patientId": "QC-097-00310",
-          "screeningId": "SCR-LIVE-001",
-          "category": "elevated",
-          "confidence": 0.78,
-          "source": "On-Device AI (provisional)",
-          "recommendedAction": "Elevated risk detected. Sync to AI Brain for full assessment.",
-          "timestamp": "2026-07-28T09:45:02Z",
-          "provisional": true
-        }
-      },
-      {
-        "step": 3,
-        "actor": "Sync Engine",
-        "action": "Sync pushes to backend (or shared demo store)"
-      },
-      {
-        "step": 4,
-        "actor": "AI Brain (server-side)",
-        "action": "Confirmed elevated risk flag appears on admin dashboard",
-        "resultingRecord": {
-          "id": "RF-LIVE-001-confirmed",
-          "patientId": "QC-097-00310",
-          "screeningId": "SCR-LIVE-001",
-          "category": "elevated",
-          "confidence": 0.91,
-          "source": "AI Brain v2.1",
-          "recommendedAction": "Urgent: Possible AFIB detected alongside elevated BP (164/99). Immediate referral to cardiologist at St. Luke's or East Avenue Medical Center strongly recommended.",
-          "timestamp": "2026-07-28T09:45:30Z",
-          "provisional": false
-        }
-      },
-      {
-        "step": 5,
-        "actor": "Dr. Carmela Ramos (RHU Physician)",
-        "action": "Creates referral from admin dashboard",
-        "resultingRecord": {
-          "id": "REF-LIVE-001",
-          "patientId": "QC-097-00310",
-          "riskFlagId": "RF-LIVE-001-confirmed",
-          "destinationFacilityId": "HOSP-QC-STLUKES",
-          "status": "referred",
-          "statusHistory": [
-            { "status": "flagged", "timestamp": "2026-07-28T09:45:30Z", "note": "AI Brain flagged elevated risk with AFIB", "updatedBy": "AI Brain" },
-            { "status": "referred", "timestamp": "2026-07-28T09:50:00Z", "note": "Referred to St. Luke's MC by Dr. Carmela Ramos", "updatedBy": "U-PHY-001" }
-          ],
-          "createdAt": "2026-07-28T09:50:00Z",
-          "updatedAt": "2026-07-28T09:50:00Z",
-          "agingDays": 0,
-          "stalled": false
-        }
-      },
-      {
-        "step": 6,
-        "actor": "Maria Dela Cruz (Patient)",
-        "action": "Sees referral on her phone in Visits tab"
-      }
-    ]
-  }
+  ]
 }

@@ -1,59 +1,64 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useDemoStore } from "@/store/useDemoStore";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 
 export default function DashboardPage() {
-  const { screenings, riskFlags, referrals, barangayMetrics, patients } = useDemoStore();
+  const {
+    kpis,
+    barangayMetrics,
+    weeklyScreeningData,
+    activityFeed,
+    referrals,
+  } = useDemoStore() as any;
 
-  const totalScreenings = screenings.length + 1150 + 15;
-  const elevatedPct = 13.4;
-  const refRate = 78;
-  const onlineStations = 7;
-  const totalStations = 8;
-
-  const kpis = [
-    { label: "SCREENINGS THIS MONTH", value: "1,165", trend: "↑12% vs last month", trendColor: "text-[#4C7A5A]" },
-    { label: "ELEVATED-RISK SHARE", value: "13.4%", trend: "↑1.8 pts vs last month", trendColor: "text-[#B0523F]" },
-    { label: "REFERRAL COMPLETION", value: "78%", trend: "↑6 pts vs last month", trendColor: "text-[#4C7A5A]" },
-    { label: "STATIONS ONLINE", value: "7 / 8", trend: "↓1 kiosk vs last month", trendColor: "text-[#C79A3C]" },
-  ];
-
-  const barangays = barangayMetrics && barangayMetrics.length > 0 ? barangayMetrics : [
-    { name: "San Isidro", elevatedRiskPct: 18, totalScreened: 214 },
-    { name: "Poblacion", elevatedRiskPct: 22, totalScreened: 189 },
-    { name: "Malanday", elevatedRiskPct: 15, totalScreened: 176 },
-    { name: "Bagong Silang", elevatedRiskPct: 9, totalScreened: 142 },
-    { name: "Sta. Cruz", elevatedRiskPct: 11, totalScreened: 138 },
-    { name: "Mabini", elevatedRiskPct: 6, totalScreened: 121 },
-    { name: "Del Pilar", elevatedRiskPct: 5, totalScreened: 97 },
-    { name: "Maligaya", elevatedRiskPct: 7, totalScreened: 88 },
-  ];
+  const [dateFilter, setDateFilter] = useState<'week' | 'month' | 'quarter'>('month');
 
   const getColorForPct = (pct: number) => {
-    if (pct >= 18) return "#B0523F";
-    if (pct >= 10) return "#C79A3C";
-    return "#4C7A5A";
+    if (pct >= 18) return { text: '#B0523F', bg: '#B0523F1F', border: '#B0523F55' };
+    if (pct >= 10) return { text: '#8F6E23', bg: '#C79A3C1F', border: '#C79A3C55' };
+    return { text: '#3F6A4E', bg: '#4C7A5A14', border: '#4C7A5A44' };
   };
 
-  const chartData = [
-    { week: "W1", volume: 220 },
-    { week: "W2", volume: 280 },
-    { week: "W3", volume: 260 },
-    { week: "W4", volume: 405 }
-  ];
+  const refStats = {
+    flagged: (referrals || []).filter((r: any) => r.status === 'flagged').length,
+    referred: (referrals || []).filter((r: any) => r.status === 'referred').length,
+    seen: (referrals || []).filter((r: any) => r.status === 'seen').length,
+    resolved: (referrals || []).filter((r: any) => r.status === 'resolved').length,
+  };
+
+  const dotColor: Record<string, string> = { flag: '#B0523F', referral: '#4C7A5A', device: '#C79A3C', validation: '#4C7A5A', sync: '#A3B18B', report: '#A3B18B' };
 
   return (
     <div className="p-8 max-w-[1400px] mx-auto space-y-8 bg-[#F5F4F0] min-h-screen">
+      {/* Date filter */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-[#1E3A2F]">Population Health Dashboard</h1>
+        <div className="flex gap-1 bg-white border border-gray-100 rounded-xl p-1">
+          {(['week', 'month', 'quarter'] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setDateFilter(f)}
+              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${dateFilter === f ? 'bg-[#1E3A2F] text-white' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              {f === 'week' ? 'This Week' : f === 'month' ? 'This Month' : 'Last 3 Months'}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* KPI Cards */}
       <div className="grid grid-cols-4 gap-6">
-        {kpis.map((k, i) => (
-          <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <h3 className="text-xs font-bold text-gray-500 tracking-wider mb-4">{k.label}</h3>
+        {(kpis || []).map((k: any, i: number) => (
+          <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <h3 className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-4">{k.label}</h3>
             <div className="flex items-end gap-3">
-              <span className="text-4xl font-bold text-[#1E3A2F]">{k.value}</span>
-              <span className={`text-xs font-bold mb-1.5 ${k.trendColor}`}>{k.trend}</span>
+              <span className="text-4xl font-black" style={{ color: k.trendColor === '#B0523F' ? '#B0523F' : '#1E3A2F' }}>{k.value}</span>
+            </div>
+            <div className="flex items-center gap-1.5 mt-2">
+              <span className="text-xs font-bold" style={{ color: k.trendColor }}>{k.trend}</span>
+              <span className="text-xs text-gray-400">{k.trendNote}</span>
             </div>
           </div>
         ))}
@@ -62,101 +67,92 @@ export default function DashboardPage() {
       <div className="flex gap-8">
         {/* Left Col (65%) */}
         <div className="w-[65%] flex flex-col gap-8">
-          
+
+          {/* Barangay heatmap */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-[#1E3A2F]">Barangay risk heatmap</h3>
-              <span className="text-sm text-gray-400 italic">% elevated-risk of screened, this month</span>
+              <span className="text-xs text-gray-400 italic">% elevated-risk of screened, this month</span>
             </div>
-            
-            <div className="grid grid-cols-4 gap-4">
-              {barangays.map((b, i) => {
-                const color = getColorForPct(b.elevatedRiskPct);
+            <div className="grid grid-cols-4 gap-3">
+              {(barangayMetrics || []).map((b: any, i: number) => {
+                const c = getColorForPct(b.elevatedRiskPct);
                 return (
-                  <div key={i} className="bg-[#F5F4F0] rounded-xl p-4 flex flex-col h-32 border border-gray-200/50 justify-between">
-                    <h4 className="font-bold text-[#1E3A2F]">{b.name}</h4>
-                    <span className="text-3xl font-light" style={{ color }}>{b.elevatedRiskPct}%</span>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{b.totalScreened} SCREENED</span>
+                  <div key={i} className="rounded-xl p-4 flex flex-col h-28 border justify-between" style={{ background: c.bg, borderColor: c.border }}>
+                    <h4 className="font-bold text-[#1E3A2F] text-sm">{b.name}</h4>
+                    <span className="text-3xl font-light" style={{ color: c.text }}>{b.elevatedRiskPct}%</span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{b.totalScreened} screened</span>
                   </div>
                 );
               })}
             </div>
-            
-            <div className="flex gap-6 mt-6 pt-6 border-t border-gray-100 text-xs font-medium text-gray-500">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-sm border border-[#4C7A5A] bg-[#4C7A5A]/20"></span> &lt; 10% low
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-sm border border-[#C79A3C] bg-[#C79A3C]/20"></span> 10–17% moderate
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-sm border border-[#B0523F] bg-[#B0523F]/20"></span> ≥ 18% elevated
-              </div>
+            <div className="flex gap-6 mt-5 pt-5 border-t border-gray-100 text-xs font-medium text-gray-500">
+              {[['#4C7A5A', '< 10% low'], ['#C79A3C', '10–17% moderate'], ['#B0523F', '≥ 18% elevated']].map(([color, label]) => (
+                <div key={label} className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-sm" style={{ background: color + '20', border: `1px solid ${color}55` }} />
+                  {label}
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-[280px]">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-[#1E3A2F]">Screening volume</h3>
-              <span className="text-sm text-gray-400 italic">last 12 weeks</span>
+          <div className="grid grid-cols-2 gap-6">
+            {/* Screening volume chart */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-base font-bold text-[#1E3A2F]">Screening volume</h3>
+                <span className="text-xs text-gray-400 italic">last 12 weeks</span>
+              </div>
+              <ResponsiveContainer width="100%" height={160}>
+                <BarChart data={weeklyScreeningData || []} margin={{ top: 4, right: 4, bottom: 0, left: -28 }}>
+                  <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9ca3af' }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9ca3af' }} />
+                  <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: '1px solid #E5E7EB' }} />
+                  <Bar dataKey="value" radius={[3, 3, 0, 0]} barSize={18}
+                    fill="#A3B18B"
+                    // Last bar is darker
+                  />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-            <ResponsiveContainer width="100%" height="80%">
-              <BarChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
-                <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                <Bar dataKey="volume" fill="#1E3A2F" radius={[4,4,0,0]} barSize={40} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
 
+            {/* Referral funnel */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <h3 className="text-base font-bold text-[#1E3A2F] mb-4">Referral funnel</h3>
+              <div className="flex flex-col gap-2 mt-2">
+                {[
+                  { label: 'Flagged', value: refStats.flagged + 8, color: '#B0523F' },
+                  { label: 'Referred', value: refStats.referred + 5, color: '#C79A3C' },
+                  { label: 'Seen', value: refStats.seen + 3, color: '#4C7A5A' },
+                  { label: 'Resolved', value: refStats.resolved + 2, color: '#1E3A2F' },
+                ].map((row) => (
+                  <div key={row.label} className="flex items-center gap-3">
+                    <span className="w-20 text-xs font-bold text-gray-500">{row.label}</span>
+                    <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${Math.min(100, row.value * 6)}%`, background: row.color }} />
+                    </div>
+                    <span className="text-xs font-bold text-gray-600 w-5">{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Right Col (35%) */}
+        {/* Right Col (35%) — Activity feed */}
         <div className="w-[35%] bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <h3 className="text-lg font-bold text-[#1E3A2F] mb-6">Recent activity</h3>
-          <div className="flex flex-col gap-6 relative">
-            <div className="absolute left-2.5 top-2 bottom-2 w-px bg-gray-100"></div>
-            
-            <div className="flex gap-4 relative z-10">
-              <div className="w-5 h-5 rounded-full bg-[#B0523F] border-4 border-white shadow-sm mt-1 shrink-0"></div>
-              <div>
-                <p className="text-sm text-gray-800">AI Brain flagged <span className="font-bold">Rosario Dimagiba (San Isidro)</span> — repeat elevated BP</p>
-                <p className="text-xs text-gray-400 mt-1 font-medium">36 min ago</p>
+          <div className="flex flex-col gap-5 relative">
+            <div className="absolute left-2.5 top-2 bottom-2 w-px bg-gray-100" />
+            {(activityFeed || []).map((item: any, i: number) => (
+              <div key={i} className="flex gap-4 relative z-10">
+                <div className="w-5 h-5 rounded-full border-4 border-white shadow-sm mt-0.5 shrink-0" style={{ background: dotColor[item.type] || item.dot }} />
+                <div>
+                  <p className="text-sm text-gray-800 leading-snug">{item.text}</p>
+                  <p className="text-xs text-gray-400 mt-1 font-medium">{item.time}</p>
+                </div>
               </div>
-            </div>
-
-            <div className="flex gap-4 relative z-10">
-              <div className="w-5 h-5 rounded-full bg-[#4C7A5A] border-4 border-white shadow-sm mt-1 shrink-0"></div>
-              <div>
-                <p className="text-sm text-gray-800">Referral <span className="font-mono text-xs font-bold text-gray-600">REF-2098</span> marked <b>"Seen"</b> — Marites Ocampo at Prov. Hospital</p>
-                <p className="text-xs text-gray-400 mt-1 font-medium">1 h ago</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 relative z-10">
-              <div className="w-5 h-5 rounded-full bg-[#C79A3C] border-4 border-white shadow-sm mt-1 shrink-0"></div>
-              <div>
-                <p className="text-sm text-gray-800">Kiosk <span className="font-mono text-xs font-bold text-gray-600">KSK-042-04</span> (Bagong Silang) offline for 48h — ops notified</p>
-                <p className="text-xs text-gray-400 mt-1 font-medium">3 h ago</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 relative z-10">
-              <div className="w-5 h-5 rounded-full bg-[#4C7A5A] border-4 border-white shadow-sm mt-1 shrink-0"></div>
-              <div>
-                <p className="text-sm text-gray-800"><span className="font-bold">Dr. Uy</span> validated screening <span className="font-mono text-xs font-bold text-gray-600">S-8841</span> as diagnostic-grade</p>
-                <p className="text-xs text-gray-400 mt-1 font-medium">Yesterday</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 relative z-10">
-              <div className="w-5 h-5 rounded-full bg-[#1E3A2F] border-4 border-white shadow-sm mt-1 shrink-0"></div>
-              <div>
-                <p className="text-sm text-gray-800"><span className="font-bold">214 screenings</span> synced from San Isidro station this week</p>
-                <p className="text-xs text-gray-400 mt-1 font-medium">Yesterday</p>
-              </div>
-            </div>
-
+            ))}
           </div>
         </div>
       </div>

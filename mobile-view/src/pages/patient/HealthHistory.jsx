@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { useLiveDemoStore } from '../../../../packages/shared/src/store/useLiveDemoStore';
-import TopBar from '../../components/layout/TopBar';
 import { useLanguage } from '../../hooks/useLanguage';
+
+const SRC_STYLE = {
+  kiosk: 'bg-primary-fixed text-on-primary-fixed',
+  rhu: 'bg-secondary-container text-on-secondary-container',
+  hospital: 'bg-surface-container-high text-on-surface-variant',
+};
 
 export default function HealthHistory() {
   const { t } = useLanguage();
   const [filter, setFilter] = useState('bp');
+  const mobileHealthHistory = useLiveDemoStore(s => s.mobileHealthHistory);
   
   return (
     <div className="bg-background text-on-background min-h-screen pb-32">
@@ -121,62 +127,28 @@ export default function HealthHistory() {
             <button className="text-label-sm font-label-sm text-primary font-bold">View Archive</button>
           </div>
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-surface-variant/20">
-            {/* Row 1 */}
-            <div className="p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors border-b border-outline-variant/10">
-              <div className="flex gap-md">
-                <div className="flex flex-col items-center justify-center bg-surface-container-high w-14 h-14 rounded-2xl">
-                  <span className="text-label-sm font-label-sm text-on-surface-variant">JUL</span>
-                  <span className="text-headline-sm font-headline-sm text-primary">12</span>
+            {(mobileHealthHistory || []).map((h, i) => {
+              const [, datePart] = h.detail.split(' · ');
+              const dateObj = new Date(h.detail.split(' · ')[0]);
+              const mon = dateObj.toLocaleString('en', { month: 'short' }).toUpperCase();
+              const day = dateObj.getDate();
+              const srcStyle = SRC_STYLE[h.srcType] || SRC_STYLE.kiosk;
+              return (
+                <div key={i} className={`p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors ${i < (mobileHealthHistory.length - 1) ? 'border-b border-outline-variant/10' : ''}`}>
+                  <div className="flex gap-md">
+                    <div className="flex flex-col items-center justify-center bg-surface-container-high w-14 h-14 rounded-2xl">
+                      <span className="text-label-sm font-label-sm text-on-surface-variant">{mon}</span>
+                      <span className="text-headline-sm font-headline-sm text-primary">{day || '—'}</span>
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <p className="text-body-lg font-body-lg text-primary">{h.title}</p>
+                      <p className="text-body-md font-body-md text-on-surface-variant">{datePart}</p>
+                    </div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-label-sm font-label-sm ${srcStyle}`}>{h.src}</span>
                 </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-body-lg font-body-lg text-primary">BP 124/82 · Glucose 108</p>
-                  <p className="text-body-md font-body-md text-on-surface-variant">Routine Screening</p>
-                </div>
-              </div>
-              <span className="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-label-sm font-label-sm">Kiosk</span>
-            </div>
-            {/* Row 2 */}
-            <div className="p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors border-b border-outline-variant/10">
-              <div className="flex gap-md">
-                <div className="flex flex-col items-center justify-center bg-surface-container-high w-14 h-14 rounded-2xl">
-                  <span className="text-label-sm font-label-sm text-on-surface-variant">MAY</span>
-                  <span className="text-headline-sm font-headline-sm text-primary">28</span>
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-body-lg font-body-lg text-primary">BP 131/85 · Glucose 112</p>
-                  <p className="text-body-md font-body-md text-on-surface-variant">Follow-up check</p>
-                </div>
-              </div>
-              <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-sm font-label-sm">RHU</span>
-            </div>
-            {/* Row 3 */}
-            <div className="p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors border-b border-outline-variant/10">
-              <div className="flex gap-md">
-                <div className="flex flex-col items-center justify-center bg-surface-container-high w-14 h-14 rounded-2xl">
-                  <span className="text-label-sm font-label-sm text-on-surface-variant">APR</span>
-                  <span className="text-headline-sm font-headline-sm text-primary">02</span>
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-body-lg font-body-lg text-primary">BP 138/89 · Glucose 121</p>
-                  <p className="text-body-md font-body-md text-on-surface-variant">Community Health Fair</p>
-                </div>
-              </div>
-              <span className="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-label-sm font-label-sm">Kiosk</span>
-            </div>
-            {/* Row 4 */}
-            <div className="p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors">
-              <div className="flex gap-md">
-                <div className="flex flex-col items-center justify-center bg-surface-container-high w-14 h-14 rounded-2xl">
-                  <span className="text-label-sm font-label-sm text-on-surface-variant">JAN</span>
-                  <span className="text-headline-sm font-headline-sm text-primary">15</span>
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-body-lg font-body-lg text-primary">Annual Physical Exam</p>
-                  <p className="text-body-md font-body-md text-on-surface-variant">Laboratory panel included</p>
-                </div>
-              </div>
-              <span className="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm">Hospital</span>
-            </div>
+              );
+            })}
           </div>
         </section>
       </main>

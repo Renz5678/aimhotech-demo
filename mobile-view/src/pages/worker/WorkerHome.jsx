@@ -8,7 +8,9 @@ export default function WorkerHome() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { syncQueueCount } = useMobileStore();
-  const patients = useLiveDemoStore(s => s.patients).slice(0,3);
+  const patients = useLiveDemoStore(s => s.patients).slice(0, 4);
+  const workerStats = useLiveDemoStore(s => s.workerStats);
+  const activityFeed = useLiveDemoStore(s => s.activityFeed).slice(0, 4);
 
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
@@ -55,7 +57,7 @@ export default function WorkerHome() {
               <span className="material-symbols-outlined text-[80px]">fact_check</span>
             </div>
             <div>
-              <h2 className="text-display-lg font-display-lg text-primary">12</h2>
+              <h2 className="text-display-lg font-display-lg text-primary">{workerStats?.todayScreenings ?? 12}</h2>
               <p className="text-body-md font-body-md text-on-surface-variant">Screenings today</p>
             </div>
             <div className="w-8 h-1 bg-secondary-fixed rounded-full"></div>
